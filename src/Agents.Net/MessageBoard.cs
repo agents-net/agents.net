@@ -175,8 +175,13 @@ namespace Agents.Net
                     List<InterceptionAction> results = new List<InterceptionAction>();
                     foreach (InterceptorAgent interceptor in interceptors)
                     {
+#if NETSTANDARD2_1
                         ThreadPool.QueueUserWorkItem(ExecuteInterception, new InterceptionExecution(interceptions, results, messageContainer, interceptor),
                                                      false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => ExecuteInterception((InterceptionExecution) o), 
+                                                     new InterceptionExecution(interceptions, results, messageContainer, interceptor));
+#endif
                     }
                 }
             }
@@ -211,7 +216,11 @@ namespace Agents.Net
                 {
                     foreach (Agent agent in agents)
                     {
+#if NETSTANDARD2_1
                         ThreadPool.QueueUserWorkItem(agent.Execute, message, false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => agent.Execute((Message) o), message);
+#endif
                     }
                 }
             }
