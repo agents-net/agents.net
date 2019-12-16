@@ -49,7 +49,7 @@ namespace Agents.Net
                     {
                         if (pendingMessages.TryDequeue(out Message message))
                         {
-                            PublishAllMessages(message);
+                            PublishAllMessages(message.HeadMessage);
                         }
                         else
                         {
