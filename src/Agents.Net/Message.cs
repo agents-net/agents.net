@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Agents.Net
 {
@@ -54,17 +55,26 @@ namespace Agents.Net
             }
         }
 
-        public bool IsUndecorated<T>(out T result) where T : Message
+        internal Message ReplaceHead(Message newHead)
         {
-            result = HeadMessage as T;
-            return result != null;
+            Message head = HeadMessage;
+            Message replaced;
+            while ((replaced = Interlocked.Exchange(ref head.parent,newHead)) != null)
+            {
+                head.parent = replaced;
+                head = head.HeadMessage;
+            }
+
+            return head;
         }
 
-        public bool Contains(MessageDefinition messageDefinition)
+        protected void AddChild(Message childMessage)
         {
-            return HeadMessage.Children.Concat(new[] {HeadMessage})
-                              .Select(m => m.Definition)
-                              .Any(d => d == messageDefinition);
+            childMessages.Add(childMessage);
+            foreach (Message message in childMessage.Children)
+            {
+                childMessages.Add(message);
+            }
         }
 
         public bool Is<T>() where T : Message

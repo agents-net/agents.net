@@ -11,18 +11,18 @@ using System.Collections.Generic;
 
 namespace Agents.Net
 {
-    public class HandledExceptionMessage : DecoratedMessage
+    public class HandledExceptionMessageDecorator : MessageDecorator
     {
         #region Definition
 
         [MessageDefinition]
-        public static MessageDefinition HandledExceptionMessageDefinition { get; } =
-            new MessageDefinition(nameof(HandledExceptionMessage));
+        public static MessageDefinition HandledExceptionMessageDecoratorDefinition { get; } =
+            new MessageDefinition(nameof(HandledExceptionMessageDecorator));
 
         #endregion
 
-        public HandledExceptionMessage(ExceptionMessage decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
-            : base(decoratedMessage, HandledExceptionMessageDefinition, additionalPredecessors)
+        public HandledExceptionMessageDecorator(ExceptionMessage decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
+            : base(decoratedMessage, HandledExceptionMessageDecoratorDefinition, additionalPredecessors)
         {
         }
 

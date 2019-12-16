@@ -77,11 +77,12 @@ namespace Agents.Net
             }
         }
 
-        public static void CreateNewDomainsFor(IEnumerable<Message> rootMessages)
+        public static void CreateNewDomainsFor(IEnumerable<Message> rootMessages,
+                                               MessageDomainsCreatedMessage createdMessage)
         {
             foreach (Message rootMessage in rootMessages)
             {
-                rootMessage.SwitchDomain(new MessageDomain(rootMessage, rootMessage.MessageDomain));
+                rootMessage.SwitchDomain(new MessageDomain(rootMessage, rootMessage.MessageDomain, createdMessage));
             }
         }
 

@@ -26,14 +26,14 @@ namespace Agents.Net
                                                                      .Where(m => !agentDefinitions.Any(
                                                                                      b => b.ConsumingTriggers
                                                                                            .Concat(b.ProducingTriggers)
-                                                                                           .Concat(agentDefinitions.OfType<DecoratorAgentDefinition>()
-                                                                                                                 .SelectMany(d => d.DecoratedMessages))
+                                                                                           .Concat(agentDefinitions.OfType<InterceptorAgentDefinition>()
+                                                                                                                 .SelectMany(d => d.InterceptedMessages))
                                                                                            .Any(t => t == m)));
             MessageDefinition[] producedTriggers = agentDefinitions.SelectMany(b => b.ProducingTriggers)
                                                               .ToArray();
             MessageDefinition[] consumedTriggers = agentDefinitions.SelectMany(b => b.ConsumingTriggers)
-                                                                 .Concat(agentDefinitions.OfType<DecoratorAgentDefinition>()
-                                                                                       .SelectMany(d => d.DecoratedMessages))
+                                                                 .Concat(agentDefinitions.OfType<InterceptorAgentDefinition>()
+                                                                                       .SelectMany(d => d.InterceptedMessages))
                                                               .ToArray();
             IEnumerable<MessageDefinition> unproducedMessageTriggers = consumedTriggers.Except(producedTriggers)
                                                                                     .Except(new []{InitializeMessage.InitializeMessageDefinition, });
@@ -48,7 +48,7 @@ namespace Agents.Net
             Assembly[] assemblies, out IEnumerable<Type> messageTypeWithoutDefinition)
         {
             IEnumerable<Type> messages = assemblies.SelectMany(a => a.GetTypes())
-                                                   .Where(t => t.BaseType == typeof(Message) || t.BaseType == typeof(DecoratedMessage))
+                                                   .Where(t => t.BaseType == typeof(Message) || t.BaseType == typeof(MessageDecorator))
                                                    .Where(t => !t.IsAbstract)
                                                    .Where(t => t.Name != "DefaultMessageDomainMessage");
             List<Type> typeWithoutDefinition = new List<Type>();
@@ -77,7 +77,7 @@ namespace Agents.Net
                                                                      out IEnumerable<Type> notInitializedAgents)
         {
             IEnumerable<Type> agents = assemblies.SelectMany(a => a.GetTypes())
-                                                   .Where(t => t.BaseType == typeof(Agent) || t.BaseType == typeof(DecoratorAgent))
+                                                   .Where(t => t.BaseType == typeof(Agent) || t.BaseType == typeof(InterceptorAgent))
                                                    .Where(t => !t.IsAbstract);
             List<Type> typeWithoutDefinition = new List<Type>();
             List<AgentDefinition> definitions = new List<AgentDefinition>();

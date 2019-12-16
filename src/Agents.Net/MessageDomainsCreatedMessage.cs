@@ -22,20 +22,20 @@ namespace Agents.Net
 
         #endregion
 
-        public Message[] DomainRootMessages { get; }
+        public ICollection<Message> DomainRootMessages { get; }
 
         public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, Message predecessorMessage) 
-            : base(predecessorMessage, MessageDomainsCreatedMessageDefinition, newDomainRootMessages.ToArray())
+            : base(predecessorMessage, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages.ToArray();
-            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages);
+            DomainRootMessages = newDomainRootMessages;
+            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
         }
 
         public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
-            : base(predecessorMessages, MessageDomainsCreatedMessageDefinition, newDomainRootMessages.ToArray())
+            : base(predecessorMessages, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages.ToArray();
-            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages);
+            DomainRootMessages = newDomainRootMessages;
+            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
         }
 
         public MessageDomainsCreatedMessage(Message newDomainRootMessage, Message predecessorMessage) 
@@ -50,7 +50,7 @@ namespace Agents.Net
 
         protected override string DataToString()
         {
-            return string.Empty;
+            return $"{nameof(DomainRootMessages)}: {string.Join(", ", DomainRootMessages.Select(m => m.Id))}";
         }
     }
 }

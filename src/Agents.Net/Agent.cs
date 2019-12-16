@@ -18,17 +18,14 @@ namespace Agents.Net
 
         protected Agent(AgentDefinition definition, MessageBoard messageBoard)
         {
-            Definition = definition;
             this.messageBoard = messageBoard;
+            Definition = definition;
         }
 
         public AgentDefinition Definition { get; }
 
-        public bool Completed { get; private set; }
-
         public void Execute(Message messageData)
         {
-            Completed = false;
             try
             {
                 ExecuteCore(messageData);
@@ -38,8 +35,6 @@ namespace Agents.Net
                 ExceptionDispatchInfo exceptionInfo = ExceptionDispatchInfo.Capture(e);
                 OnMessage(new ExceptionMessage(exceptionInfo, messageData, this));
             }
-
-            Completed = true;
         }
 
         protected void OnMessage(Message message)

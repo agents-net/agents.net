@@ -15,18 +15,33 @@ namespace Agents.Net
     {
         private readonly List<MessageDomain> children = new List<MessageDomain>();
 
-        public MessageDomain(Message root, MessageDomain parent)
+        public MessageDomain(Message root, MessageDomain parent, MessageDomainsCreatedMessage createdMessage = null)
         {
             Root = root;
             Parent = parent;
-            parent?.children.Add(this);
+            CreatedMessage = createdMessage;
+            lock (parent?.children??new object())
+            {
+                parent?.children.Add(this);
+            }
         }
 
         public Message Root { get; }
 
         public MessageDomain Parent { get; }
 
-        public IEnumerable<MessageDomain> Children => children;
+        public MessageDomainsCreatedMessage CreatedMessage { get; }
+
+        public MessageDomain[] Children
+        {
+            get
+            {
+                lock (children)
+                {
+                    return children.ToArray();
+                }
+            }
+        }
 
         public bool IsTerminated { get; private set; }
 
