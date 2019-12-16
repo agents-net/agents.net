@@ -18,7 +18,7 @@ namespace Agents.Net
     {
         private readonly HashSet<Message> childMessages;
         private Message parent;
-        private readonly Message[] predecessorMessages;
+        private Message[] predecessorMessages;
         public Guid Id { get; } = Guid.NewGuid();
 
         protected Message(Message predecessorMessage, MessageDefinition messageDefinition,
@@ -37,6 +37,20 @@ namespace Agents.Net
                 childMessage.parent = this;
             }
             MessageDomain = this.predecessorMessages.GetMessageDomain();
+        }
+        
+        public void ReplaceWith(Message message)
+        {
+            message.parent = parent;
+            parent.RemoveChild(this);
+            parent.AddChild(message);
+            message.childMessages.Clear();
+            foreach (Message childMessage in childMessages)
+            {
+                message.childMessages.Add(childMessage);
+            }
+            message.predecessorMessages = predecessorMessages;
+            message.SwitchDomain(MessageDomain);
         }
 
         internal IEnumerable<Message> Predecessors => predecessorMessages;
@@ -74,6 +88,17 @@ namespace Agents.Net
             foreach (Message message in childMessage.Children)
             {
                 childMessages.Add(message);
+            }
+        }
+
+        private void RemoveChild(Message message)
+        {
+            childMessages.Remove(message);
+            IEnumerable<Message> directChildren = childMessages.Where(c => c.parent == this);
+            childMessages.Clear();
+            foreach (Message directChild in directChildren)
+            {
+                AddChild(directChild);
             }
         }
 

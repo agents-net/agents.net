@@ -38,7 +38,13 @@ namespace Agents.Net
             ExecuteCompleteSets(completedSets);
         }
 
-        private IEnumerable<MessageSet> GetCompleteSets(MessageDomain domain)
+        public IEnumerable<MessageSet<T1, T2>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2>>();
+        }
+
+        protected IEnumerable<MessageSet> GetCompleteSets(MessageDomain domain)
         {
             HashSet<MessageSet> sets = new HashSet<MessageSet>(new MessageSetIdComparer());
             foreach (MessageDomain messageDomain in ThisAndFlattenedChildren(domain).Where(d => !d.IsTerminated))
@@ -201,6 +207,12 @@ namespace Agents.Net
             messageSet = null;
             return false;
         }
+
+        public new IEnumerable<MessageSet<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2, T3>>();
+        }
     }
 
     public class MessageCollector<T1, T2, T3, T4> : MessageCollector<T1, T2, T3>
@@ -247,6 +259,12 @@ namespace Agents.Net
 
             messageSet = null;
             return false;
+        }
+
+        public new IEnumerable<MessageSet<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2, T3, T4>>();
         }
     }
 
@@ -296,6 +314,12 @@ namespace Agents.Net
 
             messageSet = null;
             return false;
+        }
+
+        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5>>();
         }
     }
 
@@ -347,6 +371,12 @@ namespace Agents.Net
 
             messageSet = null;
             return false;
+        }
+
+        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5, T6>>();
         }
     }
 
@@ -400,6 +430,12 @@ namespace Agents.Net
 
             messageSet = null;
             return false;
+        }
+
+        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)
+        {
+            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5, T6, T7>>();
         }
     }
 }
