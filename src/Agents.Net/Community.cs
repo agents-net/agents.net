@@ -12,13 +12,12 @@ using System.Linq;
 namespace Agents.Net
 {
     /**
-     * Properties of the community
+     * Properties of the swarm
      *  + historic debugging by visualizing the log, which contains all messages and their predecessors
      *  + implicit parallelisation of agents - when the requirements of two agents are filled they are executed in parallel
      *  + scalable - work can be executed in parallel without the need for any agent to know about it except one how does the parallelisation
      *  + easy to implement global undo by reversing all messages
      *  + transactions are a domain (?) with explicit start and end
-     *  + self-organizing architecture
     **/
     public class Community
     {
@@ -35,15 +34,15 @@ namespace Agents.Net
             {
                 foreach (MessageDefinition trigger in agent.Definition.ConsumingTriggers)
                 {
-                    messageBoard.Subscribe(trigger, agent);
+                    messageBoard.Register(trigger, agent);
                 }
             }
 
-            foreach (DecoratorAgent decoratorAgent in agents.OfType<DecoratorAgent>())
+            foreach (InterceptorAgent interceptorAgent in agents.OfType<InterceptorAgent>())
             {
-                foreach (MessageDefinition decoratedMessage in decoratorAgent.DecoratorDefinition.DecoratedMessages)
+                foreach (MessageDefinition interceptedMessage in interceptorAgent.InterceptorDefinition.InterceptedMessages)
                 {
-                    messageBoard.SubscribeDecorator(decoratedMessage, decoratorAgent);
+                    messageBoard.RegisterInterceptor(interceptedMessage, interceptorAgent);
                 }
             }
         }

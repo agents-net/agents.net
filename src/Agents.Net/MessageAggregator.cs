@@ -44,10 +44,11 @@ namespace Agents.Net
                 throw new InvalidOperationException($"Cannot aggregate the message {message}. Aggregated type is {typeof(T)}");
             }
 
-            if (!aggregatedMessage.MessageDomain.Root.TryGet(out MessageDomainsCreatedMessage root))
+            MessageDomainsCreatedMessage root = aggregatedMessage.MessageDomain.CreatedMessage;
+            if (root == null)
             {
-                throw new InvalidOperationException($"Cannot aggregate message {message} because domain root " +
-                                                    $"message does not contain a {nameof(MessageDomainsCreatedMessage)}");
+                throw new InvalidOperationException($"Cannot aggregate message {message} because domain " +
+                                                    $"does not contain a {nameof(MessageDomainsCreatedMessage)}");
             }
 
             if (aggregatedMessage.MessageDomain.IsTerminated)
@@ -64,7 +65,7 @@ namespace Agents.Net
                     aggregatedMessages.Add(root, new HashSet<T>());
                 }
                 aggregatedMessages[root].Add(aggregatedMessage);
-                if (aggregatedMessages[root].Count == root.DomainRootMessages.Length)
+                if (aggregatedMessages[root].Count == root.DomainRootMessages.Count)
                 {
                     completedMessageBatch = aggregatedMessages[root];
                     aggregatedMessages.Remove(root);

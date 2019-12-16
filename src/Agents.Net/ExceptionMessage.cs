@@ -58,7 +58,7 @@ namespace Agents.Net
 
         protected override string DataToString()
         {
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

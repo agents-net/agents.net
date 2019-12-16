@@ -12,12 +12,13 @@ using System.Linq;
 
 namespace Agents.Net
 {
-    public abstract class DecoratedMessage : Message
+    public abstract class MessageDecorator : Message
     {
-        protected DecoratedMessage(Message decoratedMessage, MessageDefinition messageDefinition, IEnumerable<Message> additionalPredecessors = null) 
+        protected MessageDecorator(Message decoratedMessage, MessageDefinition messageDefinition, IEnumerable<Message> additionalPredecessors = null) 
             : base(decoratedMessage.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct(), 
-                   messageDefinition, decoratedMessage.HeadMessage)
+                   messageDefinition)
         {
+            AddChild(decoratedMessage.ReplaceHead(this));
         }
     }
 }

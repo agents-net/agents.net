@@ -72,22 +72,22 @@ namespace Agents.Net
             }
         }
 
-        public void Subscribe(MessageDefinition trigger, Agent agent)
+        public void Register(MessageDefinition trigger, Agent agent)
         {
             if (disposed)
             {
                 return;
             }
-            publisher.Subscribe(trigger, agent);
+            publisher.Register(trigger, agent);
         }
 
-        public void SubscribeDecorator(MessageDefinition decoratedMessage, DecoratorAgent agent)
+        public void RegisterInterceptor(MessageDefinition trigger, InterceptorAgent agent)
         {
             if (disposed)
             {
                 return;
             }
-            publisher.SubscribeDecorator(decoratedMessage, agent);
+            publisher.RegisterInterceptor(trigger, agent);
         }
 
         public void Dispose()
@@ -118,51 +118,101 @@ namespace Agents.Net
 
         private class MessagePublisher : IDisposable
         {
-            private readonly Dictionary<MessageDefinition, List<Agent>> subscribedAgents =
+            private readonly Dictionary<MessageDefinition, List<Agent>> registeredAgents =
                 new Dictionary<MessageDefinition, List<Agent>>();
 
-            private readonly Dictionary<MessageDefinition, List<DecoratorAgent>> decoratorAgents = 
-                new Dictionary<MessageDefinition, List<DecoratorAgent>>();
+            private readonly Dictionary<MessageDefinition, List<InterceptorAgent>> interceptorAgents = 
+                new Dictionary<MessageDefinition, List<InterceptorAgent>>();
 
-            public void Subscribe(MessageDefinition trigger, Agent agent)
+            public void Register(MessageDefinition trigger, Agent agent)
             {
-                if (!subscribedAgents.ContainsKey(trigger))
+                if (!registeredAgents.ContainsKey(trigger))
                 {
-                    subscribedAgents.Add(trigger, new List<Agent>());
+                    registeredAgents.Add(trigger, new List<Agent>());
                 }
-                subscribedAgents[trigger].Add(agent);
+                registeredAgents[trigger].Add(agent);
             }
 
-            public void SubscribeDecorator(MessageDefinition decoratedMessage, DecoratorAgent decoratorAgent)
+            public void RegisterInterceptor(MessageDefinition trigger, InterceptorAgent agent)
             {
-                if (!decoratorAgents.ContainsKey(decoratedMessage))
+                if (!interceptorAgents.ContainsKey(trigger))
                 {
-                    decoratorAgents.Add(decoratedMessage, new List<DecoratorAgent>());
+                    interceptorAgents.Add(trigger, new List<InterceptorAgent>());
                 }
-                decoratorAgents[decoratedMessage].Add(decoratorAgent);
+                interceptorAgents[trigger].Add(agent);
             }
 
             public void Publish(Message messageContainer)
             {
-                PublishSingleMessage(messageContainer);
-                foreach (Message message in messageContainer.Children)
+                List<InterceptorAgent> interceptors = null;
+                foreach (Message message in messageContainer.Children.Concat(new []{messageContainer}))
+                {
+                    if (!interceptorAgents.TryGetValue(message.Definition, out List<InterceptorAgent> agents))
+                    {
+                        continue;
+                    }
+
+                    if (interceptors == null)
+                    {
+                        interceptors = new List<InterceptorAgent>();
+                    }
+
+                    interceptors.AddRange(agents);
+                }
+
+                if (interceptors != null)
+                {
+                    Intercept();
+                }
+                else
+                {
+                    PublishFinalMessageContainer(messageContainer);
+                }
+
+                void Intercept()
+                {
+                    int interceptions = interceptors.Count;
+                    List<InterceptionAction> results = new List<InterceptionAction>();
+                    foreach (InterceptorAgent interceptor in interceptors)
+                    {
+#if NETSTANDARD2_1
+                        ThreadPool.QueueUserWorkItem(ExecuteInterception, new InterceptionExecution(interceptions, results, messageContainer, interceptor),
+                                                     false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => ExecuteInterception((InterceptionExecution) o), 
+                                                     new InterceptionExecution(interceptions, results, messageContainer, interceptor));
+#endif
+                    }
+                }
+            }
+
+            private void PublishFinalMessageContainer(Message container)
+            {
+                PublishSingleMessage(container);
+                foreach (Message message in container.Children)
                 {
                     PublishSingleMessage(message);
                 }
             }
 
+            private void ExecuteInterception(InterceptionExecution execution)
+            {
+                InterceptionAction result = execution.Interceptor.Intercept(execution.Message);
+                lock (execution.Results)
+                {
+                    execution.Results.Add(result);
+                }
+
+                if (execution.Results.Count == execution.Interceptions &&
+                    execution.Results.All(r => r != InterceptionAction.DoNotPublish))
+                {
+                    PublishFinalMessageContainer(execution.Message.HeadMessage);
+                }
+            }
+
             private void PublishSingleMessage(Message message)
             {
-                if (decoratorAgents.TryGetValue(message.Definition, out List<DecoratorAgent> decoratingAgents) &&
-                    !IsCompletelyDecorated(out DecoratorAgent nextDecoratingAgent))
-                {
-#if NETSTANDARD2_1
-                    ThreadPool.QueueUserWorkItem(nextDecoratingAgent.Execute, message, false);
-#else
-                    ThreadPool.QueueUserWorkItem((o) => nextDecoratingAgent.Execute((Message) o), message);
-#endif
-                }
-                else if (subscribedAgents.TryGetValue(message.Definition, out List<Agent> agents))
+                if (registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
                 {
                     foreach (Agent agent in agents)
                     {
@@ -173,18 +223,27 @@ namespace Agents.Net
 #endif
                     }
                 }
-
-                bool IsCompletelyDecorated(out DecoratorAgent decoratingAgent)
-                {
-                    decoratingAgent = decoratingAgents.FirstOrDefault(b => !b.DecoratorDefinition.ProducingTriggers
-                                                                             .Any(message.Contains));
-                    return decoratingAgent == null;
-                }
             }
 
             public void Dispose()
             {
-                subscribedAgents.Clear();
+                registeredAgents.Clear();
+            }
+
+            private class InterceptionExecution
+            {
+                public int Interceptions { get; }
+                public List<InterceptionAction> Results { get; }
+                public Message Message { get; }
+                public InterceptorAgent Interceptor { get; }
+
+                public InterceptionExecution(in int interceptions, List<InterceptionAction> results, Message message, InterceptorAgent interceptor)
+                {
+                    Interceptions = interceptions;
+                    Results = results;
+                    Message = message;
+                    Interceptor = interceptor;
+                }
             }
         }
     }
