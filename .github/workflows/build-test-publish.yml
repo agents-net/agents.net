@@ -1,0 +1,42 @@
+name: Build, Test and Publish
+
+on: [push]
+
+jobs:
+  build:
+    
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+    - name: Build with dotnet
+      run: dotnet build src --configuration Release
+      
+  publish_prereleases:
+  
+    name: Publish prerelease nuget packages on master
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+    - name: Build with dotnet and create prerelease nupkg
+      run: dotnet build --configuration PreRelease --version-suffix prerelease-$(date +%Y%m%d%H%M%S)
+      shell: bash
+    - name: Publish nuget
+      run: |
+           for f in ./src/Agents.Net/bin/Release/*.nupkg
+           do
+             curl -vX PUT -u "twilker:${{ secrets.GHPackagesToken }}" -F package=@$f https://nuget.pkg.github.com/twilker/
+           done
+      shell: bash
