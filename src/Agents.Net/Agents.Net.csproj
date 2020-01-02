@@ -12,6 +12,7 @@
 	<PackageReleaseNotes>https://github.com/agents-net/agents.net/releases</PackageReleaseNotes>
 	<PackageId>Agents.Net</PackageId>
 	<Product>Agents.Net</Product>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<Copyright>Tobias Wilker</Copyright>
 	<Authors>Tobias Wilker</Authors>
