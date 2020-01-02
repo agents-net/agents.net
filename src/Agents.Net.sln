@@ -16,8 +16,8 @@ Global
 		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.PreRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.PreRelease|Any CPU.Build.0 = Release|Any CPU
+		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.PreRelease|Any CPU.ActiveCfg = PreRelease|Any CPU
+		{F3E35A49-2597-4447-8DEA-D2AC14CCD054}.PreRelease|Any CPU.Build.0 = PreRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
