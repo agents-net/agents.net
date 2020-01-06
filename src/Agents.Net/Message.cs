@@ -41,9 +41,6 @@ namespace Agents.Net
         
         public void ReplaceWith(Message message)
         {
-            message.parent = parent;
-            parent.RemoveChild(this);
-            parent.AddChild(message);
             message.childMessages.Clear();
             foreach (Message childMessage in childMessages)
             {
@@ -51,6 +48,9 @@ namespace Agents.Net
             }
             message.predecessorMessages = predecessorMessages;
             message.SwitchDomain(MessageDomain);
+            message.parent = parent;
+            parent.RemoveChild(this);
+            parent.AddChild(message);
         }
 
         internal IEnumerable<Message> Predecessors => predecessorMessages;
