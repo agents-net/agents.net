@@ -1,0 +1,41 @@
+name: Build, Test and Publish
+
+on:
+  # Trigger the workflow on push,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build with dotnet
+      run: dotnet build src --configuration Release
+      
+  publish_prereleases:
+  
+    name: Publish prerelease nuget packages on master
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+    - name: Build with dotnet and create prerelease nupkg
+      run: dotnet build src --configuration PreRelease --version-suffix prerelease-$(date +%Y%m%d%H%M%S)
+      shell: bash
+    - name: Publish nuget
+      run: |
+           sed -i -e 's/TOKEN/${{ secrets.GITHUB_TOKEN }}/g' ./.build/nuget.config
+           cp ./.build/nuget.config ./nuget.config
+           for f in ./src/Agents.Net/bin/PreRelease/*.nupkg
+           do
+             dotnet nuget push "$f" --source "github"
+           done
+      shell: bash
