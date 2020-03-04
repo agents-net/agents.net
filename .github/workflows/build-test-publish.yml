@@ -30,13 +30,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100
+    - name: Add github token to nuget.config
+      run: |
+           sed -i -e 's/TOKEN/${{ secrets.GITHUB_TOKEN }}/g' ./src/nuget.config
+           cat ./src/nuget.config
+      shell: bash
     - name: Build with dotnet and create prerelease nupkg
-      run: dotnet build src --configuration PreRelease --version-suffix prerelease-$(date +%Y%m%d%H%M%S)
+      run: dotnet pack src --configuration PreRelease --version-suffix prerelease-$(date +%Y%m%d%H%M%S)
       shell: bash
     - name: Publish nuget
       run: |
            for f in ./src/Agents.Net/bin/Release/*.nupkg
            do
-             curl -vX PUT -u "twilker:${{ secrets.GHPackagesToken }}" -F package=@$f https://nuget.pkg.github.com/twilker/
+             dotnet nuget push "$f" --source "github"
            done
       shell: bash
