@@ -188,6 +188,7 @@ namespace Agents.Net
 
             private void PublishFinalMessageContainer(Message container)
             {
+                RegisterConsumableMessage(container.Children.Count() + 1, container);
                 PublishSingleMessage(container);
                 foreach (Message message in container.Children)
                 {
@@ -207,6 +208,33 @@ namespace Agents.Net
                     execution.Results.All(r => r != InterceptionAction.DoNotPublish))
                 {
                     PublishFinalMessageContainer(execution.Message.HeadMessage);
+                }
+                else
+                {
+                    RegisterConsumableMessage(0, execution.Message.HeadMessage);
+                }
+            }
+            private void RegisterConsumableMessage(int consumers, Message message)
+            {
+                int remaining = consumers;
+                if (message is ConsumableMessage consumableMessage)
+                {
+                    if (remaining > 0)
+                    {
+                        consumableMessage.ConsumeAction = Consume;
+                    }
+                    else
+                    {
+                        consumableMessage.Dispose();
+                    }
+                }
+
+                void Consume()
+                {
+                    if (Interlocked.Decrement(ref remaining) == 0)
+                    {
+                        consumableMessage.Dispose();
+                    }
                 }
             }
 
