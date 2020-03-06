@@ -21,9 +21,9 @@ namespace Agents.Net
     **/
     public class Community
     {
-        private readonly MessageBoard messageBoard;
+        private readonly IMessageBoard messageBoard;
 
-        public Community(MessageBoard messageBoard)
+        public Community(IMessageBoard messageBoard)
         {
             this.messageBoard = messageBoard;
         }

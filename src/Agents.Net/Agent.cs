@@ -15,9 +15,9 @@ namespace Agents.Net
 {
     public abstract class Agent
     {
-        private readonly MessageBoard messageBoard;
+        private readonly IMessageBoard messageBoard;
 
-        protected Agent(AgentDefinition definition, MessageBoard messageBoard)
+        protected Agent(AgentDefinition definition, IMessageBoard messageBoard)
         {
             this.messageBoard = messageBoard;
             Definition = definition;
