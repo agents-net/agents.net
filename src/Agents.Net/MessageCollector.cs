@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Agents.Net
@@ -17,19 +18,20 @@ namespace Agents.Net
         where T1 : Message
         where T2 : Message
     {
-        protected readonly Dictionary<MessageDomain, T1> Messages1 = new Dictionary<MessageDomain, T1>();
-        protected readonly Dictionary<MessageDomain, T2> Messages2 = new Dictionary<MessageDomain, T2>();
-        private readonly Action<MessageSet<T1, T2>> executeSet;
+        protected Dictionary<MessageDomain, T1> Messages1 { get; } = new Dictionary<MessageDomain, T1>();
+        protected Dictionary<MessageDomain, T2> Messages2 { get; } = new Dictionary<MessageDomain, T2>();
+        private readonly Action<MessageCollection<T1, T2>> onMessagesCollected;
         private readonly object dictionaryLock = new object();
 
-        public MessageCollector(Action<MessageSet<T1, T2>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         public void Push(Message message)
         {
-            IEnumerable<MessageSet> completedSets;
+            Contract.Requires(message != null, nameof(message) + " != null");
+            IEnumerable<MessageCollection> completedSets;
             lock (dictionaryLock)
             {
                 Aggregate(message);
@@ -38,18 +40,19 @@ namespace Agents.Net
             ExecuteCompleteSets(completedSets);
         }
 
-        public IEnumerable<MessageSet<T1, T2>> FindSetsForDomain(MessageDomain domain)
+        public IEnumerable<MessageCollection<T1, T2>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2>>();
         }
 
-        protected IEnumerable<MessageSet> GetCompleteSets(MessageDomain domain)
+        protected IEnumerable<MessageCollection> GetCompleteSets(MessageDomain domain)
         {
-            HashSet<MessageSet> sets = new HashSet<MessageSet>(new MessageSetIdComparer());
+            Contract.Requires(domain != null, nameof(domain) + " != null");
+            HashSet<MessageCollection> sets = new HashSet<MessageCollection>(new MessageSetIdComparer());
             foreach (MessageDomain messageDomain in ThisAndFlattenedChildren(domain).Where(d => !d.IsTerminated))
             {
-                if (IsCompleted(messageDomain, out MessageSet set))
+                if (IsCompleted(messageDomain, out MessageCollection set))
                 {
                     sets.Add(set);
                 }
@@ -58,30 +61,31 @@ namespace Agents.Net
             return sets;
         }
 
-        private void ExecuteCompleteSets(IEnumerable<MessageSet> sets)
+        private void ExecuteCompleteSets(IEnumerable<MessageCollection> sets)
         {
-            foreach (MessageSet messageSet in sets)
+            foreach (MessageCollection messageSet in sets)
             {
                 Execute(messageSet);
             }
         }
 
-        protected virtual bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected virtual bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2))
             {
-                messageSet = new MessageSet<T1, T2>(message1, message2);
+                messageCollection = new MessageCollection<T1, T2>(message1, message2);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
         protected bool TryGetMessageFittingDomain<T>(MessageDomain domain, Dictionary<MessageDomain, T> messagePool, out T message)
             where T : Message
         {
+            Contract.Requires(messagePool != null, nameof(messagePool) + " != null");
             MessageDomain current = domain;
             while (current != null)
             {
@@ -96,13 +100,14 @@ namespace Agents.Net
             return false;
         }
 
-        protected virtual void Execute(MessageSet messageSet)
+        protected virtual void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2>) messageCollection);
         }
 
         protected virtual void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T1 message1))
             {
                 UpdateMessagePool(message1, Messages1);
@@ -120,6 +125,8 @@ namespace Agents.Net
         protected void UpdateMessagePool<T>(T message, Dictionary<MessageDomain, T> messagePool)
             where T : Message
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
+            Contract.Requires(messagePool != null, nameof(messagePool) + " != null");
             messagePool[message.MessageDomain] = message;
         }
 
@@ -132,9 +139,9 @@ namespace Agents.Net
             }
         }
 
-        private class MessageSetIdComparer : IEqualityComparer<MessageSet>
+        private class MessageSetIdComparer : IEqualityComparer<MessageCollection>
         {
-            public bool Equals(MessageSet x, MessageSet y)
+            public bool Equals(MessageCollection x, MessageCollection y)
             {
                 if (ReferenceEquals(x, y))
                 {
@@ -154,7 +161,7 @@ namespace Agents.Net
                 return x.Select(m => m.Id).OrderBy(id => id).SequenceEqual(y.Select(m => m.Id).OrderBy(id => id));
             }
 
-            public int GetHashCode(MessageSet obj)
+            public int GetHashCode(MessageCollection obj)
             {
                 unchecked
                 {
@@ -169,16 +176,17 @@ namespace Agents.Net
         where T2 : Message
         where T3 : Message
     {
-        protected readonly Dictionary<MessageDomain, T3> Messages3 = new Dictionary<MessageDomain, T3>();
-        private readonly Action<MessageSet<T1, T2, T3>> executeSet;
+        protected Dictionary<MessageDomain, T3> Messages3 { get; } = new Dictionary<MessageDomain, T3>();
+        private readonly Action<MessageCollection<T1, T2, T3>> onMessagesCollected;
 
-        public MessageCollector(Action<MessageSet<T1, T2, T3>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2, T3>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         protected override void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T3 message3))
             {
                 UpdateMessagePool(message3, Messages3);
@@ -189,29 +197,29 @@ namespace Agents.Net
             }
         }
 
-        protected override void Execute(MessageSet messageSet)
+        protected override void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2, T3>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3>) messageCollection);
         }
 
-        protected override bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2) &&
                 TryGetMessageFittingDomain(domain, Messages3, out T3 message3))
             {
-                messageSet = new MessageSet<T1, T2, T3>(message1, message2, message3);
+                messageCollection = new MessageCollection<T1, T2, T3>(message1, message2, message3);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
-        public new IEnumerable<MessageSet<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
+        public new IEnumerable<MessageCollection<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2, T3>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2, T3>>();
         }
     }
 
@@ -221,16 +229,17 @@ namespace Agents.Net
         where T3 : Message
         where T4 : Message
     {
-        protected readonly Dictionary<MessageDomain, T4> Messages4 = new Dictionary<MessageDomain, T4>();
-        private readonly Action<MessageSet<T1, T2, T3, T4>> executeSet;
+        protected Dictionary<MessageDomain, T4> Messages4 { get; } = new Dictionary<MessageDomain, T4>();
+        private readonly Action<MessageCollection<T1, T2, T3, T4>> onMessagesCollected;
 
-        public MessageCollector(Action<MessageSet<T1, T2, T3, T4>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2, T3, T4>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         protected override void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T4 message4))
             {
                 UpdateMessagePool(message4, Messages4);
@@ -241,30 +250,30 @@ namespace Agents.Net
             }
         }
 
-        protected override void Execute(MessageSet messageSet)
+        protected override void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2, T3, T4>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4>) messageCollection);
         }
 
-        protected override bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2) &&
                 TryGetMessageFittingDomain(domain, Messages3, out T3 message3) &&
                 TryGetMessageFittingDomain(domain, Messages4, out T4 message4))
             {
-                messageSet = new MessageSet<T1, T2, T3, T4>(message1, message2, message3, message4);
+                messageCollection = new MessageCollection<T1, T2, T3, T4>(message1, message2, message3, message4);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
-        public new IEnumerable<MessageSet<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
+        public new IEnumerable<MessageCollection<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2, T3, T4>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2, T3, T4>>();
         }
     }
 
@@ -275,16 +284,17 @@ namespace Agents.Net
         where T4 : Message
         where T5 : Message
     {
-        protected readonly Dictionary<MessageDomain, T5> Messages5 = new Dictionary<MessageDomain, T5>();
-        private readonly Action<MessageSet<T1, T2, T3, T4, T5>> executeSet;
+        protected Dictionary<MessageDomain, T5> Messages5 { get; } = new Dictionary<MessageDomain, T5>();
+        private readonly Action<MessageCollection<T1, T2, T3, T4, T5>> onMessagesCollected;
 
-        public MessageCollector(Action<MessageSet<T1, T2, T3, T4, T5>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         protected override void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T5 message5))
             {
                 UpdateMessagePool(message5, Messages5);
@@ -295,12 +305,12 @@ namespace Agents.Net
             }
         }
 
-        protected override void Execute(MessageSet messageSet)
+        protected override void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2, T3, T4, T5>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5>) messageCollection);
         }
 
-        protected override bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2) &&
@@ -308,18 +318,18 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages4, out T4 message4) &&
                 TryGetMessageFittingDomain(domain, Messages5, out T5 message5))
             {
-                messageSet = new MessageSet<T1, T2, T3, T4, T5>(message1, message2, message3, message4, message5);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5>(message1, message2, message3, message4, message5);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
-        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
+        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5>>();
         }
     }
 
@@ -331,16 +341,17 @@ namespace Agents.Net
         where T5 : Message
         where T6 : Message
     {
-        protected readonly Dictionary<MessageDomain, T6> Messages6 = new Dictionary<MessageDomain, T6>();
-        private readonly Action<MessageSet<T1, T2, T3, T4, T5, T6>> executeSet;
+        protected Dictionary<MessageDomain, T6> Messages6 { get; } = new Dictionary<MessageDomain, T6>();
+        private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onMessagesCollected;
 
-        public MessageCollector(Action<MessageSet<T1, T2, T3, T4, T5, T6>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         protected override void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T6 message6))
             {
                 UpdateMessagePool(message6, Messages6);
@@ -351,12 +362,12 @@ namespace Agents.Net
             }
         }
 
-        protected override void Execute(MessageSet messageSet)
+        protected override void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2, T3, T4, T5, T6>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5, T6>) messageCollection);
         }
 
-        protected override bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2) &&
@@ -365,18 +376,18 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages5, out T5 message5) &&
                 TryGetMessageFittingDomain(domain, Messages6, out T6 message6))
             {
-                messageSet = new MessageSet<T1, T2, T3, T4, T5, T6>(message1, message2, message3, message4, message5, message6);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6>(message1, message2, message3, message4, message5, message6);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
-        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
+        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5, T6>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5, T6>>();
         }
     }
 
@@ -389,16 +400,17 @@ namespace Agents.Net
         where T6 : Message
         where T7 : Message
     {
-        protected readonly Dictionary<MessageDomain, T7> Messages7 = new Dictionary<MessageDomain, T7>();
-        private readonly Action<MessageSet<T1, T2, T3, T4, T5, T6, T7>> executeSet;
+        protected Dictionary<MessageDomain, T7> Messages7 { get; } = new Dictionary<MessageDomain, T7>();
+        private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onMessagesCollected;
 
-        public MessageCollector(Action<MessageSet<T1, T2, T3, T4, T5, T6, T7>> executeSet = null)
+        public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onMessagesCollected = null)
         {
-            this.executeSet = executeSet;
+            this.onMessagesCollected = onMessagesCollected;
         }
 
         protected override void Aggregate(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T7 message7))
             {
                 UpdateMessagePool(message7, Messages7);
@@ -409,12 +421,12 @@ namespace Agents.Net
             }
         }
 
-        protected override void Execute(MessageSet messageSet)
+        protected override void Execute(MessageCollection messageCollection)
         {
-            executeSet?.Invoke((MessageSet<T1, T2, T3, T4, T5, T6, T7>) messageSet);
+            onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) messageCollection);
         }
 
-        protected override bool IsCompleted(MessageDomain domain, out MessageSet messageSet)
+        protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out T1 message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out T2 message2) &&
@@ -424,18 +436,18 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages6, out T6 message6) &&
                 TryGetMessageFittingDomain(domain, Messages7, out T7 message7))
             {
-                messageSet = new MessageSet<T1, T2, T3, T4, T5, T6, T7>(message1, message2, message3, message4, message5, message6, message7);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6, T7>(message1, message2, message3, message4, message5, message6, message7);
                 return true;
             }
 
-            messageSet = null;
+            messageCollection = null;
             return false;
         }
 
-        public new IEnumerable<MessageSet<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)
+        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)
         {
-            IEnumerable<MessageSet> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageSet<T1, T2, T3, T4, T5, T6, T7>>();
+            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
+            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5, T6, T7>>();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Agents.Net
 
         public MessageDomainsCreatedMessage CreatedMessage { get; }
 
-        public MessageDomain[] Children
+        public IReadOnlyCollection<MessageDomain> Children
         {
             get
             {

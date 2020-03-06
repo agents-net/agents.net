@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,14 +28,14 @@ namespace Agents.Net
         public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, Message predecessorMessage) 
             : base(predecessorMessage, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages;
+            DomainRootMessages = newDomainRootMessages ?? throw new ArgumentNullException(nameof(newDomainRootMessages));
             MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
         }
 
         public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
             : base(predecessorMessages, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages;
+            DomainRootMessages = newDomainRootMessages ?? throw new ArgumentNullException(nameof(newDomainRootMessages));
             MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
         }
 
