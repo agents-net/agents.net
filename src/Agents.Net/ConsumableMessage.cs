@@ -21,7 +21,7 @@ namespace Agents.Net
 
         internal Action ConsumeAction { get; set; }
 
-        public abstract void DisposeConsumables();
+        protected abstract void DisposeConsumables();
 
         protected virtual void Dispose(bool disposing)
         {
