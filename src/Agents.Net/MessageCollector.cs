@@ -31,13 +31,26 @@ namespace Agents.Net
         public void Push(Message message)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
+            TryPush(message, true);
+        }
+
+        public bool TryPush(Message message)
+        {
+            Contract.Requires(message != null, nameof(message) + " != null");
+            return TryPush(message, false);
+        }
+
+        private bool TryPush(Message message, bool throwError)
+        {
+            bool result = true;
             IEnumerable<MessageCollection> completedSets;
             lock (dictionaryLock)
             {
-                Aggregate(message);
+                result &= Aggregate(message, throwError);
                 completedSets = GetCompleteSets(message.MessageDomain);
             }
             ExecuteCompleteSets(completedSets);
+            return result;
         }
 
         public IEnumerable<MessageCollection<T1, T2>> FindSetsForDomain(MessageDomain domain)
@@ -105,21 +118,27 @@ namespace Agents.Net
             onMessagesCollected?.Invoke((MessageCollection<T1, T2>) messageCollection);
         }
 
-        protected virtual void Aggregate(Message message)
+        protected virtual bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T1 message1))
             {
                 UpdateMessagePool(message1, Messages1);
+                return true;
             }
-            else if (message.TryGet(out T2 message2))
+
+            if (message.TryGet(out T2 message2))
             {
                 UpdateMessagePool(message2, Messages2);
+                return true;
             }
-            else
+
+            if (throwError)
             {
                 throw new InvalidOperationException($"{message} does not contain any expected message of {GetType()}");
             }
+
+            return false;
         }
 
         protected void UpdateMessagePool<T>(T message, Dictionary<MessageDomain, T> messagePool)
@@ -184,17 +203,16 @@ namespace Agents.Net
             this.onMessagesCollected = onMessagesCollected;
         }
 
-        protected override void Aggregate(Message message)
+        protected override bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T3 message3))
             {
                 UpdateMessagePool(message3, Messages3);
+                return true;
             }
-            else
-            {
-                base.Aggregate(message);
-            }
+
+            return base.Aggregate(message, throwError);
         }
 
         protected override void Execute(MessageCollection messageCollection)
@@ -237,17 +255,16 @@ namespace Agents.Net
             this.onMessagesCollected = onMessagesCollected;
         }
 
-        protected override void Aggregate(Message message)
+        protected override bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T4 message4))
             {
                 UpdateMessagePool(message4, Messages4);
+                return true;
             }
-            else
-            {
-                base.Aggregate(message);
-            }
+
+            return base.Aggregate(message, throwError);
         }
 
         protected override void Execute(MessageCollection messageCollection)
@@ -292,17 +309,16 @@ namespace Agents.Net
             this.onMessagesCollected = onMessagesCollected;
         }
 
-        protected override void Aggregate(Message message)
+        protected override bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T5 message5))
             {
                 UpdateMessagePool(message5, Messages5);
+                return true;
             }
-            else
-            {
-                base.Aggregate(message);
-            }
+
+            return base.Aggregate(message, throwError);
         }
 
         protected override void Execute(MessageCollection messageCollection)
@@ -349,17 +365,16 @@ namespace Agents.Net
             this.onMessagesCollected = onMessagesCollected;
         }
 
-        protected override void Aggregate(Message message)
+        protected override bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T6 message6))
             {
                 UpdateMessagePool(message6, Messages6);
+                return true;
             }
-            else
-            {
-                base.Aggregate(message);
-            }
+
+            return base.Aggregate(message, throwError);
         }
 
         protected override void Execute(MessageCollection messageCollection)
@@ -408,17 +423,16 @@ namespace Agents.Net
             this.onMessagesCollected = onMessagesCollected;
         }
 
-        protected override void Aggregate(Message message)
+        protected override bool Aggregate(Message message, bool throwError)
         {
             Contract.Requires(message != null, nameof(message) + " != null");
             if (message.TryGet(out T7 message7))
             {
                 UpdateMessagePool(message7, Messages7);
+                return true;
             }
-            else
-            {
-                base.Aggregate(message);
-            }
+
+            return base.Aggregate(message, throwError);
         }
 
         protected override void Execute(MessageCollection messageCollection)
