@@ -15,7 +15,7 @@ namespace Agents.Net
 {
     public class InterceptorAgentDefinition : AgentDefinition
     {
-        public MessageDefinition[] InterceptedMessages { get; }
+        public IReadOnlyCollection<MessageDefinition> InterceptedMessages { get; }
 
         public InterceptorAgentDefinition(MessageDefinition[] interceptedMessages,
                                         MessageDefinition[] producingTriggers,

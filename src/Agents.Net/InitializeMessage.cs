@@ -7,6 +7,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
+using System;
+
 namespace Agents.Net
 {
     public class InitializeMessage : Message
@@ -19,7 +21,7 @@ namespace Agents.Net
 
         #endregion
 
-        public InitializeMessage() : base(new Message[0], InitializeMessageDefinition)
+        public InitializeMessage() : base(Array.Empty<Message>(), InitializeMessageDefinition)
         {
         }
 

@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
@@ -41,6 +42,7 @@ namespace Agents.Net
         
         public void ReplaceWith(Message message)
         {
+            Contract.Requires(message != null, nameof(message) + " != null");
             message.childMessages.Clear();
             foreach (Message childMessage in childMessages)
             {
@@ -84,6 +86,11 @@ namespace Agents.Net
 
         protected void AddChild(Message childMessage)
         {
+            if (childMessage == null)
+            {
+                throw new ArgumentNullException(nameof(childMessage));
+            }
+
             childMessages.Add(childMessage);
             foreach (Message message in childMessage.Children)
             {

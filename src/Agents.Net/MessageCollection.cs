@@ -7,17 +7,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Agents.Net
 {
-    public class MessageSet : IEnumerable<Message>
+    public class MessageCollection : IEnumerable<Message>
     {
         protected virtual IEnumerable<Message> GetAllMessages()
         {
-            return new Message[0];
+            return Array.Empty<Message>();
         }
 
         public IEnumerator<Message> GetEnumerator()
@@ -31,11 +32,11 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2> : MessageSet
+    public class MessageCollection<T1, T2> : MessageCollection
         where T1 : Message
         where T2 : Message
     {
-        public MessageSet(T1 message1, T2 message2)
+        public MessageCollection(T1 message1, T2 message2)
         {
             Message1 = message1;
             Message2 = message2;
@@ -50,12 +51,12 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2, T3> : MessageSet<T1, T2>
+    public class MessageCollection<T1, T2, T3> : MessageCollection<T1, T2>
         where T1 : Message
         where T2 : Message
         where T3 : Message
     {
-        public MessageSet(T1 message1, T2 message2, T3 message3) : base(message1, message2)
+        public MessageCollection(T1 message1, T2 message2, T3 message3) : base(message1, message2)
         {
             Message3 = message3;
         }
@@ -68,13 +69,13 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2, T3, T4> : MessageSet<T1, T2, T3>
+    public class MessageCollection<T1, T2, T3, T4> : MessageCollection<T1, T2, T3>
         where T1 : Message
         where T2 : Message
         where T3 : Message
         where T4 : Message
     {
-        public MessageSet(T1 message1, T2 message2, T3 message3, T4 message4) : base(message1, message2, message3)
+        public MessageCollection(T1 message1, T2 message2, T3 message3, T4 message4) : base(message1, message2, message3)
         {
             Message4 = message4;
         }
@@ -87,14 +88,14 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2, T3, T4, T5> : MessageSet<T1, T2, T3, T4>
+    public class MessageCollection<T1, T2, T3, T4, T5> : MessageCollection<T1, T2, T3, T4>
         where T1 : Message
         where T2 : Message
         where T3 : Message
         where T4 : Message
         where T5 : Message
     {
-        public MessageSet(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5) : base(message1, message2, message3, message4)
+        public MessageCollection(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5) : base(message1, message2, message3, message4)
         {
             Message5 = message5;
         }
@@ -107,7 +108,7 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2, T3, T4, T5, T6> : MessageSet<T1, T2, T3, T4, T5>
+    public class MessageCollection<T1, T2, T3, T4, T5, T6> : MessageCollection<T1, T2, T3, T4, T5>
         where T1 : Message
         where T2 : Message
         where T3 : Message
@@ -115,7 +116,7 @@ namespace Agents.Net
         where T5 : Message
         where T6 : Message
     {
-        public MessageSet(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5, T6 message6) : base(message1, message2, message3, message4, message5)
+        public MessageCollection(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5, T6 message6) : base(message1, message2, message3, message4, message5)
         {
             Message6 = message6;
         }
@@ -128,7 +129,7 @@ namespace Agents.Net
         }
     }
 
-    public class MessageSet<T1, T2, T3, T4, T5, T6, T7> : MessageSet<T1, T2, T3, T4, T5, T6>
+    public class MessageCollection<T1, T2, T3, T4, T5, T6, T7> : MessageCollection<T1, T2, T3, T4, T5, T6>
         where T1 : Message
         where T2 : Message
         where T3 : Message
@@ -137,7 +138,7 @@ namespace Agents.Net
         where T6 : Message
         where T7 : Message
     {
-        public MessageSet(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5, T6 message6, T7 message7) : base(message1, message2, message3, message4, message5, message6)
+        public MessageCollection(T1 message1, T2 message2, T3 message3, T4 message4, T5 message5, T6 message6, T7 message7) : base(message1, message2, message3, message4, message5, message6)
         {
             Message7 = message7;
         }

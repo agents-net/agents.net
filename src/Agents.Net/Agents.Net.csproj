@@ -33,5 +33,7 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.8" />
   </ItemGroup>
+  
+  <Import Project="..\_Build_\CodeAnalysis.targets" Condition="Exists('..\_Build_\CodeAnalysis.targets')" />
 
 </Project>

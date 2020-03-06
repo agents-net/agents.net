@@ -16,7 +16,7 @@ using NLog;
 
 namespace Agents.Net
 {
-    public class MessageBoard : IDisposable
+    public sealed class MessageBoard : IDisposable
     {
         private readonly MessagePublisher publisher = new MessagePublisher();
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

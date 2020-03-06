@@ -7,6 +7,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
+using System.Collections.Generic;
+
 namespace Agents.Net
 {
     public class AgentDefinition
@@ -17,8 +19,8 @@ namespace Agents.Net
             ProducingTriggers = producingTriggers;
         }
 
-        public MessageDefinition[] ConsumingTriggers { get; }
+        public IReadOnlyCollection<MessageDefinition> ConsumingTriggers { get; }
 
-        public MessageDefinition[] ProducingTriggers { get; }
+        public IReadOnlyCollection<MessageDefinition> ProducingTriggers { get; }
     }
 }

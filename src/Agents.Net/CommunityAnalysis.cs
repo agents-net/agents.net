@@ -106,36 +106,36 @@ namespace Agents.Net
             notInitializedAgents = notInitialized;
             return definitions;
         }
+    }
 
-        public class AnalysisResult
+    public class AnalysisResult
+    {
+        public AnalysisResult(IEnumerable<MessageDefinition> unusedMessageDefinitions,
+                              IEnumerable<MessageDefinition> unproducedMessageTrigger,
+                              IEnumerable<MessageDefinition> unconsumedMessageTrigger,
+                              IEnumerable<Type> messageTypeWithoutDefinition,
+                              IEnumerable<Type> agentWithoutDefinition,
+                              int analysedAgentCount,
+                              int analysedMessageCount, 
+                              IEnumerable<Type> notInitializedAgents)
         {
-            public AnalysisResult(IEnumerable<MessageDefinition> unusedMessageDefinitions,
-                                  IEnumerable<MessageDefinition> unproducedMessageTrigger,
-                                  IEnumerable<MessageDefinition> unconsumedMessageTrigger,
-                                  IEnumerable<Type> messageTypeWithoutDefinition,
-                                  IEnumerable<Type> agentWithoutDefinition,
-                                  int analysedAgentCount,
-                                  int analysedMessageCount, 
-                                  IEnumerable<Type> notInitializedAgents)
-            {
-                UnusedMessageDefinitions = unusedMessageDefinitions;
-                UnproducedMessageTrigger = unproducedMessageTrigger;
-                UnconsumedMessageTrigger = unconsumedMessageTrigger;
-                MessageTypeWithoutDefinition = messageTypeWithoutDefinition;
-                AgentWithoutDefinition = agentWithoutDefinition;
-                AnalysedAgentCount = analysedAgentCount;
-                AnalysedMessageCount = analysedMessageCount;
-                NotInitializedAgents = notInitializedAgents;
-            }
-
-            public IEnumerable<MessageDefinition> UnusedMessageDefinitions { get; }
-            public IEnumerable<MessageDefinition> UnproducedMessageTrigger { get; }
-            public IEnumerable<MessageDefinition> UnconsumedMessageTrigger { get; }
-            public IEnumerable<Type> MessageTypeWithoutDefinition { get; }
-            public IEnumerable<Type> AgentWithoutDefinition { get; }
-            public IEnumerable<Type> NotInitializedAgents { get; }
-            public int AnalysedAgentCount { get; }
-            public int AnalysedMessageCount { get; }
+            UnusedMessageDefinitions = unusedMessageDefinitions;
+            UnproducedMessageTrigger = unproducedMessageTrigger;
+            UnconsumedMessageTrigger = unconsumedMessageTrigger;
+            MessageTypeWithoutDefinition = messageTypeWithoutDefinition;
+            AgentWithoutDefinition = agentWithoutDefinition;
+            AnalysedAgentCount = analysedAgentCount;
+            AnalysedMessageCount = analysedMessageCount;
+            NotInitializedAgents = notInitializedAgents;
         }
+
+        public IEnumerable<MessageDefinition> UnusedMessageDefinitions { get; }
+        public IEnumerable<MessageDefinition> UnproducedMessageTrigger { get; }
+        public IEnumerable<MessageDefinition> UnconsumedMessageTrigger { get; }
+        public IEnumerable<Type> MessageTypeWithoutDefinition { get; }
+        public IEnumerable<Type> AgentWithoutDefinition { get; }
+        public IEnumerable<Type> NotInitializedAgents { get; }
+        public int AnalysedAgentCount { get; }
+        public int AnalysedMessageCount { get; }
     }
 }

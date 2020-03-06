@@ -64,7 +64,11 @@ namespace Agents.Net
         {
             unchecked
             {
+#if NETSTANDARD2_1
+                return (Category.GetHashCode(StringComparison.Ordinal) * 397);
+#else
                 return (Category.GetHashCode() * 397);
+#endif
             }
         }
 
