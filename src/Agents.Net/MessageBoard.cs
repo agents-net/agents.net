@@ -188,7 +188,6 @@ namespace Agents.Net
 
             private void PublishFinalMessageContainer(Message container)
             {
-                RegisterConsumableMessage(container.Children.Count() + 1, container);
                 PublishSingleMessage(container);
                 foreach (Message message in container.Children)
                 {
@@ -212,6 +211,10 @@ namespace Agents.Net
                 else
                 {
                     RegisterConsumableMessage(0, execution.Message.HeadMessage);
+                    foreach (Message child in execution.Message.HeadMessage.Children)
+                    {
+                        RegisterConsumableMessage(0, child);
+                    }
                 }
             }
             private void RegisterConsumableMessage(int consumers, Message message)
@@ -242,6 +245,7 @@ namespace Agents.Net
             {
                 if (registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
                 {
+                    RegisterConsumableMessage(agents.Count, message);
                     foreach (Agent agent in agents)
                     {
 #if NETSTANDARD2_1
@@ -250,6 +254,10 @@ namespace Agents.Net
                         ThreadPool.QueueUserWorkItem((o) => agent.Execute((Message) o), message);
 #endif
                     }
+                }
+                else
+                {
+                    RegisterConsumableMessage(0, message);
                 }
             }
 
