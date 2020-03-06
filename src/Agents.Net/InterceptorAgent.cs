@@ -16,7 +16,7 @@ namespace Agents.Net
 {
     public abstract class InterceptorAgent : Agent
     {
-        protected InterceptorAgent(InterceptorAgentDefinition interceptorDefinition, MessageBoard messageBoard) : base(interceptorDefinition, messageBoard)
+        protected InterceptorAgent(InterceptorAgentDefinition interceptorDefinition, IMessageBoard messageBoard) : base(interceptorDefinition, messageBoard)
         {
             InterceptorDefinition = interceptorDefinition;
         }
