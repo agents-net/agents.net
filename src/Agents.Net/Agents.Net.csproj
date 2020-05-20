@@ -17,6 +17,8 @@
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<Copyright>Tobias Wilker</Copyright>
 	<Authors>Tobias Wilker</Authors>
+	<PackageIcon>Icon.png</PackageIcon>
+	<Description>.NET class library to easily build self-organizing agents based systems.</Description>
   </PropertyGroup>
   
 	<!--when prereleasing, embed symbols PDB in main nupkg bc GH Pakages doesn't have its own symbol server-->
@@ -32,6 +34,10 @@
 
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.8" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
   
   <Import Project="..\_Build_\CodeAnalysis.targets" Condition="Exists('..\_Build_\CodeAnalysis.targets')" />
