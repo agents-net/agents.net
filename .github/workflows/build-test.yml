@@ -21,7 +21,7 @@ jobs:
     - name: Build with dotnet
       run: dotnet build src --configuration Release
       
-   publish:
+  publish:
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
