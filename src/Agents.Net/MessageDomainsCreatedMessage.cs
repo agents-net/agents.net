@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Agents.Net
@@ -23,30 +24,18 @@ namespace Agents.Net
 
         #endregion
 
-        public ICollection<Message> DomainRootMessages { get; }
+        private IReadOnlyCollection<Message> DomainRootMessages { get; }
 
-        public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, Message predecessorMessage) 
+        public MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, Message predecessorMessage) 
             : base(predecessorMessage, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages ?? throw new ArgumentNullException(nameof(newDomainRootMessages));
-            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
+            DomainRootMessages = newDomainRootMessages;
         }
 
-        public MessageDomainsCreatedMessage(ICollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
+        public MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
             : base(predecessorMessages, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages ?? throw new ArgumentNullException(nameof(newDomainRootMessages));
-            MessageDomainHelper.CreateNewDomainsFor(DomainRootMessages, this);
-        }
-
-        public MessageDomainsCreatedMessage(Message newDomainRootMessage, Message predecessorMessage) 
-            : this(new []{newDomainRootMessage}, predecessorMessage)
-        {
-        }
-
-        public MessageDomainsCreatedMessage(Message newDomainRootMessage, IEnumerable<Message> predecessorMessages) 
-            : this(new []{newDomainRootMessage}, predecessorMessages)
-        {
+            DomainRootMessages = newDomainRootMessages;
         }
 
         protected override string DataToString()

@@ -24,8 +24,8 @@ namespace Agents.Net
             this.aggregateAction = aggregateAction;
         }
 
-        private readonly Dictionary<MessageDomainsCreatedMessage, HashSet<T>> aggregatedMessages =
-            new Dictionary<MessageDomainsCreatedMessage, HashSet<T>>();
+        private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<T>> aggregatedMessages =
+            new Dictionary<IReadOnlyCollection<Message>, HashSet<T>>();
         private readonly object dictionaryLock = new object();
 
         public bool TryAggregate(Message message)
@@ -47,7 +47,7 @@ namespace Agents.Net
                 throw new InvalidOperationException($"Cannot aggregate the message {message}. Aggregated type is {typeof(T)}");
             }
 
-            MessageDomainsCreatedMessage root = aggregatedMessage.MessageDomain.CreatedMessage;
+            IReadOnlyCollection<Message> root = aggregatedMessage.MessageDomain.SiblingDomainRootMessages;
             if (root == null)
             {
                 throw new InvalidOperationException($"Cannot aggregate message {message} because domain " +
@@ -68,7 +68,7 @@ namespace Agents.Net
                     aggregatedMessages.Add(root, new HashSet<T>());
                 }
                 aggregatedMessages[root].Add(aggregatedMessage);
-                if (aggregatedMessages[root].Count == root.DomainRootMessages.Count)
+                if (aggregatedMessages[root].Count == root.Count)
                 {
                     completedMessageBatch = aggregatedMessages[root];
                     aggregatedMessages.Remove(root);

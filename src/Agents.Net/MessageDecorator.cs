@@ -18,6 +18,7 @@ namespace Agents.Net
             : base(decoratedMessage.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct(), 
                    messageDefinition)
         {
+            SwitchDomain(decoratedMessage.MessageDomain);
             AddChild(decoratedMessage.ReplaceHead(this));
         }
     }

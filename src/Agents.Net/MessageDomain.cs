@@ -9,21 +9,45 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Agents.Net
 {
     public class MessageDomain : IEquatable<MessageDomain>
     {
+        public static MessageDomain DefaultMessageDomain { get; } = new MessageDomain(new DefaultMessageDomainMessage(), null);
+
         private readonly List<MessageDomain> children = new List<MessageDomain>();
 
-        public MessageDomain(Message root, MessageDomain parent, MessageDomainsCreatedMessage createdMessage = null)
+        private MessageDomain(Message root, MessageDomain parent, IReadOnlyCollection<Message> siblingDomainRootMessages = null)
         {
             Root = root;
             Parent = parent;
-            CreatedMessage = createdMessage;
+            SiblingDomainRootMessages = siblingDomainRootMessages ?? Array.Empty<Message>();
             lock (parent?.children??new object())
             {
                 parent?.children.Add(this);
+            }
+        }
+
+        public static MessageDomainsCreatedMessage CreateNewDomainsFor(Message newDomainRootMessage)
+        {
+            return CreateNewDomainsFor(new[] {newDomainRootMessage});
+        }
+
+        public static MessageDomainsCreatedMessage CreateNewDomainsFor(IReadOnlyCollection<Message> newDomainRootMessages)
+        {
+            Contract.Requires(newDomainRootMessages != null, nameof(newDomainRootMessages) + " != null");
+            CreateDomains();
+            return new MessageDomainsCreatedMessage(newDomainRootMessages, newDomainRootMessages.SelectMany(m => m.Predecessors).Distinct());
+
+            void CreateDomains()
+            {
+                foreach (Message rootMessage in newDomainRootMessages)
+                {
+                    rootMessage.SwitchDomain(new MessageDomain(rootMessage, rootMessage.MessageDomain, newDomainRootMessages));
+                }
             }
         }
 
@@ -31,7 +55,7 @@ namespace Agents.Net
 
         public MessageDomain Parent { get; }
 
-        public MessageDomainsCreatedMessage CreatedMessage { get; }
+        public IReadOnlyCollection<Message> SiblingDomainRootMessages { get; }
 
         public IReadOnlyCollection<MessageDomain> Children
         {
@@ -103,6 +127,18 @@ namespace Agents.Net
                 messageDomain.Terminate();
             }
             IsTerminated = true;
+        }
+
+        private class DefaultMessageDomainMessage : Message
+        {
+            public DefaultMessageDomainMessage() : base(Array.Empty<Message>(),new MessageDefinition("DefaultDomain"))
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
         }
     }
 }
