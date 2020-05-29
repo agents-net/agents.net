@@ -15,13 +15,11 @@ namespace Agents.Net
 {
     internal static class MessageDomainHelper
     {
-        private static MessageDomain DefaultMessageDomain { get; } = new MessageDomain(new DefaultMessageDomainMessage(), null);
-
         public static MessageDomain GetMessageDomain(this ICollection<Message> domainSourceMessages)
         {
             if (domainSourceMessages.Count == 0)
             {
-                return DefaultMessageDomain;
+                return MessageDomain.DefaultMessageDomain;
             }
             HashSet<MessageDomain> remainingDomains = new HashSet<MessageDomain>(GetDomainsFromMessages());
             List<MessageDomain> visitedDomains = new List<MessageDomain>();
@@ -60,31 +58,12 @@ namespace Agents.Net
                         current = messageDomain.Parent;
                     }
 
-                    yield return current ?? DefaultMessageDomain;
+                    yield return current ?? MessageDomain.DefaultMessageDomain;
                 }
             }
         }
 
-        private class DefaultMessageDomainMessage : Message
-        {
-            public DefaultMessageDomainMessage() : base(Array.Empty<Message>(),new MessageDefinition("DefaultDomain"))
-            {
-            }
-
-            protected override string DataToString()
-            {
-                return string.Empty;
-            }
-        }
-
-        public static void CreateNewDomainsFor(IEnumerable<Message> rootMessages,
-                                               MessageDomainsCreatedMessage createdMessage)
-        {
-            foreach (Message rootMessage in rootMessages)
-            {
-                rootMessage.SwitchDomain(new MessageDomain(rootMessage, rootMessage.MessageDomain, createdMessage));
-            }
-        }
+        
 
         public static IEnumerable<Message> TerminateDomainsOfMessages(this IEnumerable<Message> terminatedMessages)
         {
