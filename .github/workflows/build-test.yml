@@ -35,8 +35,10 @@ jobs:
       shell: bash
     - name: Publish nuget
       run: |
+           sed -i -e 's/TOKEN/${{ secrets.GITHUB_TOKEN }}/g' ./.build/nuget.config
+           cp ./.build/nuget.config ./nuget.config
            for f in ./src/Agents.Net/bin/PreRelease/*.nupkg
            do
-             dotnet nuget push "$f" -s https://nuget.pkg.github.com/agents-net/v3/index.json -k ${{ secrets.GITHUB_TOKEN }} --no-symbols --skip-duplicate
+             dotnet nuget push "$f" -s "github" --no-symbols --skip-duplicate
            done
       shell: bash
