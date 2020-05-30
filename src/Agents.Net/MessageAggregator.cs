@@ -16,11 +16,11 @@ namespace Agents.Net
     public class MessageAggregator<T> where T:Message
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly Action<ICollection<T>> aggregateAction;
+        private readonly Action<ICollection<T>> onAggregated;
 
-        public MessageAggregator(Action<ICollection<T>> aggregateAction)
+        public MessageAggregator(Action<ICollection<T>> onAggregated)
         {
-            this.aggregateAction = aggregateAction;
+            this.onAggregated = onAggregated;
         }
 
         private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<T>> aggregatedMessages =
@@ -86,7 +86,7 @@ namespace Agents.Net
             if (completedMessageBatch != null)
             {
                 Logger.Trace($"Execute aggregated message. Source:{message.Id}");
-                aggregateAction(completedMessageBatch);
+                onAggregated(completedMessageBatch);
             }
         }
     }
