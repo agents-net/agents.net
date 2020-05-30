@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Agents.Net
@@ -38,7 +37,10 @@ namespace Agents.Net
 
         public static MessageDomainsCreatedMessage CreateNewDomainsFor(IReadOnlyCollection<Message> newDomainRootMessages)
         {
-            Contract.Requires(newDomainRootMessages != null, nameof(newDomainRootMessages) + " != null");
+            if (newDomainRootMessages == null)
+            {
+                throw new ArgumentNullException(nameof(newDomainRootMessages));
+            }
             CreateDomains();
             return new MessageDomainsCreatedMessage(newDomainRootMessages, newDomainRootMessages.SelectMany(m => m.Predecessors).Distinct());
 

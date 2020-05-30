@@ -12,6 +12,38 @@ namespace Agents.Net.Tests
         }
 
         [Test]
+        public void IsDecoratorReturnsTrueForDecorator()
+        {
+            TestMessage message = new TestMessage(Array.Empty<Message>());
+            TestDecorator decorator = new TestDecorator(message);
+
+            Assert.IsTrue(MessageDecorator.IsDecorator(decorator),"TestDecorator.IsDecorator(decorator)");
+        }
+
+        [Test]
+        public void IsDecoratorReturnsTrueForDecoratorIfMessagePassed()
+        {
+            TestMessage message = new TestMessage(Array.Empty<Message>());
+            TestDecorator decorator = new TestDecorator(message);
+
+            Assert.IsTrue(MessageDecorator.IsDecorator(message),"TestDecorator.IsDecorator(message)");
+        }
+
+        [Test]
+        public void IsDecoratorReturnsFalseForNormalMessage()
+        {
+            TestMessage message = new TestMessage(Array.Empty<Message>());
+            
+            Assert.IsFalse(MessageDecorator.IsDecorator(message),"MessageDecorator.IsDecorator(message)");
+        }
+
+        [Test]
+        public void IsDecoratorReturnsThrowsExceptionForNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => MessageDecorator.IsDecorator(null));
+        }
+
+        [Test]
         public void DecoratorAdaptsMessageDomain()
         {
             TestMessage message = new TestMessage(Array.Empty<Message>());

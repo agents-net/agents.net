@@ -7,10 +7,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Agents.Net
 {
     public enum InterceptionAction

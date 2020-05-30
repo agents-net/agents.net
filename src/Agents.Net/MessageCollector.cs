@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Agents.Net
@@ -30,13 +29,19 @@ namespace Agents.Net
 
         public void Push(Message message)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             TryPush(message, true);
         }
 
         public bool TryPush(Message message)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             return TryPush(message, false);
         }
 
@@ -61,7 +66,10 @@ namespace Agents.Net
 
         protected IEnumerable<MessageCollection> GetCompleteSets(MessageDomain domain)
         {
-            Contract.Requires(domain != null, nameof(domain) + " != null");
+            if (domain == null)
+            {
+                throw new ArgumentNullException(nameof(domain));
+            }
             HashSet<MessageCollection> sets = new HashSet<MessageCollection>(new MessageSetIdComparer());
             foreach (MessageDomain messageDomain in ThisAndFlattenedChildren(domain).Where(d => !d.IsTerminated))
             {
@@ -98,7 +106,10 @@ namespace Agents.Net
         protected bool TryGetMessageFittingDomain<T>(MessageDomain domain, Dictionary<MessageDomain, T> messagePool, out T message)
             where T : Message
         {
-            Contract.Requires(messagePool != null, nameof(messagePool) + " != null");
+            if (messagePool == null)
+            {
+                throw new ArgumentNullException(nameof(messagePool));
+            }
             MessageDomain current = domain;
             while (current != null)
             {
@@ -120,7 +131,10 @@ namespace Agents.Net
 
         protected virtual bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T1 message1))
             {
                 UpdateMessagePool(message1, Messages1);
@@ -144,8 +158,14 @@ namespace Agents.Net
         protected void UpdateMessagePool<T>(T message, Dictionary<MessageDomain, T> messagePool)
             where T : Message
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
-            Contract.Requires(messagePool != null, nameof(messagePool) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+            if (messagePool == null)
+            {
+                throw new ArgumentNullException(nameof(messagePool));
+            }
             messagePool[message.MessageDomain] = message;
         }
 
@@ -205,7 +225,10 @@ namespace Agents.Net
 
         protected override bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T3 message3))
             {
                 UpdateMessagePool(message3, Messages3);
@@ -257,7 +280,10 @@ namespace Agents.Net
 
         protected override bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T4 message4))
             {
                 UpdateMessagePool(message4, Messages4);
@@ -311,7 +337,10 @@ namespace Agents.Net
 
         protected override bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T5 message5))
             {
                 UpdateMessagePool(message5, Messages5);
@@ -367,7 +396,10 @@ namespace Agents.Net
 
         protected override bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T6 message6))
             {
                 UpdateMessagePool(message6, Messages6);
@@ -425,7 +457,10 @@ namespace Agents.Net
 
         protected override bool Aggregate(Message message, bool throwError)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
             if (message.TryGet(out T7 message7))
             {
                 UpdateMessagePool(message7, Messages7);

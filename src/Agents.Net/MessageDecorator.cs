@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,16 @@ namespace Agents.Net
         {
             SwitchDomain(decoratedMessage.MessageDomain);
             AddChild(decoratedMessage.ReplaceHead(this));
+        }
+
+        public static bool IsDecorator(Message message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return message.Is<MessageDecorator>();
         }
     }
 }
