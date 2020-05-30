@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using NLog;
 
 namespace Agents.Net
@@ -30,7 +29,11 @@ namespace Agents.Net
 
         public bool TryAggregate(Message message)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (!message.Is<T>())
             {
                 return false;
@@ -41,7 +44,11 @@ namespace Agents.Net
 
         public void Aggregate(Message message)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (!message.TryGet(out T aggregatedMessage))
             {
                 throw new InvalidOperationException($"Cannot aggregate the message {message}. Aggregated type is {typeof(T)}");

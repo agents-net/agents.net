@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
@@ -42,7 +41,11 @@ namespace Agents.Net
         
         public void ReplaceWith(Message message)
         {
-            Contract.Requires(message != null, nameof(message) + " != null");
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             message.childMessages.Clear();
             foreach (Message childMessage in childMessages)
             {

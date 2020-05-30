@@ -8,7 +8,6 @@
 #endregion
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.ExceptionServices;
 
 namespace Agents.Net
@@ -27,7 +26,11 @@ namespace Agents.Net
 
         public void Execute(Message messageData)
         {
-            Contract.Requires(messageData != null, nameof(messageData) + " != null");
+            if (messageData == null)
+            {
+                throw new ArgumentNullException(nameof(messageData));
+            }
+
             try
             {
                 ExecuteCore(messageData);
