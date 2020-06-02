@@ -198,13 +198,15 @@ namespace Agents.Net
             private void ExecuteInterception(InterceptionExecution execution)
             {
                 InterceptionAction result = execution.Interceptor.Intercept(execution.Message);
+                bool canPublishFinalMessage;
                 lock (execution.Results)
                 {
                     execution.Results.Add(result);
+                    canPublishFinalMessage = execution.Results.Count == execution.Interceptions &&
+                                             execution.Results.All(r => r != InterceptionAction.DoNotPublish);
                 }
 
-                if (execution.Results.Count == execution.Interceptions &&
-                    execution.Results.All(r => r != InterceptionAction.DoNotPublish))
+                if (canPublishFinalMessage)
                 {
                     PublishFinalMessageContainer(execution.Message.HeadMessage);
                 }
