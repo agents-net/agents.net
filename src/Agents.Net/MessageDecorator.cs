@@ -23,7 +23,7 @@ namespace Agents.Net
             AddChild(decoratedMessage.ReplaceHead(this));
         }
 
-        public static bool IsDecorator(Message message)
+        public static bool IsDecorated(Message message)
         {
             if (message == null)
             {
