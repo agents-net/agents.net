@@ -213,7 +213,7 @@ namespace Agents.Net
                 else
                 {
                     RegisterConsumableMessage(0, execution.Message.HeadMessage);
-                    foreach (Message child in execution.Message.HeadMessage.Children)
+                    foreach (Message child in execution.Message.HeadMessage.Children.ToArray())
                     {
                         RegisterConsumableMessage(0, child);
                     }
