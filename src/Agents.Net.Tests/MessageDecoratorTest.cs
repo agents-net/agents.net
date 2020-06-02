@@ -17,7 +17,7 @@ namespace Agents.Net.Tests
             TestMessage message = new TestMessage(Array.Empty<Message>());
             TestDecorator decorator = new TestDecorator(message);
 
-            Assert.IsTrue(MessageDecorator.IsDecorator(decorator),"TestDecorator.IsDecorator(decorator)");
+            Assert.IsTrue(MessageDecorator.IsDecorated(decorator),"TestDecorator.IsDecorated(decorator)");
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace Agents.Net.Tests
             TestMessage message = new TestMessage(Array.Empty<Message>());
             TestDecorator decorator = new TestDecorator(message);
 
-            Assert.IsTrue(MessageDecorator.IsDecorator(message),"TestDecorator.IsDecorator(message)");
+            Assert.IsTrue(MessageDecorator.IsDecorated(message),"TestDecorator.IsDecorated(message)");
         }
 
         [Test]
@@ -34,13 +34,13 @@ namespace Agents.Net.Tests
         {
             TestMessage message = new TestMessage(Array.Empty<Message>());
             
-            Assert.IsFalse(MessageDecorator.IsDecorator(message),"MessageDecorator.IsDecorator(message)");
+            Assert.IsFalse(MessageDecorator.IsDecorated(message),"MessageDecorator.IsDecorated(message)");
         }
 
         [Test]
         public void IsDecoratorReturnsThrowsExceptionForNull()
         {
-            Assert.Throws<ArgumentNullException>(() => MessageDecorator.IsDecorator(null));
+            Assert.Throws<ArgumentNullException>(() => MessageDecorator.IsDecorated(null));
         }
 
         [Test]
