@@ -23,8 +23,7 @@
   <Choose>
     <When Condition="'$(FxCopAnalysisEnabled)' == 'true'">
       <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-          <Version>2.9.8</Version>
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>

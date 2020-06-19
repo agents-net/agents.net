@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agents.Net", "Agents.Net\Agents.Net.csproj", "{F3E35A49-2597-4447-8DEA-D2AC14CCD054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agents.Net.Tests", "Agents.Net.Tests\Agents.Net.Tests.csproj", "{87895EF5-BDCB-419E-97B8-6B463ECE156A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agents.Net.Tests", "Agents.Net.Tests\Agents.Net.Tests.csproj", "{87895EF5-BDCB-419E-97B8-6B463ECE156A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agents.Net.Benchmarks", "Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj", "{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,12 @@ Global
 		{87895EF5-BDCB-419E-97B8-6B463ECE156A}.PreRelease|Any CPU.Build.0 = Release|Any CPU
 		{87895EF5-BDCB-419E-97B8-6B463ECE156A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87895EF5-BDCB-419E-97B8-6B463ECE156A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.PreRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.PreRelease|Any CPU.Build.0 = Release|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
