@@ -20,56 +20,34 @@ namespace Agents.Net
     {
         private readonly MessagePublisher publisher = new MessagePublisher();
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly ConcurrentQueue<Message> pendingMessages = new ConcurrentQueue<Message>();
         private readonly List<Message> publishedMessages = new List<Message>();
-        private Thread spinningThread;
         private bool disposed;
-
-        public MessageBoard()
-        {
-            pendingMessages.Enqueue(new InitializeMessage());
-        }
 
         public void Publish(Message message)
         {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (disposed)
             {
                 return;
             }
-            pendingMessages.Enqueue(message);
+
+            PublishAllMessages(message.HeadMessage);
         }
 
         public void Start()
         {
-            spinningThread = new Thread(() =>
-            {
-                try
-                {
-                    while (!disposed)
-                    {
-                        if (pendingMessages.TryDequeue(out Message message))
-                        {
-                            PublishAllMessages(message.HeadMessage);
-                        }
-                        else
-                        {
-                            Thread.SpinWait(10);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Logger.Error(e, "Exception in spinning thread.");
-                }
-            }) {Priority = ThreadPriority.AboveNormal};
-            spinningThread.Start();
+            Publish(new InitializeMessage());
+        }
 
-            void PublishAllMessages(Message messageContainer)
-            {
-                publishedMessages.Add(messageContainer);
-                Logger.Trace(messageContainer);
-                publisher.Publish(messageContainer);
-            }
+        private void PublishAllMessages(Message messageContainer)
+        {
+            publishedMessages.Add(messageContainer);
+            Logger.Trace(messageContainer);
+            publisher.Publish(messageContainer);
         }
 
         public void Register(MessageDefinition trigger, Agent agent)
@@ -93,20 +71,11 @@ namespace Agents.Net
         public void Dispose()
         {
             disposed = true;
-            spinningThread?.Join();
             DisposeMessages();
             publisher.Dispose();
 
             void DisposeMessages()
             {
-                while (pendingMessages.TryDequeue(out Message message))
-                {
-                    if (message is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-                }
-
                 foreach (IDisposable disposable in publishedMessages.OfType<IDisposable>())
                 {
                     disposable.Dispose();
