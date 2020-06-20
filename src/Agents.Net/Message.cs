@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace Agents.Net
 {
-    public abstract class Message : IEquatable<Message>
+    public abstract class Message : IEquatable<Message>, IDisposable
     {
         private readonly HashSet<Message> childMessages;
         private Message parent;
@@ -253,5 +253,55 @@ namespace Agents.Net
         }
 
         public MessageDefinition Definition { get; }
+
+        internal void Used()
+        {
+            if (Interlocked.Decrement(ref remainingUses) == 0)
+            {
+                Dispose();
+            }
+        }
+
+        public IDisposable DelayDispose()
+        {
+            Interlocked.Increment(ref remainingUses);
+            return new DisposableUse(this);
+        }
+
+        private int remainingUses;
+
+        internal void SetUserCount(int userCount)
+        {
+            remainingUses = userCount;
+            if (userCount == 0)
+            {
+                Dispose();
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private class DisposableUse : IDisposable
+        {
+            private readonly Message message;
+
+            public DisposableUse(Message message)
+            {
+                this.message = message;
+            }
+
+            public void Dispose()
+            {
+                message.Used();
+            }
+        }
     }
 }

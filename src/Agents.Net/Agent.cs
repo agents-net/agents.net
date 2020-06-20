@@ -55,6 +55,10 @@ namespace Agents.Net
             {
                 OnMessage(createdMessage);
             }
+            else
+            {
+                createdMessage.Dispose();
+            }
             foreach (Message message in messages)
             {
                 OnMessage(message);

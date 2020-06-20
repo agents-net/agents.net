@@ -197,37 +197,23 @@ namespace Agents.Net
                     return;
                 }
 
-                if (message is SelfDisposingMessage disposingMessage)
-                {
-                    disposingMessage.SetUserCount(agents.Count);
+                message.SetUserCount(agents.Count);
 
-                    foreach (Agent agent in agents)
-                    {
+                foreach (Agent agent in agents)
+                {
 #if NETSTANDARD2_1
-                        ThreadPool.QueueUserWorkItem((Message m) =>
-                        {
-                            agent.Execute(message);
-                            disposingMessage.Used();
-                        }, message, false);
+                    ThreadPool.QueueUserWorkItem((Message m) =>
+                    {
+                        agent.Execute(message);
+                        message.Used();
+                    }, message, false);
 #else
                         ThreadPool.QueueUserWorkItem((o) => 
                         {
                             agent.Execute((Message) o);
-                            disposingMessage.Used();
+                            message.Used();
                         }, message);
 #endif
-                    }
-                }
-                else
-                {
-                    foreach (Agent agent in agents)
-                    {
-#if NETSTANDARD2_1
-                        ThreadPool.QueueUserWorkItem(agent.Execute, message, false);
-#else
-                        ThreadPool.QueueUserWorkItem((o) => agent.Execute((Message) o), message);
-#endif
-                    }
                 }
             }
 

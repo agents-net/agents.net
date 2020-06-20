@@ -20,10 +20,7 @@ namespace Agents.Net
         public MessageStore(T message)
         {
             this.message = message;
-            if (message is SelfDisposingMessage selfDisposingMessage)
-            {
-                disposableUse = selfDisposingMessage.DelayDispose();
-            }
+            disposableUse = message?.DelayDispose();
         }
 
         public static implicit operator T(MessageStore<T> store) => store?.message;
