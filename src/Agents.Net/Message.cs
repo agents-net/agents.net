@@ -39,6 +39,26 @@ namespace Agents.Net
             MessageDomain = this.predecessorMessages.GetMessageDomain();
         }
         
+        /// <summary>
+        /// Replace this message with the given message.
+        /// </summary>
+        /// <param name="message">The message which replaces this message.</param>
+        /// <remarks>
+        /// This method is intended of the use case, that an <see cref="InterceptorAgent"/> wants to replace a,
+        /// message with a different message. How to do this see the example.
+        /// </remarks>
+        /// <example>
+        /// This example shows the use case how to replace a message using an <see cref="InterceptorAgent"/>
+        /// <code>
+        /// protected override InterceptionAction InterceptCore(Message messageData)
+        /// {
+        ///     Message replacingMessage = GenerateNewMessage();
+        ///     messageData.ReplaceWith(replacingMessage);
+        ///     OnMessage(replacingMessage);
+        ///     return InterceptionAction.DoNotPublish;
+        /// }
+        /// </code>
+        /// </example>
         public void ReplaceWith(Message message)
         {
             if (message == null)
@@ -139,27 +159,6 @@ namespace Agents.Net
                 if (predecessorMessage.TryGet(out result))
                 {
                     return true;
-                }
-            }
-
-            result = null;
-            return false;
-        }
-
-        public bool TryGetPredecessorRecursive<T>(out T result) where T : Message
-        {
-            Queue<Message> predecessors = new Queue<Message>(predecessorMessages);
-            while (predecessors.Any())
-            {
-                Message current = predecessors.Dequeue();
-                if (current.TryGet(out result))
-                {
-                    return true;
-                }
-
-                foreach (Message predecessorMessage in current.predecessorMessages)
-                {
-                    predecessors.Enqueue(predecessorMessage);
                 }
             }
 
