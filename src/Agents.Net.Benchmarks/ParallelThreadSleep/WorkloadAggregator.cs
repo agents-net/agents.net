@@ -31,7 +31,7 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
         private void OnAggregated(ICollection<WorkloadExecutedMessage> aggregate)
         {
             WorkloadExecutedMessage[] messageCollection = aggregate.ToArray();
-            OnMessage(new MessageDomainTerminatedMessage(messageCollection));
+            MessageDomain.TerminateDomainsOf(messageCollection);
             terminateAction();
         }
 

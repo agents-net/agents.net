@@ -22,23 +22,17 @@ namespace Agents.Net
 
         #endregion
 
-        private IReadOnlyCollection<Message> DomainRootMessages { get; }
+        public IReadOnlyCollection<MessageDomain> CreatedDomains { get; }
 
-        public MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, Message predecessorMessage) 
-            : base(predecessorMessage, MessageDomainsCreatedMessageDefinition)
-        {
-            DomainRootMessages = newDomainRootMessages;
-        }
-
-        public MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
+        internal MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
             : base(predecessorMessages, MessageDomainsCreatedMessageDefinition)
         {
-            DomainRootMessages = newDomainRootMessages;
+            CreatedDomains = newDomainRootMessages.Select(m => m.MessageDomain).Distinct().ToArray();
         }
 
         protected override string DataToString()
         {
-            return $"{nameof(DomainRootMessages)}: {string.Join(", ", DomainRootMessages.Select(m => m.Id))}";
+            return $"{nameof(CreatedDomains)}: {string.Join(", ", CreatedDomains.Select(d => d.Root.Id))}";
         }
     }
 }

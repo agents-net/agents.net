@@ -24,20 +24,15 @@ namespace Agents.Net
 
         public IEnumerable<MessageDomain> TerminatedDomains { get; }
 
-        public MessageDomainTerminatedMessage(Message messageToTerminate) 
-            : this(new []{messageToTerminate})
+        internal MessageDomainTerminatedMessage(IEnumerable<Message> lastMessages, IEnumerable<MessageDomain> terminatedDomains) 
+            : base(lastMessages, MessageDomainTerminatedMessageDefinition)
         {
-        }
-
-        public MessageDomainTerminatedMessage(ICollection<Message> messagesToTerminate) 
-            : base(messagesToTerminate.TerminateDomainsOfMessages(), MessageDomainTerminatedMessageDefinition)
-        {
-            TerminatedDomains = messagesToTerminate.Select(m => m.MessageDomain).Distinct().ToArray();
+            TerminatedDomains = terminatedDomains;
         }
 
         protected override string DataToString()
         {
-            return $"{nameof(TerminatedDomains)}: {string.Join(", ", TerminatedDomains)}";
+            return $"{nameof(TerminatedDomains)}: {string.Join(", ", TerminatedDomains.Select(d => d.Root.Id))}";
         }
     }
 }

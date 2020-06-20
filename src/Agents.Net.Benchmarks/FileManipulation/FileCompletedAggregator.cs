@@ -31,7 +31,7 @@ namespace Agents.Net.Benchmarks.FileManipulation
         private void OnAggregated(ICollection<FileCompletedMessage> aggregate)
         {
             FileCompletedMessage[] messageCollection = aggregate.ToArray();
-            OnMessage(new MessageDomainTerminatedMessage(messageCollection));
+            MessageDomain.TerminateDomainsOf(messageCollection);
             terminateAction();
         }
 

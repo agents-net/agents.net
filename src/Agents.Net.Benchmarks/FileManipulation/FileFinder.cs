@@ -34,11 +34,7 @@ namespace Agents.Net.Benchmarks.FileManipulation
             {
                 messages.Add(new FileFoundMessage(file, messageData));
             }
-            MessageDomain.CreateNewDomainsFor(messages);
-            foreach (Message message in messages)
-            {
-                OnMessage(message);
-            }
+            OnMessages(messages);
         }
     }
 }
