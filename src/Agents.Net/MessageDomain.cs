@@ -53,6 +53,21 @@ namespace Agents.Net
             }
         }
 
+        public static MessageDomainTerminatedMessage TerminateDomainsOf(Message domainMessage)
+        {
+            return TerminateDomainsOf(new[] {domainMessage});
+        }
+
+        public static MessageDomainTerminatedMessage TerminateDomainsOf(IReadOnlyCollection<Message> domainMessages)
+        {
+            IEnumerable<MessageDomain> terminatingDomains = domainMessages.Select(m => m.MessageDomain).Distinct().ToArray();
+            foreach (MessageDomain terminatedDomain in terminatingDomains)
+            {
+                terminatedDomain.Terminate();
+            }
+            return new MessageDomainTerminatedMessage(domainMessages, terminatingDomains);
+        }
+
         public Message Root { get; }
 
         public MessageDomain Parent { get; }

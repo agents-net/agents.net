@@ -33,11 +33,7 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
             {
                 messages.Add(new WorkloadDefinedMessage(workload, messageData));
             }
-            MessageDomain.CreateNewDomainsFor(messages);
-            foreach (Message message in messages)
-            {
-                OnMessage(message);
-            }
+            OnMessages(messages);
         }
     }
 }

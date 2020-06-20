@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 
 namespace Agents.Net
@@ -45,6 +46,19 @@ namespace Agents.Net
         protected void OnMessage(Message message)
         {
             messageBoard.Publish(message);
+        }
+
+        protected void OnMessages(IReadOnlyCollection<Message> messages, bool sendDomainCreatedMessage = false)
+        {
+            MessageDomainsCreatedMessage createdMessage = MessageDomain.CreateNewDomainsFor(messages);
+            if (sendDomainCreatedMessage)
+            {
+                OnMessage(createdMessage);
+            }
+            foreach (Message message in messages)
+            {
+                OnMessage(message);
+            }
         }
 
         protected abstract void ExecuteCore(Message messageData);

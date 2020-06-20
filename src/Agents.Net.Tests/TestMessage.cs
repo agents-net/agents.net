@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Agents.Net;
 
 namespace Agents.Net.Tests
@@ -20,6 +21,11 @@ namespace Agents.Net.Tests
 
         public TestMessage(IEnumerable<Message> predecessorMessages, params Message[] childMessages)
             : base(predecessorMessages, TestMessageDefinition, childMessages)
+        {
+        }
+
+        public TestMessage()
+            : base(Array.Empty<Message>(), TestMessageDefinition)
         {
         }
 
