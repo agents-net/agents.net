@@ -50,7 +50,7 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             messageBoard.Start();
         }
 
-        [Params(-1, 1)]
+        [Params(-1)]
         public int Duration { get; set; }
 
         [Benchmark(Baseline = true)]

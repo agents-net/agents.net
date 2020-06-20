@@ -181,42 +181,45 @@ namespace Agents.Net
                 }
                 else
                 {
-                    RegisterConsumableMessage(0, execution.Message.HeadMessage);
+                    (execution.Message.HeadMessage as IDisposable)?.Dispose();
                     foreach (Message child in execution.Message.HeadMessage.Children.ToArray())
                     {
-                        RegisterConsumableMessage(0, child);
-                    }
-                }
-            }
-            private void RegisterConsumableMessage(int consumers, Message message)
-            {
-                int remaining = consumers;
-                if (message is ConsumableMessage consumableMessage)
-                {
-                    if (remaining > 0)
-                    {
-                        consumableMessage.ConsumeAction = Consume;
-                    }
-                    else
-                    {
-                        consumableMessage.Dispose();
-                    }
-                }
-
-                void Consume()
-                {
-                    if (Interlocked.Decrement(ref remaining) == 0)
-                    {
-                        consumableMessage.Dispose();
+                        (child as IDisposable)?.Dispose();
                     }
                 }
             }
 
             private void PublishSingleMessage(Message message)
             {
-                if (registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
+                if (!registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
                 {
-                    RegisterConsumableMessage(agents.Count, message);
+                    (message as IDisposable)?.Dispose();
+                    return;
+                }
+
+                if (message is SelfDisposingMessage disposingMessage)
+                {
+                    disposingMessage.SetUserCount(agents.Count);
+
+                    foreach (Agent agent in agents)
+                    {
+#if NETSTANDARD2_1
+                        ThreadPool.QueueUserWorkItem((Message m) =>
+                        {
+                            agent.Execute(message);
+                            disposingMessage.Used();
+                        }, message, false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => 
+                        {
+                            agent.Execute((Message) o);
+                            disposingMessage.Used();
+                        }, message);
+#endif
+                    }
+                }
+                else
+                {
                     foreach (Agent agent in agents)
                     {
 #if NETSTANDARD2_1
@@ -225,10 +228,6 @@ namespace Agents.Net
                         ThreadPool.QueueUserWorkItem((o) => agent.Execute((Message) o), message);
 #endif
                     }
-                }
-                else
-                {
-                    RegisterConsumableMessage(0, message);
                 }
             }
 

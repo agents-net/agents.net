@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 
 namespace Agents.Net
@@ -23,8 +24,8 @@ namespace Agents.Net
             this.onAggregated = onAggregated;
         }
 
-        private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<T>> aggregatedMessages =
-            new Dictionary<IReadOnlyCollection<Message>, HashSet<T>>();
+        private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<MessageStore<T>>> aggregatedMessages =
+            new Dictionary<IReadOnlyCollection<Message>, HashSet<MessageStore<T>>>();
         private readonly object dictionaryLock = new object();
 
         public bool TryAggregate(Message message)
@@ -66,13 +67,13 @@ namespace Agents.Net
                 return;
             }
 
-            HashSet<T> completedMessageBatch = null;
+            HashSet<MessageStore<T>> completedMessageBatch = null;
             lock (dictionaryLock)
             {
                 Logger.Trace($"Enter aggregation lock. Source:{message.Id}");
                 if (!aggregatedMessages.ContainsKey(root))
                 {
-                    aggregatedMessages.Add(root, new HashSet<T>());
+                    aggregatedMessages.Add(root, new HashSet<MessageStore<T>>());
                 }
                 aggregatedMessages[root].Add(aggregatedMessage);
                 if (aggregatedMessages[root].Count == root.Count)
@@ -86,7 +87,11 @@ namespace Agents.Net
             if (completedMessageBatch != null)
             {
                 Logger.Trace($"Execute aggregated message. Source:{message.Id}");
-                onAggregated(completedMessageBatch);
+                onAggregated(completedMessageBatch.Select<MessageStore<T>,T>(m => m).ToArray());
+                foreach (MessageStore<T> messageStore in completedMessageBatch)
+                {
+                    messageStore.Dispose();
+                }
             }
         }
     }
