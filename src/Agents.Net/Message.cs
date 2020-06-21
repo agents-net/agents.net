@@ -10,13 +10,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
-
+#pragma warning disable CA1801
 namespace Agents.Net
 {
-    public abstract class Message : IEquatable<Message>
+    public abstract class Message : IEquatable<Message>, IDisposable
     {
-        private readonly HashSet<Message> childMessages;
         private Message parent;
         private Message[] predecessorMessages;
         public Guid Id { get; } = Guid.NewGuid();
@@ -30,7 +30,7 @@ namespace Agents.Net
         protected Message(IEnumerable<Message> predecessorMessages, MessageDefinition messageDefinition, params Message[] childMessages)
         {
             Definition = messageDefinition;
-            this.childMessages = new HashSet<Message>(childMessages.Concat(childMessages.SelectMany(e => e.childMessages)));
+            this.Children = childMessages.Concat(childMessages.SelectMany(e => e.Children));
             this.predecessorMessages = predecessorMessages.ToArray();
             foreach (Message childMessage in childMessages)
             {
@@ -46,11 +46,7 @@ namespace Agents.Net
                 throw new ArgumentNullException(nameof(message));
             }
 
-            message.childMessages.Clear();
-            foreach (Message childMessage in childMessages)
-            {
-                message.childMessages.Add(childMessage);
-            }
+            message.Children = Children;
             message.predecessorMessages = predecessorMessages;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
@@ -94,22 +90,13 @@ namespace Agents.Net
                 throw new ArgumentNullException(nameof(childMessage));
             }
 
-            childMessages.Add(childMessage);
-            foreach (Message message in childMessage.Children)
-            {
-                childMessages.Add(message);
-            }
+            Children = Children.Concat(childMessage.Children).Concat(new[] {childMessage});
         }
 
         private void RemoveChild(Message message)
         {
-            childMessages.Remove(message);
-            IEnumerable<Message> directChildren = childMessages.Where(c => c.parent == this);
-            childMessages.Clear();
-            foreach (Message directChild in directChildren)
-            {
-                AddChild(directChild);
-            }
+            IEnumerable<Message> directChildren = Children.Where(c => c.parent == this && c != message).ToArray();
+            Children = directChildren.SelectMany(c => c.Children).Concat(directChildren);
         }
 
         public bool Is<T>() where T : Message
@@ -121,7 +108,7 @@ namespace Agents.Net
         {
             if (!(this is T result))
             {
-                result = this != HeadMessage ? HeadMessage.Get<T>() : childMessages.OfType<T>().First();
+                result = this != HeadMessage ? HeadMessage.Get<T>() : Children.OfType<T>().First();
             }
 
             return result;
@@ -138,7 +125,7 @@ namespace Agents.Net
                 }
                 else
                 {
-                    result = childMessages.OfType<T>().FirstOrDefault();
+                    result = Children.OfType<T>().FirstOrDefault();
                 }
             }
 
@@ -191,13 +178,30 @@ namespace Agents.Net
             }
         }
 
-        public IEnumerable<Message> Children => childMessages;
+        public IEnumerable<Message> Children { get; set; } = Enumerable.Empty<Message>();
 
         public override string ToString()
         {
-            return $"Id: {Id}, {nameof(Definition)}: {Definition}, Predecessors: {string.Join(", ", predecessorMessages.Select(m => m.Id))}, " +
-                   $"{nameof(MessageDomain)}: {MessageDomain.Root.Id} Data: {DataToString()}, " +
-                   $"{nameof(Children)}: {string.Join(", ", Children)}";
+            StringBuilder jsonFormat = ToStringBuilder();
+            return jsonFormat.ToString();
+        }
+
+        public StringBuilder ToStringBuilder()
+        {
+            StringBuilder jsonFormat = new StringBuilder("{\"Id\": \"");
+            jsonFormat.Append(Id);
+            jsonFormat.Append("\", \"Definition\": \"");
+            jsonFormat.Append(Definition);
+            jsonFormat.Append("\", \"Predecessors\": \"");
+            jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => m.Id)));
+            jsonFormat.Append("\", \"MessageDomain\": \"");
+            jsonFormat.Append(MessageDomain.Root.Id);
+            jsonFormat.Append("\", \"Data\": \"");
+            jsonFormat.Append(DataToString());
+            jsonFormat.Append("\", \"Children\": [");
+            jsonFormat.Append(string.Join(", ", Children));
+            jsonFormat.Append("]}");
+            return jsonFormat;
         }
 
         protected abstract string DataToString();
@@ -253,5 +257,55 @@ namespace Agents.Net
         }
 
         public MessageDefinition Definition { get; }
+
+        internal void Used()
+        {
+            if (Interlocked.Decrement(ref remainingUses) == 0)
+            {
+                Dispose();
+            }
+        }
+
+        public IDisposable DelayDispose()
+        {
+            Interlocked.Increment(ref remainingUses);
+            return new DisposableUse(this);
+        }
+
+        private int remainingUses;
+
+        internal void SetUserCount(int userCount)
+        {
+            remainingUses = userCount;
+            if (userCount == 0)
+            {
+                Dispose();
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private class DisposableUse : IDisposable
+        {
+            private readonly Message message;
+
+            public DisposableUse(Message message)
+            {
+                this.message = message;
+            }
+
+            public void Dispose()
+            {
+                message.Used();
+            }
+        }
     }
 }

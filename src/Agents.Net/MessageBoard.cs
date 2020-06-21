@@ -19,8 +19,6 @@ namespace Agents.Net
     public sealed class MessageBoard : IDisposable, IMessageBoard
     {
         private readonly MessagePublisher publisher = new MessagePublisher();
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly List<Message> publishedMessages = new List<Message>();
         private bool disposed;
 
         public void Publish(Message message)
@@ -45,8 +43,6 @@ namespace Agents.Net
 
         private void PublishAllMessages(Message messageContainer)
         {
-            publishedMessages.Add(messageContainer);
-            Logger.Trace(messageContainer);
             publisher.Publish(messageContainer);
         }
 
@@ -71,18 +67,7 @@ namespace Agents.Net
         public void Dispose()
         {
             disposed = true;
-            DisposeMessages();
             publisher.Dispose();
-
-            void DisposeMessages()
-            {
-                foreach (IDisposable disposable in publishedMessages.OfType<IDisposable>())
-                {
-                    disposable.Dispose();
-                }
-
-                publishedMessages.Clear();
-            }
         }
 
         private class MessagePublisher : IDisposable
@@ -181,54 +166,39 @@ namespace Agents.Net
                 }
                 else
                 {
-                    RegisterConsumableMessage(0, execution.Message.HeadMessage);
+                    (execution.Message.HeadMessage as IDisposable)?.Dispose();
                     foreach (Message child in execution.Message.HeadMessage.Children.ToArray())
                     {
-                        RegisterConsumableMessage(0, child);
-                    }
-                }
-            }
-            private void RegisterConsumableMessage(int consumers, Message message)
-            {
-                int remaining = consumers;
-                if (message is ConsumableMessage consumableMessage)
-                {
-                    if (remaining > 0)
-                    {
-                        consumableMessage.ConsumeAction = Consume;
-                    }
-                    else
-                    {
-                        consumableMessage.Dispose();
-                    }
-                }
-
-                void Consume()
-                {
-                    if (Interlocked.Decrement(ref remaining) == 0)
-                    {
-                        consumableMessage.Dispose();
+                        (child as IDisposable)?.Dispose();
                     }
                 }
             }
 
             private void PublishSingleMessage(Message message)
             {
-                if (registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
+                if (!registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
                 {
-                    RegisterConsumableMessage(agents.Count, message);
-                    foreach (Agent agent in agents)
-                    {
-#if NETSTANDARD2_1
-                        ThreadPool.QueueUserWorkItem(agent.Execute, message, false);
-#else
-                        ThreadPool.QueueUserWorkItem((o) => agent.Execute((Message) o), message);
-#endif
-                    }
+                    (message as IDisposable)?.Dispose();
+                    return;
                 }
-                else
+
+                message.SetUserCount(agents.Count);
+
+                foreach (Agent agent in agents)
                 {
-                    RegisterConsumableMessage(0, message);
+#if NETSTANDARD2_1
+                    ThreadPool.QueueUserWorkItem((Message m) =>
+                    {
+                        agent.Execute(message);
+                        message.Used();
+                    }, message, false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => 
+                        {
+                            agent.Execute((Message) o);
+                            message.Used();
+                        }, message);
+#endif
                 }
             }
 
