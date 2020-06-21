@@ -22,10 +22,12 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
         #endregion
 
         private readonly Action finishAction;
+        private readonly bool reuseMessage;
 
-        public SpinWaiter(IMessageBoard messageBoard, Action finishAction) : base(SpinWaiterDefinition, messageBoard)
+        public SpinWaiter(IMessageBoard messageBoard, Action finishAction, bool reuseMessage) : base(SpinWaiterDefinition, messageBoard)
         {
             this.finishAction = finishAction;
+            this.reuseMessage = reuseMessage;
         }
 
         protected override void ExecuteCore(Message messageData)
@@ -45,7 +47,16 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
                 {
                     Thread.SpinWait(15);
                 }
-                OnMessage(new SpinWaitCountedMessage(counted.CountDown-1, counted.Duration, messageData));
+
+                if (reuseMessage)
+                {
+                    counted.CountDown--;
+                    OnMessage(counted);
+                }
+                else
+                {
+                    OnMessage(new SpinWaitCountedMessage(counted.CountDown-1, counted.Duration, messageData));
+                }
             }
         }
     }

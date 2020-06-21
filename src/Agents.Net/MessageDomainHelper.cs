@@ -15,12 +15,20 @@ namespace Agents.Net
 {
     internal static class MessageDomainHelper
     {
-        public static MessageDomain GetMessageDomain(this ICollection<Message> domainSourceMessages)
+        public static MessageDomain GetMessageDomain(this Message[] domainSourceMessages)
         {
-            if (domainSourceMessages.Count == 0)
+            if (domainSourceMessages.Length == 0)
             {
                 return MessageDomain.DefaultMessageDomain;
             }
+
+            if (!domainSourceMessages[0].MessageDomain.IsTerminated &&
+                (domainSourceMessages.Length == 1 ||
+                domainSourceMessages.All(m => m.MessageDomain == domainSourceMessages[0].MessageDomain)))
+            {
+                return domainSourceMessages[0].MessageDomain;
+            }
+
             HashSet<MessageDomain> remainingDomains = new HashSet<MessageDomain>(GetDomainsFromMessages());
             List<MessageDomain> visitedDomains = new List<MessageDomain>();
             while (remainingDomains.Except(visitedDomains).Any())

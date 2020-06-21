@@ -32,42 +32,59 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
     ///       </description>
     ///       <description>Using the agent framework to execute all tasks sequentially.</description>
     ///     </item>
+    ///     <item>
+    ///       <description>
+    ///         <c>AgentFrameworkReusingMessage</c>
+    ///       </description>
+    ///       <description>Using the agent framework to execute all tasks sequentially, but reusing the message instead of creating a new object each time. This is a wrong usage and should not be used in real scenarios, but it is good to show the additional overhead of creating a new object each time.</description>
+    ///     </item>
     ///   </list>
     /// </remarks>
     public class SequentialOverheadBenchmark
     {
         private readonly AutoResetEvent finishedEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent finishedEventReuse = new AutoResetEvent(false);
         private IMessageBoard messageBoard;
+        private IMessageBoard messageBoardReuse;
         private const int Iterations = 1000;
 
         [GlobalSetup]
         public void Setup()
         {
-            messageBoard = new MessageBoard();
-            Community community = new Community(messageBoard);
-            SpinWaiter waiter = new SpinWaiter(messageBoard, () => finishedEvent.Set());
-            community.RegisterAgents(new Agent[] {waiter});
-            messageBoard.Start();
+            {
+                messageBoard = new MessageBoard();
+                Community community = new Community(messageBoard);
+                SpinWaiter waiter = new SpinWaiter(messageBoard, () => finishedEvent.Set(), false);
+                community.RegisterAgents(new Agent[] {waiter});
+                messageBoard.Start();
+            }
+            {
+                messageBoardReuse = new MessageBoard();
+                Community community = new Community(messageBoardReuse);
+                SpinWaiter waiter = new SpinWaiter(messageBoardReuse, () => finishedEventReuse.Set(), true);
+                community.RegisterAgents(new Agent[] {waiter});
+                messageBoardReuse.Start();
+            }
         }
 
         [Params(-1)]
         public int Duration { get; set; }
 
-        [Benchmark(Baseline = true)]
-        public void SingleThread()
-        {
-            for (int i = 0; i < Iterations; i++)
-            {
-                if (Duration > 0)
-                {
-                    Thread.Sleep(Duration);
-                }
-                else
-                {
-                    Thread.SpinWait(15);
-                }
-            }
-        }
+        //[Benchmark(Baseline = true)]
+        //public void SingleThread()
+        //{
+        //    for (int i = 0; i < Iterations; i++)
+        //    {
+        //        if (Duration > 0)
+        //        {
+        //            Thread.Sleep(Duration);
+        //        }
+        //        else
+        //        {
+        //            Thread.SpinWait(15);
+        //        }
+        //    }
+        //}
 
         [Benchmark]
         public void AgentFramework()
@@ -76,11 +93,20 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             finishedEvent.WaitOne();
         }
 
+        //[Benchmark]
+        //public void AgentFrameworkReusingMessage()
+        //{
+        //    messageBoardReuse.Publish(new SpinWaitCountedMessage(Iterations, Duration, Array.Empty<Message>()));
+        //    finishedEventReuse.WaitOne();
+        //}
+
         [GlobalCleanup]
         public void Cleanup()
         {
             (messageBoard as IDisposable)?.Dispose();
+            (messageBoardReuse as IDisposable)?.Dispose();
             finishedEvent.Dispose();
+            finishedEventReuse.Dispose();
         }
     }
 }

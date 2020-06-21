@@ -11,12 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-
+#pragma warning disable CA1801
 namespace Agents.Net
 {
     public abstract class Message : IEquatable<Message>, IDisposable
     {
-        private readonly HashSet<Message> childMessages;
         private Message parent;
         private Message[] predecessorMessages;
         public Guid Id { get; } = Guid.NewGuid();
@@ -30,7 +29,7 @@ namespace Agents.Net
         protected Message(IEnumerable<Message> predecessorMessages, MessageDefinition messageDefinition, params Message[] childMessages)
         {
             Definition = messageDefinition;
-            this.childMessages = new HashSet<Message>(childMessages.Concat(childMessages.SelectMany(e => e.childMessages)));
+            this.Children = childMessages.Concat(childMessages.SelectMany(e => e.Children));
             this.predecessorMessages = predecessorMessages.ToArray();
             foreach (Message childMessage in childMessages)
             {
@@ -46,11 +45,7 @@ namespace Agents.Net
                 throw new ArgumentNullException(nameof(message));
             }
 
-            message.childMessages.Clear();
-            foreach (Message childMessage in childMessages)
-            {
-                message.childMessages.Add(childMessage);
-            }
+            message.Children = Children;
             message.predecessorMessages = predecessorMessages;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
@@ -94,22 +89,13 @@ namespace Agents.Net
                 throw new ArgumentNullException(nameof(childMessage));
             }
 
-            childMessages.Add(childMessage);
-            foreach (Message message in childMessage.Children)
-            {
-                childMessages.Add(message);
-            }
+            Children = Children.Concat(childMessage.Children).Concat(new[] {childMessage});
         }
 
         private void RemoveChild(Message message)
         {
-            childMessages.Remove(message);
-            IEnumerable<Message> directChildren = childMessages.Where(c => c.parent == this);
-            childMessages.Clear();
-            foreach (Message directChild in directChildren)
-            {
-                AddChild(directChild);
-            }
+            IEnumerable<Message> directChildren = Children.Where(c => c.parent == this && c != message).ToArray();
+            Children = directChildren.SelectMany(c => c.Children).Concat(directChildren);
         }
 
         public bool Is<T>() where T : Message
@@ -121,7 +107,7 @@ namespace Agents.Net
         {
             if (!(this is T result))
             {
-                result = this != HeadMessage ? HeadMessage.Get<T>() : childMessages.OfType<T>().First();
+                result = this != HeadMessage ? HeadMessage.Get<T>() : Children.OfType<T>().First();
             }
 
             return result;
@@ -138,7 +124,7 @@ namespace Agents.Net
                 }
                 else
                 {
-                    result = childMessages.OfType<T>().FirstOrDefault();
+                    result = Children.OfType<T>().FirstOrDefault();
                 }
             }
 
@@ -191,7 +177,7 @@ namespace Agents.Net
             }
         }
 
-        public IEnumerable<Message> Children => childMessages;
+        public IEnumerable<Message> Children { get; set; } = Enumerable.Empty<Message>();
 
         public override string ToString()
         {

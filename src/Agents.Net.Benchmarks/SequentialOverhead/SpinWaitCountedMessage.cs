@@ -29,7 +29,7 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             Duration = duration;
         }
 
-        public int CountDown { get; }
+        public int CountDown { get; set; }
 
         public int Duration { get; }
 

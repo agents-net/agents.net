@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Threading;
 using Agents.Net.Benchmarks.FileManipulation;
+using Agents.Net.Benchmarks.OptimalOverhead;
 using Agents.Net.Benchmarks.ParallelThreadSleep;
 using Agents.Net.Benchmarks.SequentialOverhead;
 using BenchmarkDotNet.Attributes;
@@ -15,7 +16,7 @@ namespace Agents.Net.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<SequentialOverheadBenchmark>();
+            BenchmarkRunner.Run<OptimalOverheadBenchmark>();
         }
     }
 }
