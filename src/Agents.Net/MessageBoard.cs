@@ -19,8 +19,6 @@ namespace Agents.Net
     public sealed class MessageBoard : IDisposable, IMessageBoard
     {
         private readonly MessagePublisher publisher = new MessagePublisher();
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly List<Message> publishedMessages = new List<Message>();
         private bool disposed;
 
         public void Publish(Message message)
@@ -45,8 +43,6 @@ namespace Agents.Net
 
         private void PublishAllMessages(Message messageContainer)
         {
-            publishedMessages.Add(messageContainer);
-            Logger.Trace(messageContainer);
             publisher.Publish(messageContainer);
         }
 
@@ -71,18 +67,7 @@ namespace Agents.Net
         public void Dispose()
         {
             disposed = true;
-            DisposeMessages();
             publisher.Dispose();
-
-            void DisposeMessages()
-            {
-                foreach (IDisposable disposable in publishedMessages.OfType<IDisposable>())
-                {
-                    disposable.Dispose();
-                }
-
-                publishedMessages.Clear();
-            }
         }
 
         private class MessagePublisher : IDisposable

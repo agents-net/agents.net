@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 #pragma warning disable CA1801
 namespace Agents.Net
@@ -181,9 +182,26 @@ namespace Agents.Net
 
         public override string ToString()
         {
-            return $"Id: {Id}, {nameof(Definition)}: {Definition}, Predecessors: {string.Join(", ", predecessorMessages.Select(m => m.Id))}, " +
-                   $"{nameof(MessageDomain)}: {MessageDomain.Root.Id} Data: {DataToString()}, " +
-                   $"{nameof(Children)}: {string.Join(", ", Children)}";
+            StringBuilder jsonFormat = ToStringBuilder();
+            return jsonFormat.ToString();
+        }
+
+        public StringBuilder ToStringBuilder()
+        {
+            StringBuilder jsonFormat = new StringBuilder("{\"Id\": \"");
+            jsonFormat.Append(Id);
+            jsonFormat.Append("\", \"Definition\": \"");
+            jsonFormat.Append(Definition);
+            jsonFormat.Append("\", \"Predecessors\": \"");
+            jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => m.Id)));
+            jsonFormat.Append("\", \"MessageDomain\": \"");
+            jsonFormat.Append(MessageDomain.Root.Id);
+            jsonFormat.Append("\", \"Data\": \"");
+            jsonFormat.Append(DataToString());
+            jsonFormat.Append("\", \"Children\": [");
+            jsonFormat.Append(string.Join(", ", Children));
+            jsonFormat.Append("]}");
+            return jsonFormat;
         }
 
         protected abstract string DataToString();

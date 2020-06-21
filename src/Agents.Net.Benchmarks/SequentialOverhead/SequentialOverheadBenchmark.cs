@@ -67,24 +67,24 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             }
         }
 
-        [Params(-1)]
+        [Params(-1, 1)]
         public int Duration { get; set; }
 
-        //[Benchmark(Baseline = true)]
-        //public void SingleThread()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        if (Duration > 0)
-        //        {
-        //            Thread.Sleep(Duration);
-        //        }
-        //        else
-        //        {
-        //            Thread.SpinWait(15);
-        //        }
-        //    }
-        //}
+        [Benchmark(Baseline = true)]
+        public void SingleThread()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                if (Duration > 0)
+                {
+                    Thread.Sleep(Duration);
+                }
+                else
+                {
+                    Thread.SpinWait(15);
+                }
+            }
+        }
 
         [Benchmark]
         public void AgentFramework()
@@ -93,12 +93,12 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             finishedEvent.WaitOne();
         }
 
-        //[Benchmark]
-        //public void AgentFrameworkReusingMessage()
-        //{
-        //    messageBoardReuse.Publish(new SpinWaitCountedMessage(Iterations, Duration, Array.Empty<Message>()));
-        //    finishedEventReuse.WaitOne();
-        //}
+        [Benchmark]
+        public void AgentFrameworkReusingMessage()
+        {
+            messageBoardReuse.Publish(new SpinWaitCountedMessage(Iterations, Duration, Array.Empty<Message>()));
+            finishedEventReuse.WaitOne();
+        }
 
         [GlobalCleanup]
         public void Cleanup()
