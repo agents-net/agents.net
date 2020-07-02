@@ -70,9 +70,9 @@ As I read about event sourcing and microservices I thought that these ideas are 
 * executes all work that can be parallelized in parallel
 
 Here's why:
-* Your time should be focused on writing the logic without spending all your time thinking about who is talking to whom and how to optimize the performance
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+* Your time should be focused on writing the logic without spending all your time thinking about who is talking to whom and how to optimize the performance.
+* You should not be bothered with difficult mechanisms to make your UI responsive.
+* You should be encouraged
 
 Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
 
@@ -199,6 +199,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNDEzNzM4NDIsLTQwNzQwMTkwOCwtMT
+eyJoaXN0b3J5IjpbLTEyNjg5Mjk0NTksLTQwNzQwMTkwOCwtMT
 cyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
 -->
