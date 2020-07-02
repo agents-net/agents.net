@@ -164,10 +164,20 @@ In a nutshell:
 
 I am working on a contribution guideline in the moment. Please be patient.
 
-<!-- LICENSE -->
+## Authors
+
+  - **Tobias Wilker** - *Initial idea and implementation* -
+    [twilker](https://github.com/twilker)
+
+See also the list of
+[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
+who participated in this project.
+
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
+Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
+details
 
 
 
@@ -219,7 +229,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYxNjQxNTkwNSwtMjQzMjQ1OTI4LC0xNj
-g2NjUwNTE4LC04NjE2ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQw
-MTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbLTEwOTAxMjU1NzEsLTI0MzI0NTkyOCwtMT
+Y4NjY1MDUxOCwtODYxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0
+MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
