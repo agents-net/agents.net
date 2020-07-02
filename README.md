@@ -17,7 +17,6 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -189,14 +188,12 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [forks-shield]: https://img.shields.io/github/forks/agents-net/agents.net.svg?style=flat-square
 [forks-url]: https://github.com/agents-net/agents.net/network/members
 [stars-shield]: https://img.shields.io/github/stars/agents-net/agents.net.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[stars-url]: https://github.com/agents-net/agents.net/stargazers
+[issues-shield]: https://img.shields.io/github/issues/agents-net/agents.net.svg?style=flat-square
+[issues-url]: https://github.com/agents-net/agents.net/issues
+[license-shield]: https://img.shields.io/github/license/agents-net/agents.net.svg?style=flat-square
+[license-url]: https://github.com/agents-net/agents.net/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkzNzI2ODY3Nl19
+eyJoaXN0b3J5IjpbLTU0NTIwNzYzNl19
 -->
