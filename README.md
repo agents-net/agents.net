@@ -65,7 +65,8 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 
 As I read about event sourcing and microservices I thought that these ideas are maybe not only viable for large distributed systems but also for your everyday console or UI application. This was when I started the Agents.Net framework. Agent based programming is more of an academic topic, but fits the ides the best. The idea is to have a framework which 
 * logs perfectly all necessary events to see what happens without debugging
-* self-orginises 
+* self-organizes all active parts (agents) so that their needs are met
+* tim 
 
 Here's why:
 * Your time should be focused on creating something amazing. A project that solves a problem and helps others
@@ -197,6 +198,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODAxODA3MzI0LC00MDc0MDE5MDgsLTE3Mj
+eyJoaXN0b3J5IjpbMTY0MzYxMDkzLC00MDc0MDE5MDgsLTE3Mj
 c1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
