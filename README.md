@@ -193,9 +193,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [issues-url]: https://github.com/agents-net/agents.net/issues
 [license-shield]: https://img.shields.io/github/license/agents-net/agents.net.svg?style=flat-square
 [license-url]: https://github.com/agents-net/agents.net/blob/master/LICENSE
-[nuget-shield]:https://img.shields.io/nuget/v/Agents.Net
-[nuget-url]:[https://www.nuget.org/packages/Agents.Net/
+[nuget-shield]:https://img.shields.io/nuget/v/Agents.Net?style=flat-square
+[nuget-url]:https://www.nuget.org/packages/Agents.Net
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyODQ2MTU2NDhdfQ==
+eyJoaXN0b3J5IjpbNDM0MDI5NTUwXX0=
 -->
