@@ -17,7 +17,7 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-
+[![NuGet][nuget-shield]][nuget-url]
 
 
 <!-- PROJECT LOGO -->
@@ -193,7 +193,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [issues-url]: https://github.com/agents-net/agents.net/issues
 [license-shield]: https://img.shields.io/github/license/agents-net/agents.net.svg?style=flat-square
 [license-url]: https://github.com/agents-net/agents.net/blob/master/LICENSE
+[nuget-shield]:https://img.shields.io/nuget/v/Agents.Net
+[nuget-url]:[https://www.nuget.org/packages/Agents.Net/
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU0NTIwNzYzNl19
+eyJoaXN0b3J5IjpbLTEyODQ2MTU2NDhdfQ==
 -->
