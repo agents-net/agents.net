@@ -124,7 +124,11 @@ dotnet add package Agents.Net
 ```
 To use to latest version from master you can either compile it yourself or use the latest NuGet package from github:
 
- 1. [Authenticate ][github-package]
+ 1. [Authenticating to github packages for this repository][github-package-auth]
+ 2. Add package via NuGet
+```sh
+dotnet add package Agents.Net
+```
 
 WIP -> I will design use cases as integration tests and than based on that include examples here.
 
@@ -206,8 +210,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-screenshot]: images/AgentsNetGif.gif
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
+[github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3ODU0NTk2NTYsLTE2ODY2NTA1MTgsLT
-g2MTY4NDYyMSwtMTY3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3
-NTY1OTE1LDQzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbLTI0MzI0NTkyOCwtMTY4NjY1MDUxOCwtOD
+YxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1
+NjU5MTUsNDM0MDI5NTUwXX0=
 -->
