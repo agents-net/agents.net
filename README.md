@@ -74,7 +74,7 @@ Here's why:
 * You should not be bothered with difficult mechanisms to make your UI responsive.
 * You should be able to easily find an issue in your application just by looking at the log without the need for time consuming debugging and reproducing the defect.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
+The basic idea of the framework is this. Each agent does one thing (connects to a database, reads console input, verifies )
 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
@@ -199,6 +199,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEyMzU0NTcwNiwtNDA3NDAxOTA4LC0xNz
+eyJoaXN0b3J5IjpbLTc0NzkxMDU4MCwtNDA3NDAxOTA4LC0xNz
 I3NTY1OTE1LDQzNDAyOTU1MF19
 -->
