@@ -1,4 +1,4 @@
-.NET class library to easily build self-organizing agents based systems.
+
 
 There is no documentation yet, but there are [benchmarks](https://github.com/agents-net/agents.net/wiki/Benchmarks)! XD
 
@@ -21,16 +21,16 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/agents-net/agents.net">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Agents.Net</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    .NET class library to easily build self-organizing agents based systems!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/agents-net/agents.net/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
@@ -197,5 +197,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbMTgwOTQ0NjIwMywtMTcyNzU2NTkxNSw0Mz
+QwMjk1NTBdfQ==
 -->
