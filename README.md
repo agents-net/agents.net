@@ -1,20 +1,8 @@
-# agents.net
-Test .NET class library to easily build self-organizing agents based systems.
+.NET class library to easily build self-organizing agents based systems.
 
 Current release is [![NuGet](https://img.shields.io/nuget/v/Agents.Net)](https://www.nuget.org/packages/Agents.Net/).
 
 There is no documentation yet, but there are [benchmarks](https://github.com/agents-net/agents.net/wiki/Benchmarks)! XD
-
-<!--
-*** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better, please fork the repo and create a pull request or simply open
-*** an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -210,5 +198,5 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4OTQ4MTQzMzFdfQ==
+eyJoaXN0b3J5IjpbMzAzMzk1MDUwXX0=
 -->
