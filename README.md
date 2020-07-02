@@ -162,7 +162,7 @@ In a nutshell:
 5. Open a Pull Request
 -->
 
-
+I am working on a contribution guideline in the moment. Please be patient.
 
 <!-- LICENSE -->
 ## License
@@ -219,7 +219,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NDM5NzIzNTEsLTI0MzI0NTkyOCwtMT
-Y4NjY1MDUxOCwtODYxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0
-MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbMTYxNjQxNTkwNSwtMjQzMjQ1OTI4LC0xNj
+g2NjUwNTE4LC04NjE2ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQw
+MTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
 -->
