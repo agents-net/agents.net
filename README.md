@@ -196,8 +196,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [license-url]: https://github.com/agents-net/agents.net/blob/master/LICENSE
 [nuget-shield]:https://img.shields.io/nuget/v/Agents.Net?style=flat-square
 [nuget-url]:https://www.nuget.org/packages/Agents.Net
-
+[workflow-shield]:https://img.shields.io/github/workflow/status/agents-net/agents.net/Build%2C%20Test%20and%20Publish?style=flat-square
+[workflow-url]:
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU4MjQ3NjAwOCw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbLTEwNTY4NjU0MjAsNDM0MDI5NTUwXX0=
 -->
