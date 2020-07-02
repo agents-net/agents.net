@@ -94,6 +94,20 @@ sudo apt-get install -y dotnet-sdk-3.1
 
 ### Compilation
 
+Compile using [.NET Core][dotnet-core-website]
+```sh
+dotnet build src
+```
+
+### Run tests
+
+Test using [.NET Core][dotnet-core-website]
+```sh
+dotnet build src
+```
+
+### Compilation
+
 1. Compile using [.NET Core][dotnet-core-website]
 ```sh
 dotnet build src
@@ -184,6 +198,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzIxMDcxMDE5LC0xNjc3MjMxOTYxLC00MD
-c0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbLTg2MTY4NDYyMSwtMTY3NzIzMTk2MSwtND
+A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
