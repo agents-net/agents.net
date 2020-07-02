@@ -74,7 +74,7 @@ Here's why:
 * You should not be bothered with difficult mechanisms to make your UI responsive.
 * You should be able to easily find an issue in your application just by looking at the log without the need for time consuming debugging and reproducing the defect.
 
-The basic idea of the framework is this. Each agent does one thing (connects to a database, reads console input, verifies )
+The basic idea of the framework is this. Each agent does one thing (connects to a database, reads console input, verifies some values, ...). For that it needs specific information (location of the database, the raw console input, ...). Additionally it provides all the information it knows
 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
@@ -199,6 +199,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc0NzkxMDU4MCwtNDA3NDAxOTA4LC0xNz
+eyJoaXN0b3J5IjpbLTEwNTU0NTA3OSwtNDA3NDAxOTA4LC0xNz
 I3NTY1OTE1LDQzNDAyOTU1MF19
 -->
