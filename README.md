@@ -87,8 +87,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+* [.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 ```sh
 npm install npm@latest -g
 ```
@@ -193,6 +192,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-screenshot]: images/AgentsNetGif.gif
 [product-homepage]:https://github.com/agents-net/agents.net
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkyNjEzMTc4NywtMTY3NzIzMTk2MSwtND
+eyJoaXN0b3J5IjpbLTc0ODE3MTU0NywtMTY3NzIzMTk2MSwtND
 A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
