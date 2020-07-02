@@ -125,8 +125,11 @@ WIP -> I will design use cases as integration tests and than based on that inclu
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues][issues-url] for a list of proposed features (and known issues).
 
+### Versioning
+
+The versioning is 
 
 
 <!-- CONTRIBUTING -->
@@ -196,7 +199,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzYwNzU4MDg5LC04NjE2ODQ2MjEsLTE2Nz
-cyMzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1
-NTBdfQ==
+eyJoaXN0b3J5IjpbMTcyMDI1NzQzMSwtODYxNjg0NjIxLC0xNj
+c3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5
+NTUwXX0=
 -->
