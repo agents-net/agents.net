@@ -110,7 +110,7 @@ dotnet test src
 
 Run benchmarks using [.NET Core][dotnet-core-website]
 ```sh
-dotnet build src
+dotnet run -c Release -p src/Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj
 ```
 
 
@@ -198,7 +198,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA3Nzc0MDg3NiwtODYxNjg0NjIxLC0xNj
-c3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5
-NTUwXX0=
+eyJoaXN0b3J5IjpbMjA0NzUyMjgzLC04NjE2ODQ2MjEsLTE2Nz
+cyMzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1
+NTBdfQ==
 -->
