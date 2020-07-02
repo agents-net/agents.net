@@ -92,6 +92,20 @@ To get a local copy up and running follow these simple example steps.
 sudo apt-get install -y dotnet-sdk-3.1
 ```
 
+### Installation
+
+To use the current release simply add it via NuGet:
+```sh
+dotnet add package Agents.Net
+```
+To use to latest version from master you can either compile it yourself or use the latest NuGet package from github:
+
+ 1. [Authenticating to github packages for this repository][github-package-auth]
+ 2. Add package via NuGet
+```sh
+nuget install Agents.Net -prerelease
+```
+
 ### Compilation
 
 Compile using [.NET Core][dotnet-core-website]
@@ -118,17 +132,6 @@ dotnet run -c Release -p src/Agents.Net.Benchmarks/Agents.Net.Benchmarks.csproj
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To use the current release simply add it via NuGet:
-```sh
-dotnet add package Agents.Net
-```
-To use to latest version from master you can either compile it yourself or use the latest NuGet package from github:
-
- 1. [Authenticating to github packages for this repository][github-package-auth]
- 2. Add package via NuGet
-```sh
-nuget install Agents.Net -pre
-```
 
 WIP -> I will design use cases as integration tests and than based on that include examples here.
 
@@ -212,7 +215,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MTg1Nzg0NDEsLTI0MzI0NTkyOCwtMT
-Y4NjY1MDUxOCwtODYxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0
-MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbLTEwOTU4NDEwMSwtMjQzMjQ1OTI4LC0xNj
+g2NjUwNTE4LC04NjE2ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQw
+MTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
 -->
