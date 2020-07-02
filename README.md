@@ -89,23 +89,14 @@ To get a local copy up and running follow these simple example steps.
 
 * [.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 ```sh
-npm install npm@latest -g
+sudo apt-get install -y dotnet-sdk-3.1
 ```
 
-### Installation
+### Compilation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Compile using .Net Core
 ```sh
 git clone https://github.com/your_username_/Project-Name.git
-```
-3. Install NPM packages
-```sh
-npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
 ```
 
 
@@ -192,6 +183,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-screenshot]: images/AgentsNetGif.gif
 [product-homepage]:https://github.com/agents-net/agents.net
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc0ODE3MTU0NywtMTY3NzIzMTk2MSwtND
-A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbLTExNDA5MTM0NjQsLTE2NzcyMzE5NjEsLT
+QwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
 -->
