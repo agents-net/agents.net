@@ -18,6 +18,7 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![NuGet][nuget-shield]][nuget-url]
+[![Workflow][workflow-shield]][workflow-url]
 
 
 <!-- PROJECT LOGO -->
@@ -195,7 +196,8 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [license-url]: https://github.com/agents-net/agents.net/blob/master/LICENSE
 [nuget-shield]:https://img.shields.io/nuget/v/Agents.Net?style=flat-square
 [nuget-url]:https://www.nuget.org/packages/Agents.Net
+
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbLTU4MjQ3NjAwOCw0MzQwMjk1NTBdfQ==
 -->
