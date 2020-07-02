@@ -110,7 +110,7 @@ dotnet test src
 
 Run benchmarks using [.NET Core][dotnet-core-website]
 ```sh
-dotnet run -c Release -p src/Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj
+dotnet run -c Release -p src/Agents.Net.Benchmarks/Agents.Net.Benchmarks.csproj
 ```
 
 
@@ -118,9 +118,7 @@ dotnet run -c Release -p src/Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+WIP -> I will design use cases as integration tests and than based on that include examples here.
 
 
 
@@ -198,7 +196,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0NzUyMjgzLC04NjE2ODQ2MjEsLTE2Nz
+eyJoaXN0b3J5IjpbMzYwNzU4MDg5LC04NjE2ODQ2MjEsLTE2Nz
 cyMzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1
 NTBdfQ==
 -->
