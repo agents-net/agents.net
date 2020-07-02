@@ -75,7 +75,7 @@ The basic idea of the framework is this. Each agent does one thing (connects to 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
-* [.NET Core](https://dotnet.microsoft.com/)
+* [.NET Core][dotnet-core-website]
 * [NLog](https://nlog-project.org/)
 
 
@@ -94,9 +94,9 @@ sudo apt-get install -y dotnet-sdk-3.1
 
 ### Compilation
 
-1. Compile using .Net Core
+1. Compile using [.NET Core][dotnet-core-website]
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
+dotnet build src
 ```
 
 
@@ -182,7 +182,8 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/AgentsNetGif.gif
 [product-homepage]:https://github.com/agents-net/agents.net
+[dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNDA5MTM0NjQsLTE2NzcyMzE5NjEsLT
-QwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbNzIxMDcxMDE5LC0xNjc3MjMxOTYxLC00MD
+c0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
