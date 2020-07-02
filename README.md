@@ -63,7 +63,7 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Agent based system are more 
+Agent based system are more of an academic topic. As I read about distributed systems and 
 
 Here's why:
 * Your time should be focused on creating something amazing. A project that solves a problem and helps others
@@ -195,6 +195,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExMTY5MDc0MjQsLTE3Mjc1NjU5MTUsND
-M0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbLTQwNzQwMTkwOCwtMTcyNzU2NTkxNSw0Mz
+QwMjk1NTBdfQ==
 -->
