@@ -79,10 +79,8 @@ The basic idea of the framework is this. Each agent does one thing (connects to 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
+* [.NET Core](https://dotnet.microsoft.com/)
 * [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
 
 
 
@@ -199,6 +197,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYxNzQyNDEyOSwtNDA3NDAxOTA4LC0xNz
-I3NTY1OTE1LDQzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbNzg0Mjg0MjI5LC00MDc0MDE5MDgsLTE3Mj
+c1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
