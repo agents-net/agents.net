@@ -103,12 +103,12 @@ dotnet build src
 
 Test using [.NET Core][dotnet-core-website]
 ```sh
-dotnet build src
+dotnet test src
 ```
 
-### Compilation
+### Run benchmarks
 
-1. Compile using [.NET Core][dotnet-core-website]
+Run benchmarks using [.NET Core][dotnet-core-website]
 ```sh
 dotnet build src
 ```
@@ -198,6 +198,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg2MTY4NDYyMSwtMTY3NzIzMTk2MSwtND
-A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbMjA3Nzc0MDg3NiwtODYxNjg0NjIxLC0xNj
+c3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5
+NTUwXX0=
 -->
