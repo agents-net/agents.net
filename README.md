@@ -118,11 +118,14 @@ dotnet run -c Release -p src/Agents.Net.Benchmarks/Agents.Net.Benchmarks.csproj
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To use the current release simply add it via NuGet
+To use the current release simply add it via NuGet:
 ```sh
 dotnet add package Agents.Net
 ```
-To use to latest version from master you can either compile it yourself or use the latest NuGet package from github
+To use to latest version from master you can either compile it yourself or use the latest NuGet package from github:
+
+ 1. [Authenticate ][github-package]
+
 WIP -> I will design use cases as integration tests and than based on that include examples here.
 
 
@@ -204,7 +207,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2ODY2NTA1MTgsLTg2MTY4NDYyMSwtMT
-Y3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAy
-OTU1MF19
+eyJoaXN0b3J5IjpbLTE3ODU0NTk2NTYsLTE2ODY2NTA1MTgsLT
+g2MTY4NDYyMSwtMTY3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3
+NTY1OTE1LDQzNDAyOTU1MF19
 -->
