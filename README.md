@@ -7,7 +7,6 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
 *** I'm using markdown "reference style" links for readability.
 *** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
 *** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 [![Contributors][contributors-shield]][contributors-url]
@@ -198,5 +197,5 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc3MDk0MTM1Miw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
