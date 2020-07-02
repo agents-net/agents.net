@@ -57,7 +57,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Agents.Net Intro][product-screenshot]][product-homepage]
 
 As I read about event sourcing and microservices I thought that these ideas are maybe not only viable for large distributed systems but also for your everyday console or UI application. This was when I started the Agents.Net framework. Agent based programming is more of an academic topic, but fits the ides the best. The idea is to have a framework which 
 * logs perfectly all necessary events to see what happens without debugging
@@ -191,8 +191,8 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [nuget-url]:https://www.nuget.org/packages/Agents.Net
 [workflow-shield]:https://img.shields.io/github/workflow/status/agents-net/agents.net/Build%2C%20Test%20and%20Publish?style=flat-square
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/AgentsNetGif.gif
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NzcyMzE5NjEsLTQwNzQwMTkwOCwtMT
-cyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbMTU2Nzk4OTA3OSwtMTY3NzIzMTk2MSwtND
+A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
