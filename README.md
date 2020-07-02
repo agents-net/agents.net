@@ -169,9 +169,7 @@ I am working on a contribution guideline in the moment. Please be patient.
   - **Tobias Wilker** - *Initial idea and implementation* -
     [twilker](https://github.com/twilker)
 
-See also the list of
-[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
-who participated in this project.
+See also the list of [contributors][contributors-url] who participated in this project.
 
 ## License
 
@@ -229,7 +227,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwOTAxMjU1NzEsLTI0MzI0NTkyOCwtMT
-Y4NjY1MDUxOCwtODYxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0
-MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbNTk1NTQwMTQzLC0yNDMyNDU5MjgsLTE2OD
+Y2NTA1MTgsLTg2MTY4NDYyMSwtMTY3NzIzMTk2MSwtNDA3NDAx
+OTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
