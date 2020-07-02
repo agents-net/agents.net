@@ -33,8 +33,6 @@ There is no documentation yet, but there are [benchmarks](https://github.com/age
     <a href="https://github.com/agents-net/agents.net/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
@@ -197,6 +195,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTgwOTQ0NjIwMywtMTcyNzU2NTkxNSw0Mz
+eyJoaXN0b3J5IjpbMjEyMDk2ODY4MSwtMTcyNzU2NTkxNSw0Mz
 QwMjk1NTBdfQ==
 -->
