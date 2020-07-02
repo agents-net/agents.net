@@ -1,7 +1,3 @@
-
-
-There is no documentation yet, but there are [benchmarks](https://github.com/agents-net/agents.net/wiki/Benchmarks)! XD
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -80,7 +76,7 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 
 ### Built With
 * [.NET Core](https://dotnet.microsoft.com/)
-* [JQuery](https://jquery.com)
+* [NLog](https://nlog-project.org/)
 
 
 
@@ -197,6 +193,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzg0Mjg0MjI5LC00MDc0MDE5MDgsLTE3Mj
-c1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbLTE2NzcyMzE5NjEsLTQwNzQwMTkwOCwtMT
+cyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
 -->
