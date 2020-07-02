@@ -118,6 +118,7 @@ dotnet run -c Release -p src/Agents.Net.Benchmarks/Agents.Net.Benchmarks.csproj
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+
 WIP -> I will design use cases as integration tests and than based on that include examples here.
 
 
@@ -129,7 +130,7 @@ See the [open issues][issues-url] for a list of proposed features (and known iss
 
 ### Versioning
 
-The versioning is straight forward. I intend to make one release every half year. Releases will be versioned YEAR.[0|6].PATCH. So for the mid-year release of 2020 it is 2020.6.0. Patches will only be released for major issues. There will always be pre-releases for each commit to master in 
+The versioning is straight forward. I intend to make one release every half year. Releases will be versioned YEAR.[0|6].PATCH. So for the mid-year release of 2020 it is 2020.6.0. Patches will only be released for major issues. There will always be pre-releases for each commit to master  as a github package.
 
 
 <!-- CONTRIBUTING -->
@@ -199,7 +200,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNzkxNTcxMSwtODYxNjg0NjIxLC0xNj
-c3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5
-NTUwXX0=
+eyJoaXN0b3J5IjpbLTEzMTE4Mzk4ODgsLTg2MTY4NDYyMSwtMT
+Y3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAy
+OTU1MF19
 -->
