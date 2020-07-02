@@ -187,8 +187,8 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* My co-workers for helping me with
+* [Event Sourcing - Explanation from Martin Fowler](https://martinfowler.com/eaaDev/EventSourcing.html)
+* My co-workers
 
 
 
@@ -215,7 +215,7 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MjQ0ODE3ODcsLTI0MzI0NTkyOCwtMT
+eyJoaXN0b3J5IjpbLTExODg5Nzg5NTQsLTI0MzI0NTkyOCwtMT
 Y4NjY1MDUxOCwtODYxNjg0NjIxLC0xNjc3MjMxOTYxLC00MDc0
 MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
 -->
