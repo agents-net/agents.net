@@ -184,11 +184,11 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/agents-net/agents.net.svg?style=flat-square
+[contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/agents-net/agents.net.svg?style=flat-square
+[forks-url]: https://github.com/agents-net/agents.net/network/members
+[stars-shield]: https://img.shields.io/github/stars/agents-net/agents.net.svg?style=flat-square
 [stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
 [issues-url]: https://github.com/othneildrew/Best-README-Template/issues
@@ -198,5 +198,5 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzAzMzk1MDUwXX0=
+eyJoaXN0b3J5IjpbMTkzNzI2ODY3Nl19
 -->
