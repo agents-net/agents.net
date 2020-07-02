@@ -150,7 +150,7 @@ The versioning is straight forward. I intend to make one release every half year
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the Contribution guideline 
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -215,7 +215,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwOTU4NDEwMSwtMjQzMjQ1OTI4LC0xNj
-g2NjUwNTE4LC04NjE2ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQw
-MTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbNjE0ODU1MzkwLC0yNDMyNDU5MjgsLTE2OD
+Y2NTA1MTgsLTg2MTY4NDYyMSwtMTY3NzIzMTk2MSwtNDA3NDAx
+OTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
