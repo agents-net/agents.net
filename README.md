@@ -83,7 +83,6 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
@@ -194,6 +193,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [product-screenshot]: images/AgentsNetGif.gif
 [product-homepage]:https://github.com/agents-net/agents.net
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjIyNzk0MDU1LC0xNjc3MjMxOTYxLC00MD
-c0MDE5MDgsLTE3Mjc1NjU5MTUsNDM0MDI5NTUwXX0=
+eyJoaXN0b3J5IjpbMTkyNjEzMTc4NywtMTY3NzIzMTk2MSwtND
+A3NDAxOTA4LC0xNzI3NTY1OTE1LDQzNDAyOTU1MF19
 -->
