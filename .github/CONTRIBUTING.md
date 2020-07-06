@@ -2,6 +2,7 @@
 
 First off, thank you for considering contributing to Agents.Net. With your help Agents.Net can develop to be an amazing framework.
 
+Following these guidelines helps to communicate exactly what you wish .
 
 ### Write something nice here!
 
@@ -182,5 +183,5 @@ These sections are not necessary, but can help streamline the contributions you 
 
 **Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODI5MDQxMjYwXX0=
+eyJoaXN0b3J5IjpbMTk2Mzk3MzMzMV19
 -->
