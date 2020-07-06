@@ -29,9 +29,9 @@
     <a href="https://github.com/agents-net/agents.net/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=">Request Feature</a>
   </p>
 </p>
 
