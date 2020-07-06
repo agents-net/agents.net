@@ -1,5 +1,8 @@
 # Introduction
 
+First off, thank you for considering contributing to Agents.Net. With your help Agents.Net can develop to be an amazing framework.
+
+
 ### Write something nice here!
 
 >First off, thank you for considering contributing to Active Admin. It's people like you that make Active Admin such a great tool.
@@ -178,3 +181,6 @@ These sections are not necessary, but can help streamline the contributions you 
 ### Explain if you use any labeling conventions for issues.
 
 **Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbODI5MDQxMjYwXX0=
+-->
