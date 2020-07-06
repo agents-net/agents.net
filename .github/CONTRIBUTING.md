@@ -4,6 +4,8 @@ First off, thank you for considering contributing to Agents.Net. With your help 
 
 Following these guidelines helps to communicate exactly what you wish to address and help you, the developers and maintainers of this project to understand each other.
 
+There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code which can be incorporated into Agents.Net itself.
+
 ### Write something nice here!
 
 >First off, thank you for considering contributing to Active Admin. It's people like you that make Active Admin such a great tool.
@@ -183,5 +185,5 @@ These sections are not necessary, but can help streamline the contributions you 
 
 **Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTE1Nzk4MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
