@@ -32,6 +32,8 @@
     <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
     <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=">Request Feature</a>
+    ·
+    <a href="https://discord.gg/gn3dqG4">Ask a Question</a>
   </p>
 </p>
 
