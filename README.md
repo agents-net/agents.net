@@ -59,7 +59,7 @@
 
 [![Agents.Net Intro][product-screenshot]][product-homepage]
 
-As I read about event sourcing and microservices I thought that these ideas are maybe not only viable for large distributed systems but also for your everyday console or UI application. This was when I started the Agents.Net framework. Agent based programming is more of an academic topic, but fits the ides the best. The idea is to have a framework which 
+As I read about event sourcing and microservices I thought that these ideas are maybe not only viable for large distributed systems but also for your everyday console or UI application. This was when I started the Agents.Net framework. Agent based programming is more of an academic topic, but fits the ideas the best. The idea is to have a framework which 
 * logs perfectly all necessary events to see what happens without debugging
 * self-organizes all active parts (agents) so that their needs are met
 * timely decouples all agents so that sending an information (message) does not block the sending agent
@@ -218,7 +218,8 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIzNTIzMDM5NiwtMjQzMjQ1OTI4LC0xNj
-g2NjUwNTE4LC04NjE2ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQw
-MTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NTBdfQ==
+eyJoaXN0b3J5IjpbLTIxMDM5ODc3MDgsMTIzNTIzMDM5NiwtMj
+QzMjQ1OTI4LC0xNjg2NjUwNTE4LC04NjE2ODQ2MjEsLTE2Nzcy
+MzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NTkxNSw0MzQwMjk1NT
+BdfQ==
 -->
