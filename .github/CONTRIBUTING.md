@@ -18,7 +18,7 @@ For all contributions, please respect the following guidelines:
 -   Do not commit changes to files that are irrelevant to your feature or bugfix (eg:  `.gitignore`).
 -   Be willing to accept suggestions on how to improve your code.
 -   Be aware that the pull request review process is not immediate, and is generally proportional to the size of the pull request.
--   If your pull request is merged, please do not ask for an immediate release. There are many factors contributing to when releases occur (remember that they affect thousands of apps with Geocoder in their Gemfiles). If necessary, please install from the Github source until the next official release.
+-   If your pull request is merged, please do not ask for an immediate release. Releases are scheduled every half year. Only major issues will 
 
 # Your First Contribution
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
@@ -159,6 +159,6 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNjkwMTk5OTAsLTE1Nzk4MDQ0NSw1Nj
+eyJoaXN0b3J5IjpbLTIwMzQyNzA2ODgsLTE1Nzk4MDQ0NSw1Nj
 gyMDA0NDVdfQ==
 -->
