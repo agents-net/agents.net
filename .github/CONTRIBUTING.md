@@ -57,6 +57,14 @@ At this point, you should switch back to your master branch and make sure it's u
        git push --set-upstream origin 325-add-japanese-translations
 
    Finally, go to GitHub and  [make a Pull Request](https://help.github.com/articles/creating-a-pull-request)  :smile:
+6. **Keep Pull Request updated**
+If a maintainer asks you to "rebase" your PR, they're saying that a lot of code has changed, and that you need to update your branch so it's easier to merge.
+
+To learn more about rebasing in Git, there are a lot of  [good](http://git-scm.com/book/en/Git-Branching-Rebasing)  [resources](https://help.github.com/en/github/using-git/about-git-rebase)  but here's the suggested workflow:
+
+git checkout 325-add-japanese-translations
+git pull --rebase upstream master
+git push --force-with-lease 325-add-japanese-translations
 
 >For something that is bigger than a one or two line fix:
 
@@ -172,6 +180,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzU2MDAzNTk2LC0zNzU4ODUyMDIsLTIxMz
-U0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbLTE4ODI1OTEyNjgsLTM3NTg4NTIwMiwtMj
+EzNTQyODMxLC0xNTc5ODA0NDUsNTY4MjAwNDQ1XX0=
 -->
