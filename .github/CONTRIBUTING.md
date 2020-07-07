@@ -70,7 +70,7 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
 In this section you can find the process to create a bug report.
 
 ### Security issues
-Any security issues should be submitted directly to [our mail list](mailto:agents-net@freelists.org).
+Any security issues should be submitted directly to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
 -   Can I access something that’s not mine, or something I shouldn’t have access to?
@@ -142,8 +142,8 @@ Waiting for a response to an issue/question?
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYyMDE1NzY2OCwxOTk3MDIyOTUwLC0xNz
-I3NDM5MTk3LC0xMzQzNzY4OTY4LC03ODk0Njg5NDAsMTM3NjA3
-OTAxNCwtMTk1NDIwMjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4Mz
-EsLTE1Nzk4MDQ0NSw1NjgyMDA0NDVdfQ==
+eyJoaXN0b3J5IjpbMTkyMjQzOTE0MiwtNjIwMTU3NjY4LDE5OT
+cwMjI5NTAsLTE3Mjc0MzkxOTcsLTEzNDM3Njg5NjgsLTc4OTQ2
+ODk0MCwxMzc2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4ODUyMD
+IsLTIxMzU0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
