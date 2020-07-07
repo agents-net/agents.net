@@ -16,10 +16,9 @@ For all contributions, please respect the following guidelines:
 
 -   Each pull request should implement ONE feature or bugfix. If you want to add or fix more than one thing, submit more than one pull request.
 -   Do not commit changes to files that are irrelevant to your feature or bugfix (eg:  `.gitignore`).
--   Remember: Geocoder needs to run outside of Rails. Don't assume things like ActiveSupport are available.
--   Be willing to accept criticism and work on improving your code; Geocoder is used by thousands of developers and care must be taken not to introduce bugs.
+-   Be willing to accept suggestions on how to improve your code.
 -   Be aware that the pull request review process is not immediate, and is generally proportional to the size of the pull request.
--   If your pull request is merged, please do not ask for an immediate release of the gem. There are many factors contributing to when releases occur (remember that they affect thousands of apps with Geocoder in their Gemfiles). If necessary, please install from the Github source until the next official release.
+-   If your pull request is merged, please do not ask for an immediate release. There are many factors contributing to when releases occur (remember that they affect thousands of apps with Geocoder in their Gemfiles). If necessary, please install from the Github source until the next official release.
 
 # Your First Contribution
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
@@ -160,6 +159,6 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTgzNzA4NTQ0OCwtMTU3OTgwNDQ1LDU2OD
-IwMDQ0NV19
+eyJoaXN0b3J5IjpbLTExNjkwMTk5OTAsLTE1Nzk4MDQ0NSw1Nj
+gyMDA0NDVdfQ==
 -->
