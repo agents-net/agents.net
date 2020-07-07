@@ -152,7 +152,7 @@ The versioning is straight forward. I intend to make one release every half year
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the contribution guideline before contributing.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the [contribution guideline](.github/CONTRIBUTING.md) before contributing.
 
 In a nutshell:
 
@@ -216,8 +216,8 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0MjQwNTE1NCwtMjEwMzk4NzcwOCwxMj
-M1MjMwMzk2LC0yNDMyNDU5MjgsLTE2ODY2NTA1MTgsLTg2MTY4
-NDYyMSwtMTY3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3NTY1OT
-E1LDQzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbLTE5ODU1NDkxOTAsLTIxMDM5ODc3MDgsMT
+IzNTIzMDM5NiwtMjQzMjQ1OTI4LC0xNjg2NjUwNTE4LC04NjE2
+ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NT
+kxNSw0MzQwMjk1NTBdfQ==
 -->
