@@ -26,11 +26,7 @@ Unsure where to begin contributing? You can start by looking for [beginner issue
 If there are no beginner issues available or you want to look for something a bit more challenging? Then look out for these labels:
 [Bug][bug-issues] - all currently known bugs.
 [Documentation][documentation-issues] - these issues should not involve coding, but usually need a bit of knowledge about the framework.
-[Enhancements][enhancement-issues]
-> Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
-> Beginner issues - issues which should only require a few lines of code, and a test or two.
-> Help wanted issues - issues which should be a bit more involved than beginner issues.
-> Both issue lists are sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.
+[Enhancements][enhancement-issues] - these are new features that need to be implemented.
 
 [source: [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#your-first-code-contribution)] **Need more inspiration?** [1] [Read the Docs](http://docs.readthedocs.org/en/latest/contribute.html#contributing-to-development) [2] [Django](https://docs.djangoproject.com/en/dev/internals/contributing/new-contributors/#first-steps) (scroll down to "Guidelines" as well)
 
@@ -163,7 +159,10 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 [beginner-issues]:https://github.com/agents-net/agents.net/labels/good%20first%20issue
+[bug-issues]:https://github.com/agents-net/agents.net/labels/bug
+[documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
+[enhancement-issues]:https://github.com/agents-net/agents.net/labels/en
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxOTcxODA0NSwtMTU3OTgwNDQ1LDU2OD
-IwMDQ0NV19
+eyJoaXN0b3J5IjpbLTE5ODE2NzIzMzEsLTE1Nzk4MDQ0NSw1Nj
+gyMDA0NDVdfQ==
 -->
