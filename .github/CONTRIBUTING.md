@@ -38,8 +38,9 @@ Here is how make a contribution to to Agents.Net:
 1. **[Fork Agents.Net][fork-manual] and create a new branch**
 Please do not make changes to the master branch. The new branch name should roughly describe, what you are changing.
 2. **Check that [all tests are running][run-tests]**
-This gives you the confidence that when you changes are done and all tests are green, that you did not breaking anything major 
-4. **Implement your fix or enhancement**
+This gives you the confidence that when you changes are done and all tests are green, that you did not breaking anything major :sweat_smile:
+3. **Implement your fix or enhancement**
+Please remember to write tests for your code. The code style should automatically be checked by the build system.
 5. **Add a changelog entry**
 If your contribution changes/removes an existing behavior or adds a new behavior a 
 
@@ -157,6 +158,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM5NDk3ODY0NCwtMzc1ODg1MjAyLC0yMT
+eyJoaXN0b3J5IjpbLTI2ODEyNDEyNSwtMzc1ODg1MjAyLC0yMT
 M1NDI4MzEsLTE1Nzk4MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
