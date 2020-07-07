@@ -98,16 +98,9 @@ The goal of Agents.Net is to have a framework which
 
 If you find yourself wishing for a feature that doesn't exist in Agents.Net, open an issue on our issues list on GitHub which describes the feature you would like to see, why you need it, and how it should work. Please use the provided template for [feature requests][feature-template].
 
-[source: [Elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#feature-requests)] **Need more inspiration?** [1] [Hoodie](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md#feature-requests) [2] [Ember.js](https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#requesting-a-feature)
-
 # Code review process
-### Explain how a contribution gets accepted after it’s been submitted.
-Who reviews it? Who needs to sign off before it’s accepted? When should a contributor expect to hear from you? How can contributors get commit access, if at all?
 
-> The core team looks at Pull Requests on a regular basis in a weekly triage meeting that we hold in a public Google Hangout. The hangout is announced in the weekly status updates that are sent to the puppet-dev list. Notes are posted to the Puppet Community community-triage repo and include a link to a YouTube recording of the hangout.
-> After feedback has been given we expect responses within two weeks. After two weeks we may close the pull request if it isn't showing any activity.
 
-[source: [Puppet](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#submitting-changes)] **Need more inspiration?** [1] [Meteor](https://meteor.hackpad.com/Responding-to-GitHub-Issues-SKE2u3tkSiH ) [2] [Express.js](https://github.com/expressjs/express/blob/master/Contributing.md#becoming-a-committer)
 
 # Community
 If there are other channels you use besides GitHub to discuss contributions, mention them here. You can also list the author, maintainers, and/or contributors here, or set expectations for response time.
@@ -140,8 +133,9 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
+[feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4ODE3ODAyOTEsLTc4OTQ2ODk0MCwxMz
+eyJoaXN0b3J5IjpbLTExOTA2NzE4ODIsLTc4OTQ2ODk0MCwxMz
 c2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0
 MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
