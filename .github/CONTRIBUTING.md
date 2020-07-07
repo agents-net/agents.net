@@ -15,7 +15,7 @@ This project and everyone participating in it is governed by the [Agents.Net Cod
 For all contributions, please respect the following guidelines:
 
 -   Each pull request should implement ONE feature or bugfix. If you want to add or fix more than one thing, submit more than one pull request.
-- Each pull request should have at least one new or changed test covering the feature or bugfix. 
+- Each pull request should have at least one new or changed test covering the feature or bugfix. If no test is possible please state the reason in the pull request.
 -   Do not commit changes to files that are irrelevant to your feature or bugfix (eg:  `.gitignore`).
 -   Be willing to accept suggestions on how to improve your code.
 -   Be aware that the pull request review process is not immediate, and is generally proportional to the size of the pull request.
@@ -160,6 +160,6 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQyODQxMjI4NSwtMTU3OTgwNDQ1LDU2OD
+eyJoaXN0b3J5IjpbLTgxMTE1MjU1OCwtMTU3OTgwNDQ1LDU2OD
 IwMDQ0NV19
 -->
