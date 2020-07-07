@@ -31,7 +31,7 @@ If there are no beginner issues available or you want to look for something a bi
 
 Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
 
->At this point, you're ready to make your changes! Feel free to ask for help; everyone is a beginner at first :smile_cat:
+Also feel free to ask for help; everyone is a beginner at first :smile_cat:
 
 # Getting started
 ### Give them a quick walkthrough of how to submit a contribution.
@@ -153,6 +153,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTMxMzg0MjEsLTE1Nzk4MDQ0NSw1Nj
-gyMDA0NDVdfQ==
+eyJoaXN0b3J5IjpbLTIxMzU0MjgzMSwtMTU3OTgwNDQ1LDU2OD
+IwMDQ0NV19
 -->
