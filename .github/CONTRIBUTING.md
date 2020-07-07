@@ -6,7 +6,7 @@ Following these guidelines helps to communicate exactly what you wish to address
 
 There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code which can be incorporated into Agents.Net itself.
 
-Please, don't use the issue tracker for questions. There is a [discord server] available for q. Stack Overflow is also worth considering.
+Please, don't use the issue tracker for questions. There is a [discord server][discord-link] available for asking questions. Stack Overflow is also worth considering.
 
 ### Write something nice here!
 
@@ -186,7 +186,9 @@ These sections are not necessary, but can help streamline the contributions you 
 ### Explain if you use any labeling conventions for issues.
 
 **Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
+
+[discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMTM5NTMzMzUsLTE1Nzk4MDQ0NSw1Nj
+eyJoaXN0b3J5IjpbLTIwNzA0MTY0MTIsLTE1Nzk4MDQ0NSw1Nj
 gyMDA0NDVdfQ==
 -->
