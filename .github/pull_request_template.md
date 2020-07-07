@@ -15,7 +15,7 @@ Please describe the tests that you ran to verify your changes. Mention new and c
 
 ## Checklist:
 
-<!-- To check one of the checkboxes -->
+<!-- To check one of the checkboxes just change [ ] to [x]-->
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
@@ -25,5 +25,5 @@ Please describe the tests that you ran to verify your changes. Mention new and c
 - [ ] I have checked my code and corrected any misspellings
 - [ ] I have added an entry to the [changelog](https://github.com/agents-net/agents.net/blob/master/CHANGELOG.md) if necessary
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk3MjEwNDY0OF19
+eyJoaXN0b3J5IjpbLTE4OTg4NjE1XX0=
 -->
