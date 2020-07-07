@@ -115,11 +115,10 @@ Development on Agnets.Net is community-driven:
 -   Everyone is invited to contribute.
 -   Connect with other Cookiecutter contributors and users on [Discord][discord-link].
 
-Encouragement is unbelievably motivating. If you want more work done on Cookiecutter, show support:
+Encouragement is unbelievably motivating. If you want more work done on Agents.Net, show support:
 
--   Thank a core committer for their efforts.
--   Star  [Cookiecutter on GitHub](https://github.com/cookiecutter/cookiecutter).
--   [Support this project](https://github.com/cookiecutter/cookiecutter#support-this-project)
+-   Star  [Agents.Net on GitHub](https://github.com/agents-net/agents.net).
+- Write a blog post about Agents.Net
 
 Got criticism or complaints?
 
@@ -160,8 +159,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTI0NDUzMDQ0LC0xNzI3NDM5MTk3LC0xMz
-QzNzY4OTY4LC03ODk0Njg5NDAsMTM3NjA3OTAxNCwtMTk1NDIw
-MjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4MDQ0NS
-w1NjgyMDA0NDVdfQ==
+eyJoaXN0b3J5IjpbLTIwMjk4NzgyMywtMTcyNzQzOTE5NywtMT
+M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
+MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
+UsNTY4MjAwNDQ1XX0=
 -->
