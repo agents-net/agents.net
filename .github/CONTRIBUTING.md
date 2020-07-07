@@ -77,7 +77,8 @@ In order to determine whether you are dealing with a security issue, ask yoursel
 If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 
 ### Tell your contributors how to file a bug report.
-Before filling a new bug please check the issue
+Before filling a new bug please check the issues whether someone all ready reported the same or a related issue.
+When reporting a bug please use the provided [bug template][bug-template]
 
 [source: [Go](https://github.com/golang/go/blob/master/CONTRIBUTING.md#filing-issues)] **Need more inspiration?** [1] [Celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#other-bugs ) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#reporting-bugs) (includes template)
 
@@ -137,8 +138,9 @@ These sections are not necessary, but can help streamline the contributions you 
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
+[bug-template]:
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjExNTI3NDAwMSwxMzc2MDc5MDE0LC0xOT
-U0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgw
-NDQ1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbMzYwMjc0MzU3LDEzNzYwNzkwMTQsLTE5NT
+QyMDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0
+NDUsNTY4MjAwNDQ1XX0=
 -->
