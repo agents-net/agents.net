@@ -26,9 +26,7 @@ Unsure where to begin contributing? You can start by looking for [beginner issue
 If there are no beginner issues available or you want to look for something a bit more challenging? Then look out for these labels:
 [Bug][bug-issues] - all currently known bugs.
 [Documentation][documentation-issues] - these issues should not involve coding, but usually need a bit of knowledge about the framework.
-[Enhancements][enhancement-issues] - these are new features that need to be implemented.
-
-[source: [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#your-first-code-contribution)] **Need more inspiration?** [1] [Read the Docs](http://docs.readthedocs.org/en/latest/contribute.html#contributing-to-development) [2] [Django](https://docs.djangoproject.com/en/dev/internals/contributing/new-contributors/#first-steps) (scroll down to "Guidelines" as well)
+[Enhancement][enhancement-issues] - these are new features that need to be implemented.
 
 ### Bonus points: Add a link to a resource for people who have never contributed to open source before.
 Here are a couple of friendly tutorials you can include: http://makeapullrequest.com/ and http://www.firsttimersonly.com/
@@ -161,8 +159,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [beginner-issues]:https://github.com/agents-net/agents.net/labels/good%20first%20issue
 [bug-issues]:https://github.com/agents-net/agents.net/labels/bug
 [documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
-[enhancement-issues]:https://github.com/agents-net/agents.net/labels/en
+[enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5ODE2NzIzMzEsLTE1Nzk4MDQ0NSw1Nj
-gyMDA0NDVdfQ==
+eyJoaXN0b3J5IjpbLTc0NzMwMjAyMiwtMTU3OTgwNDQ1LDU2OD
+IwMDQ0NV19
 -->
