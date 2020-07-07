@@ -49,13 +49,14 @@ At this point, you should switch back to your master branch and make sure it's u
         git remote add upstream git@github.com:activeadmin/activeadmin.git
         git checkout master
         git pull upstream master
+
    Then update your feature branch from your local copy of master, and push it!
 
-git checkout 325-add-japanese-translations
-git rebase master
-git push --set-upstream origin 325-add-japanese-translations
+       git checkout 325-add-japanese-translations
+       git rebase master
+       git push --set-upstream origin 325-add-japanese-translations
 
-Finally, go to GitHub and  [make a Pull Request](https://help.github.com/articles/creating-a-pull-request)  :D
+   Finally, go to GitHub and  [make a Pull Request](https://help.github.com/articles/creating-a-pull-request)  :smile:
 
 >For something that is bigger than a one or two line fix:
 
@@ -171,6 +172,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTgyNTIyMTg4LC0zNzU4ODUyMDIsLTIxMz
+eyJoaXN0b3J5IjpbMzU2MDAzNTk2LC0zNzU4ODUyMDIsLTIxMz
 U0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
