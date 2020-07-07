@@ -68,7 +68,7 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
 
 # How to report a bug
 
-Any security issues should be submitted directly to [unkown]
+Any security issues should be submitted directly to [unkown].
 In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
 -   Can I access something that’s not mine, or something I shouldn’t have access to?
@@ -147,7 +147,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTczODczMzY2MCwtMTk1NDIwMjA2MSwtMz
+eyJoaXN0b3J5IjpbMTM3NjA3OTAxNCwtMTk1NDIwMjA2MSwtMz
 c1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4MDQ0NSw1NjgyMDA0
 NDVdfQ==
 -->
