@@ -127,24 +127,9 @@ Got criticism or complaints?
 
 Waiting for a response to an issue/question?
 
--   Be patient and persistent. No one is paying the committers for th
+-   Be patient and persistent. No one is paying the committers for their effort so please be patient. If it is urgent it is ok to ping an admin of the project.
 -   Ask others to comment, discuss, review, etc.
 -   Search the Agents.Net repo for issues related to yours.
-
-# BONUS: Code, commit message and labeling conventions
-These sections are not necessary, but can help streamline the contributions you receive.
-
-### Explain your preferred style for code, if you have any.
-
-**Need inspiration?** [1] [Requirejs](http://requirejs.org/docs/contributing.html#codestyle) [2] [Elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#contributing-to-the-elasticsearch-codebase)
-
-### Explain if you use any commit message conventions.
-
-**Need inspiration?** [1] [Angular](https://github.com/angular/material/blob/master/.github/CONTRIBUTING.md#submit) [2] [Node.js](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#step-3-commit)
-
-### Explain if you use any labeling conventions for issues.
-
-**Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
 
 [discord-link]:https://discord.gg/gn3dqG4
 [beginner-issues]:https://github.com/agents-net/agents.net/labels/good%20first%20issue
@@ -157,8 +142,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MDM2MTc0OTMsLTE3Mjc0MzkxOTcsLT
-EzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0
-MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwND
-Q1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbMTk5NzAyMjk1MCwtMTcyNzQzOTE5NywtMT
+M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
+MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
+UsNTY4MjAwNDQ1XX0=
 -->
