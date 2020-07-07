@@ -15,6 +15,7 @@ Please describe the tests that you ran to verify your changes. Mention new and c
 
 ## Checklist:
 
+<!-- To check one of the checkboxes -->
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
@@ -22,7 +23,7 @@ Please describe the tests that you ran to verify your changes. Mention new and c
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] I have checked my code and corrected any misspellings
-- [ ] I have added an entry to the [changelog]()
+- [ ] I have added an entry to the [changelog](https://github.com/agents-net/agents.net/blob/master/CHANGELOG.md) if necessary
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMDc3MTMyMDRdfQ==
+eyJoaXN0b3J5IjpbLTk3MjEwNDY0OF19
 -->
