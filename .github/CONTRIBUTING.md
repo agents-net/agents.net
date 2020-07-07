@@ -10,7 +10,7 @@ Please, don't use the issue tracker for questions. There is a [discord server][d
 
 # Ground Rules
 
-This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [atom@github.com](mailto:atom@github.com).
+This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 
 # Your First Contribution
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
@@ -151,6 +151,6 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYxODYyMTIwMSwtMTU3OTgwNDQ1LDU2OD
-IwMDQ0NV19
+eyJoaXN0b3J5IjpbLTIxNDU0NjIzNDUsLTE1Nzk4MDQ0NSw1Nj
+gyMDA0NDVdfQ==
 -->
