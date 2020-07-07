@@ -67,20 +67,14 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
        git push --force-with-lease my-awesome-feature
 
 # How to report a bug
-### Explain security disclosures first!
-At bare minimum, include this sentence:
-> If you find a security vulnerability, do NOT open an issue. Email XXXX instead.
 
-If you don’t want to use your personal contact information, set up a “security@” email address. Larger projects might have more formal processes for disclosing security, including encrypted communication. (Disclosure: I am not a security expert.)
+Any security issues should be submitted directly to [unkown]
+In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
-> Any security issues should be submitted directly to security@travis-ci.org
-> In order to determine whether you are dealing with a security issue, ask yourself these two questions:
-> * Can I access something that's not mine, or something I shouldn't have access to?
-> * Can I disable something for other people?
->
-> If the answer to either of those two questions are "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to both questions, you may still be dealing with a security issue, so if you're unsure, just email us at security@travis-ci.org.
+-   Can I access something that’s not mine, or something I shouldn’t have access to?
+-   Can I disable something for other people?
 
-[source: [Travis CI](https://github.com/travis-ci/travis-ci/blob/master/CONTRIBUTING.md)] **Need more inspiration?** [1] [Celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#security) [2] [Express.js](https://github.com/expressjs/express/blob/master/Security.md)
+If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [unkown].
 
 ### Tell your contributors how to file a bug report.
 You can even include a template so people can just copy-paste (again, less work for you).
@@ -153,6 +147,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NTQyMDIwNjEsLTM3NTg4NTIwMiwtMj
-EzNTQyODMxLC0xNTc5ODA0NDUsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbMTczODczMzY2MCwtMTk1NDIwMjA2MSwtMz
+c1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4MDQ0NSw1NjgyMDA0
+NDVdfQ==
 -->
