@@ -100,7 +100,7 @@ If you find yourself wishing for a feature that doesn't exist in Agents.Net, ope
 
 # Code review process
 
-Once you started a pull request the Github CI will run automatic checks such as checks for build errors or test failures. If you are not a maintainer of the proj
+Once you started a pull request the Github CI will run automatic checks such as checks for build errors or test failures. If you are not a maintainer of the project the pull request needs
 
 # Community
 If there are other channels you use besides GitHub to discuss contributions, mention them here. You can also list the author, maintainers, and/or contributors here, or set expectations for response time.
@@ -135,7 +135,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIxOTMxNjM5OCwtNzg5NDY4OTQwLDEzNz
-YwNzkwMTQsLTE5NTQyMDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQy
-ODMxLC0xNTc5ODA0NDUsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTEzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMz
+c2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0
+MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
