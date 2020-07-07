@@ -52,9 +52,9 @@ At this point, you should switch back to your master branch and make sure it's u
 
    Then update your feature branch from your local copy of master, and push it!
 
-       git checkout 325-add-japanese-translations
+       git checkout my-awesome-feature
        git rebase master
-       git push --set-upstream origin 325-add-japanese-translations
+       git push --set-upstream origin my-awesome-feature
 
    Finally, go to GitHub and  [make a Pull Request](https://help.github.com/articles/creating-a-pull-request)  :smile:
 6. **Keep Pull Request updated**
@@ -62,36 +62,9 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
 
    Here's a suggested workflow:
 
-       git checkout 325-add-japanese-translations
+       git checkout my-awesome-feature
        git pull --rebase upstream master
-       git push --force-with-lease 325-add-japanese-translations
-
->For something that is bigger than a one or two line fix:
-
->1. Create your own fork of the code
->2. Do the changes in your fork
->3. If you like the change and think the project could use it:
-    * Be sure you have followed the code style for the project.
-    * Sign the Contributor License Agreement, CLA, with the jQuery Foundation.
-    * Note the jQuery Foundation Code of Conduct.
-    * Send a pull request indicating that you have a CLA on file.
-
-[source: [Requirejs](http://requirejs.org/docs/contributing.html)] **Need more inspiration?** [1] [Active Admin](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md#1-where-do-i-go-from-here) [2] [Node.js](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#code-contributions) [3] [Ember.js](https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#pull-requests)
-
-### If you have a different process for small or "obvious" fixes, let them know.
-
-> Small contributions such as fixing spelling errors, where the content is small enough to not be considered intellectual property, can be submitted by a contributor as a patch, without a CLA.
->
->As a rule of thumb, changes are obvious fixes if they do not introduce any new functionality or creative thinking. As long as the change does not affect functionality, some likely examples include the following:
->* Spelling / grammar fixes
->* Typo correction, white space and formatting changes
->* Comment clean up
->* Bug fixes that change default return values or error codes stored in constants
->* Adding logging messages or debugging output
->* Changes to ‘metadata’ files like Gemfile, .gitignore, build scripts, etc.
->* Moving source files from one directory or package to another
-
-[source: [Chef](https://github.com/chef/chef/blob/master/CONTRIBUTING.md#chef-obvious-fix-policy)] **Need more inspiration?** [1] [Puppet](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#making-trivial-changes)
+       git push --force-with-lease my-awesome-feature
 
 # How to report a bug
 ### Explain security disclosures first!
@@ -180,6 +153,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjMxMDI1MjIzLC0zNzU4ODUyMDIsLTIxMz
-U0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbLTE5NTQyMDIwNjEsLTM3NTg4NTIwMiwtMj
+EzNTQyODMxLC0xNTc5ODA0NDUsNTY4MjAwNDQ1XX0=
 -->
