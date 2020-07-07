@@ -35,7 +35,8 @@ Also feel free to ask for help; everyone is a beginner at first :smile_cat:
 
 # Getting started
 Here is how make a contribution to to Agents.Net:
-1. [Fork Agents.Net][fork-manual] and 
+1. [Fork Agents.Net][fork-manual] and create a new branch
+2. Check that all 
 
 >For something that is bigger than a one or two line fix:
 
@@ -150,6 +151,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNDkzNjAyMDAsLTIxMzU0MjgzMSwtMT
+eyJoaXN0b3J5IjpbLTE5NTA0MzY1OTksLTIxMzU0MjgzMSwtMT
 U3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
