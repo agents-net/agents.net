@@ -68,25 +68,16 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
 
 # How to report a bug
 
-Any security issues should be submitted directly to [unkown].
+Any security issues should be submitted directly to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
 -   Can I access something that’s not mine, or something I shouldn’t have access to?
 -   Can I disable something for other people?
 
-If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [unkown].
+If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 
 ### Tell your contributors how to file a bug report.
-You can even include a template so people can just copy-paste (again, less work for you).
-
-> When filing an issue, make sure to answer these five questions:
->
-> 1. What version of Go are you using (go version)?
-> 2. What operating system and processor architecture are you using?
-> 3. What did you do?
-> 4. What did you expect to see?
-> 5. What did you see instead?
-> General questions should go to the golang-nuts mailing list instead of the issue tracker. The gophers there will answer or ask you to file an issue if you've tripped over a bug.
+Before filling a new bug please check the issue
 
 [source: [Go](https://github.com/golang/go/blob/master/CONTRIBUTING.md#filing-issues)] **Need more inspiration?** [1] [Celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#other-bugs ) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#reporting-bugs) (includes template)
 
@@ -147,7 +138,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM3NjA3OTAxNCwtMTk1NDIwMjA2MSwtMz
-c1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4MDQ0NSw1NjgyMDA0
-NDVdfQ==
+eyJoaXN0b3J5IjpbMjExNTI3NDAwMSwxMzc2MDc5MDE0LC0xOT
+U0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgw
+NDQ1LDU2ODIwMDQ0NV19
 -->
