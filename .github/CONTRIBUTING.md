@@ -23,23 +23,15 @@ For all contributions, please respect the following guidelines:
 
 # Your First Contribution
 Unsure where to begin contributing? You can start by looking for [beginner issues][beginner-issues].
+
 If there are no beginner issues available or you want to look for something a bit more challenging? Then look out for these labels:
 [Bug][bug-issues] - all currently known bugs.
 [Documentation][documentation-issues] - these issues should not involve coding, but usually need a bit of knowledge about the framework.
 [Enhancement][enhancement-issues] - these are new features that need to be implemented.
 
-### Bonus points: Add a link to a resource for people who have never contributed to open source before.
-Here are a couple of friendly tutorials you can include: http://makeapullrequest.com/ and http://www.firsttimersonly.com/
-
-> Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
-
-[source: [React](https://github.com/facebook/react/blob/master/CONTRIBUTING.md#pull-requests)]  
-
-As a side note, it helps to use newcomer-friendly language throughout the rest of your document. Here are a couple of examples from [Active Admin](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md):
+Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
 
 >At this point, you're ready to make your changes! Feel free to ask for help; everyone is a beginner at first :smile_cat:
->
->If a maintainer asks you to "rebase" your PR, they're saying that a lot of code has changed, and that you need to update your branch so it's easier to merge.
 
 # Getting started
 ### Give them a quick walkthrough of how to submit a contribution.
@@ -161,6 +153,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc0NzMwMjAyMiwtMTU3OTgwNDQ1LDU2OD
-IwMDQ0NV19
+eyJoaXN0b3J5IjpbLTE3OTMxMzg0MjEsLTE1Nzk4MDQ0NSw1Nj
+gyMDA0NDVdfQ==
 -->
