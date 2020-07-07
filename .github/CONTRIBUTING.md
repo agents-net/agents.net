@@ -85,7 +85,7 @@ When reporting a bug please use the provided [bug template][bug-template].
 # How to suggest a feature or enhancement
 In this section you can find the process of suggesting a new feature.
 
-### Goal
+### Goals
 The goal of Agents.Net is to have a framework which
 
 -   logs perfectly all necessary events to see what happens without debugging
@@ -95,9 +95,8 @@ The goal of Agents.Net is to have a framework which
 - provides the tooling necessary to design, maintain, debug and optimize large agent networks
 
 ### Suggesting a new feature
-If there is back-and-forth or signoff required, say so. Ask them to scope the feature, thinking through why it’s needed and how it might work.
 
-> If you find yourself wishing for a feature that doesn't exist in Elasticsearch, you are probably not alone. There are bound to be others out there with similar needs. Many of the features that Elasticsearch has today have been added because our users saw the need. Open an issue on our issues list on GitHub which describes the feature you would like to see, why you need it, and how it should work.
+If you find yourself wishing for a feature that doesn't exist in Agents.Net, open an issue on our issues list on GitHub which describes the feature you would like to see, why you need it, and how it should work. Please use the provided template for [feature requests][feature-template].
 
 [source: [Elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#feature-requests)] **Need more inspiration?** [1] [Hoodie](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md#feature-requests) [2] [Ember.js](https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#requesting-a-feature)
 
@@ -142,7 +141,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOT
-U0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgw
-NDQ1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbLTE4ODE3ODAyOTEsLTc4OTQ2ODk0MCwxMz
+c2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0
+MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
