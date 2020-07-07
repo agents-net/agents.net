@@ -103,7 +103,37 @@ If you find yourself wishing for a feature that doesn't exist in Agents.Net, ope
 Once you started a pull request the Github CI will run automatic checks such as checks for build errors or test failures. Pull requests can only be merged by collaborators. If you are a collaborator please request a review of your own pull request if you are not sure if the changes are good enough. If you wish to be a collaborator and work on improving Agents.Net please state that intend in the pull request and the maintainers will gladly accept you as a collaborator.
 
 # Community
+Stuck? Try one of the following:
 
+-   See the  [Troubleshooting](https://cookiecutter.readthedocs.io/en/latest/troubleshooting.html)  page.
+-   Ask for help on  [Stack Overflow](https://stackoverflow.com/questions/tagged/agents-net).
+-   You are strongly encouraged to  [file an issue][bug-template]  about the problem, even if it's just "I can't get it to work on this cookiecutter" with a link to your cookiecutter. Don't worry about naming/pinpointing the issue properly.
+-   Ask for help on  [Slack](https://join.slack.com/t/cookie-cutter/shared_invite/enQtNzI0Mzg5NjE5Nzk5LTRlYWI2YTZhYmQ4YmU1Y2Q2NmE1ZjkwOGM0NDQyNTIwY2M4ZTgyNDVkNjMxMDdhZGI5ZGE5YmJjM2M3ODJlY2U)  if you must (but please try one of the other options first, so that others can benefit from the discussion).
+
+Development on Cookiecutter is community-driven:
+
+-   Huge thanks to all the  [contributors](https://github.com/cookiecutter/cookiecutter/blob/master/AUTHORS.md)  who have pitched in to help make Cookiecutter an even better tool.
+-   Everyone is invited to contribute. Read the  [contributing instructions](https://github.com/cookiecutter/cookiecutter/blob/master/CONTRIBUTING.md), then get started.
+-   Connect with other Cookiecutter contributors and users on  [Slack](https://join.slack.com/t/cookie-cutter/shared_invite/enQtNzI0Mzg5NjE5Nzk5LTRlYWI2YTZhYmQ4YmU1Y2Q2NmE1ZjkwOGM0NDQyNTIwY2M4ZTgyNDVkNjMxMDdhZGI5ZGE5YmJjM2M3ODJlY2U)  (note: due to work and commitments, a core committer might not always be available)
+
+Encouragement is unbelievably motivating. If you want more work done on Cookiecutter, show support:
+
+-   Thank a core committer for their efforts.
+-   Star  [Cookiecutter on GitHub](https://github.com/cookiecutter/cookiecutter).
+-   [Support this project](https://github.com/cookiecutter/cookiecutter#support-this-project)
+
+Got criticism or complaints?
+
+-   [File an issue](https://github.com/cookiecutter/cookiecutter/issues?q=is%3Aopen)  so that Cookiecutter can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
+-   **Keep us in the loop so that we can help.**  For example, if you are discussing problems with Cookiecutter on a mailing list,  [file an issue](https://github.com/cookiecutter/cookiecutter/issues?q=is%3Aopen)  where you link to the discussion thread and/or cc at least 1 core committer on the email.
+-   Be encouraging. A comment like "This function ought to be rewritten like this" is much more likely to result in action than a comment like "Eww, look how bad this function is."
+
+Waiting for a response to an issue/question?
+
+-   Be patient and persistent. All issues are on the core committer team's radar and will be considered thoughtfully, but we have a lot of issues to work through. If urgent, it's fine to ping a core committer in the issue with a reminder.
+-   Ask others to comment, discuss, review, etc.
+-   Search the Cookiecutter repo for issues related to yours.
+-   Need a fix/feature/release/help urgently, and can't wait?  [@audreyr](https://github.com/audreyr)  is available for hire for consultation or custom development.
 
 # BONUS: Code, commit message and labeling conventions
 These sections are not necessary, but can help streamline the contributions you receive.
@@ -130,7 +160,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkzMjg0ODk3MywtMTcyNzQzOTE5NywtMT
+eyJoaXN0b3J5IjpbMTU5ODYyNjM3NSwtMTcyNzQzOTE5NywtMT
 M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
 MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
 UsNTY4MjAwNDQ1XX0=
