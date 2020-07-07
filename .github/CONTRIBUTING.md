@@ -67,7 +67,9 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
        git push --force-with-lease my-awesome-feature
 
 # How to report a bug
+In this section you can find the process to create a bug report.
 
+## Security issues
 Any security issues should be submitted directly to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
 In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
@@ -75,6 +77,7 @@ In order to determine whether you are dealing with a security issue, ask yoursel
 -   Can I disable something for other people?
 
 If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
+
 
 Before filling a new bug please check the issues whether someone all ready reported the same or a related issue.
 When reporting a bug please use the provided [bug template][bug-template].
@@ -86,9 +89,7 @@ The goal of Agents.Net is to have a framework which
 -   self-organizes all active parts (agents) so that their needs are met
 -   timely decouples all agents so that sending an information (message) does not block the sending agent
 -   executes all work that can be parallelized in parallel
-- provides the tooling necessary to design large agent networks
-
-[source: [Express](https://github.com/expressjs/express#philosophy)] **Need more inspiration?** [Active Admin](https://github.com/activeadmin/activeadmin#goals)
+- provides the tooling necessary to design, maintain, debug and optimize large agent networks
 
 ### Explain your desired process for suggesting a feature.
 If there is back-and-forth or signoff required, say so. Ask them to scope the feature, thinking through why it’s needed and how it might work.
@@ -138,7 +139,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5Nzc3OTQwNTUsMTM3NjA3OTAxNCwtMT
+eyJoaXN0b3J5IjpbLTIwOTczOTk4MzUsMTM3NjA3OTAxNCwtMT
 k1NDIwMjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4
 MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
