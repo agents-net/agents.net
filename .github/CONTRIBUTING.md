@@ -41,8 +41,21 @@ Please do not make changes to the master branch. The new branch name should roug
 This gives you the confidence that when you changes are done and all tests are green, that you did not breaking anything major :sweat_smile:
 3. **Implement your fix or enhancement**
 Please remember to write tests for your code. The code style should automatically be checked by the build system.
-5. **Add a changelog entry**
+4. **Add a changelog entry**
 If your contribution changes/removes an existing behavior or adds a new behavior, please add an entry to the [CHANGELOG](../CHANGELOG.md) under the Unreleased heading. Changes are sorted either under "Bug Fixing" or "Enhancement". Please consider linking the resolved issue.
+5. **Create a pull request**
+At this point, you should switch back to your master branch and make sure it's up to date with Active Admin's master branch:
+     git remote add upstream git@github.com:activeadmin/activeadmin.git
+    git checkout master
+    git pull upstream master
+
+Then update your feature branch from your local copy of master, and push it!
+
+git checkout 325-add-japanese-translations
+git rebase master
+git push --set-upstream origin 325-add-japanese-translations
+
+Finally, go to GitHub and  [make a Pull Request](https://help.github.com/articles/creating-a-pull-request)  :D
 
 >For something that is bigger than a one or two line fix:
 
@@ -158,6 +171,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDA0ODI1NDYyLC0zNzU4ODUyMDIsLTIxMz
+eyJoaXN0b3J5IjpbNTQ5MjA4NDYyLC0zNzU4ODUyMDIsLTIxMz
 U0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
 -->
