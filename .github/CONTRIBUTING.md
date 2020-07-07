@@ -122,16 +122,14 @@ Encouragement is unbelievably motivating. If you want more work done on Agents.N
 
 Got criticism or complaints?
 
--   [File an issue](https://github.com/cookiecutter/cookiecutter/issues?q=is%3Aopen)  so that Cookiecutter can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
--   **Keep us in the loop so that we can help.**  For example, if you are discussing problems with Cookiecutter on a mailing list,  [file an issue](https://github.com/cookiecutter/cookiecutter/issues?q=is%3Aopen)  where you link to the discussion thread and/or cc at least 1 core committer on the email.
+-   [File an issue][bug-template]  so that Cookiecutter can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
 -   Be encouraging. A comment like "This function ought to be rewritten like this" is much more likely to result in action than a comment like "Eww, look how bad this function is."
 
 Waiting for a response to an issue/question?
 
--   Be patient and persistent. All issues are on the core committer team's radar and will be considered thoughtfully, but we have a lot of issues to work through. If urgent, it's fine to ping a core committer in the issue with a reminder.
+-   Be patient and persistent. No one is paying the committers for th
 -   Ask others to comment, discuss, review, etc.
--   Search the Cookiecutter repo for issues related to yours.
--   Need a fix/feature/release/help urgently, and can't wait?  [@audreyr](https://github.com/audreyr)  is available for hire for consultation or custom development.
+-   Search the Agents.Net repo for issues related to yours.
 
 # BONUS: Code, commit message and labeling conventions
 These sections are not necessary, but can help streamline the contributions you receive.
@@ -159,8 +157,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMjk4NzgyMywtMTcyNzQzOTE5NywtMT
-M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
-MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
-UsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTE1MDM2MTc0OTMsLTE3Mjc0MzkxOTcsLT
+EzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0
+MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwND
+Q1LDU2ODIwMDQ0NV19
 -->
