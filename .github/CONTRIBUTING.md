@@ -80,12 +80,13 @@ Before filling a new bug please check the issues whether someone all ready repor
 When reporting a bug please use the provided [bug template][bug-template].
 
 # How to suggest a feature or enhancement
-### If you have a particular roadmap, goals, or philosophy for development, share it here.
-This information will give contributors context before they make suggestions that may not align with the project’s needs.
+The goal of Agents.Net is to have a framework which
 
-> The Express philosophy is to provide small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs.
->
-> Express does not force you to use any specific ORM or template engine. With support for over 14 template engines via Consolidate.js, you can quickly craft your perfect framework.
+-   logs perfectly all necessary events to see what happens without debugging
+-   self-organizes all active parts (agents) so that their needs are met
+-   timely decouples all agents so that sending an information (message) does not block the sending agent
+-   executes all work that can be parallelized in parallel
+- provides the tooling necessary to design large agent networks
 
 [source: [Express](https://github.com/expressjs/express#philosophy)] **Need more inspiration?** [Active Admin](https://github.com/activeadmin/activeadmin#goals)
 
@@ -137,7 +138,7 @@ These sections are not necessary, but can help streamline the contributions you 
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcyNTk3ODY5LDEzNzYwNzkwMTQsLTE5NT
-QyMDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0
-NDUsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTE5Nzc3OTQwNTUsMTM3NjA3OTAxNCwtMT
+k1NDIwMjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4
+MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
