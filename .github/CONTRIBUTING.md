@@ -9,18 +9,8 @@ There are many ways to contribute, from writing tutorials or blog posts, improvi
 Please, don't use the issue tracker for questions. There is a [discord server][discord-link] available for asking questions. Stack Overflow is also worth considering.
 
 # Ground Rules
-### Set expectations for behavior (yours, and theirs).
-This includes not just how to communicate with others (being respectful, considerate, etc) but also technical responsibilities (importance of testing, project dependencies, etc). Mention and link to your code of conduct, if you have one.
 
-> Responsibilities
-> * Ensure cross-platform compatibility for every change that's accepted. Windows, Mac, Debian & Ubuntu Linux.
-> * Ensure that code that goes into core meets all requirements in this checklist: https://gist.github.com/audreyr/4feef90445b9680475f2
-> * Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.
-> * Don't add any classes to the codebase unless absolutely needed. Err on the side of using functions.
-> * Keep feature versions as small as possible, preferably one new feature per version.
-> * Be welcoming to newcomers and encourage diverse new contributors from all backgrounds. See the [Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/).
-
-[source: [cookiecutter](https://github.com/audreyr/cookiecutter/blob/master/CONTRIBUTING.rst)] **Need more inspiration?** [1] [Celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#community-code-of-conduct) [2] [geocoder](https://github.com/alexreisner/geocoder#contributing)
+This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](https://github.com/atom/atom/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [atom@github.com](mailto:atom@github.com).
 
 # Your First Contribution
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
@@ -161,6 +151,6 @@ These sections are not necessary, but can help streamline the contributions you 
 
 [discord-link]:https://discord.gg/gn3dqG4
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkxNjQ5MTc1MywtMTU3OTgwNDQ1LDU2OD
+eyJoaXN0b3J5IjpbMTIyOTM3NDQyOCwtMTU3OTgwNDQ1LDU2OD
 IwMDQ0NV19
 -->
