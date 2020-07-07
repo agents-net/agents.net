@@ -111,9 +111,9 @@ Stuck? Try one of the following:
 
 Development on Agnets.Net is community-driven:
 
--   Huge thanks to all the  [contributors](https://github.com/cookiecutter/cookiecutter/blob/master/AUTHORS.md)  who have pitched in to help make Cookiecutter an even better tool.
--   Everyone is invited to contribute. Read the  [contributing instructions](https://github.com/cookiecutter/cookiecutter/blob/master/CONTRIBUTING.md), then get started.
--   Connect with other Cookiecutter contributors and users on  [Slack](https://join.slack.com/t/cookie-cutter/shared_invite/enQtNzI0Mzg5NjE5Nzk5LTRlYWI2YTZhYmQ4YmU1Y2Q2NmE1ZjkwOGM0NDQyNTIwY2M4ZTgyNDVkNjMxMDdhZGI5ZGE5YmJjM2M3ODJlY2U)  (note: due to work and commitments, a core committer might not always be available)
+-   Huge thanks to all the  [contributors][contributors-url].
+-   Everyone is invited to contribute.
+-   Connect with other Cookiecutter contributors and users on [Discord][discord-link].
 
 Encouragement is unbelievably motivating. If you want more work done on Cookiecutter, show support:
 
@@ -158,9 +158,10 @@ These sections are not necessary, but can help streamline the contributions you 
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
+[contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNDQwMDQ0MDMsLTE3Mjc0MzkxOTcsLT
-EzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0
-MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwND
-Q1LDU2ODIwMDQ0NV19
+eyJoaXN0b3J5IjpbOTI0NDUzMDQ0LC0xNzI3NDM5MTk3LC0xMz
+QzNzY4OTY4LC03ODk0Njg5NDAsMTM3NjA3OTAxNCwtMTk1NDIw
+MjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4MzEsLTE1Nzk4MDQ0NS
+w1NjgyMDA0NDVdfQ==
 -->
