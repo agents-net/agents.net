@@ -181,7 +181,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 <!-- CONTACT -->
 ## Contact
 
-Mail List - tobias.wilker@gmail.com
+Mail List - [agents-net@freelists.org](mailto:agents-net@freelists.org)
 
 Project Link: [https://github.com/agents-net/agents.net](https://github.com/agents-net/agents.net)
 
@@ -220,8 +220,8 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzMyNzgzMywtMjEwMzk4NzcwOCwxMjM1Mj
-MwMzk2LC0yNDMyNDU5MjgsLTE2ODY2NTA1MTgsLTg2MTY4NDYy
-MSwtMTY3NzIzMTk2MSwtNDA3NDAxOTA4LC0xNzI3NTY1OTE1LD
-QzNDAyOTU1MF19
+eyJoaXN0b3J5IjpbLTk2ODcxMTEzLC0yMTAzOTg3NzA4LDEyMz
+UyMzAzOTYsLTI0MzI0NTkyOCwtMTY4NjY1MDUxOCwtODYxNjg0
+NjIxLC0xNjc3MjMxOTYxLC00MDc0MDE5MDgsLTE3Mjc1NjU5MT
+UsNDM0MDI5NTUwXX0=
 -->
