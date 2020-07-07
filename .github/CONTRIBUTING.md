@@ -34,12 +34,8 @@ Working on your first Pull Request? You can learn how from this *free* series, [
 Also feel free to ask for help; everyone is a beginner at first :smile_cat:
 
 # Getting started
-### Give them a quick walkthrough of how to submit a contribution.
-How you write this is up to you, but some things you may want to include:
-
-* Let them know if they need to sign a CLA, agree to a DCO, or get any other legal stuff out of the way
-* If tests are required for contributions, let them know, and explain how to run the tests
-* If you use anything other than GitHub to manage issues (ex. JIRA or Trac), let them know which tools they’ll need to contribute
+Here is how make a contribution to to Agents.Net:
+1. 
 
 >For something that is bigger than a one or two line fix:
 
@@ -153,6 +149,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMzU0MjgzMSwtMTU3OTgwNDQ1LDU2OD
-IwMDQ0NV19
+eyJoaXN0b3J5IjpbLTMxMDI2NDIxMiwtMjEzNTQyODMxLC0xNT
+c5ODA0NDUsNTY4MjAwNDQ1XX0=
 -->
