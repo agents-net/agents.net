@@ -35,10 +35,12 @@ Also feel free to ask for help; everyone is a beginner at first :smile_cat:
 
 # Getting started
 Here is how make a contribution to to Agents.Net:
-1. [Fork Agents.Net][fork-manual] and create a new branch
-2. Check that [all tests are running][run-tests]
-3. Implement your fix or enhancement
-4. Add a changelog entry - if your contribution changes/removes an existing behavior or adds a new behavior
+1. **[Fork Agents.Net][fork-manual] and create a new branch**
+jgoierjgoierjo
+2. **Check that [all tests are running][run-tests]**
+3. **Implement your fix or enhancement**
+4. **Add a changelog entry**
+If your contribution changes/removes an existing behavior or adds a new behavior a 
 
 >For something that is bigger than a one or two line fix:
 
@@ -154,6 +156,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [fork-manual]:https://help.github.com/articles/fork-a-repo
 [run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNT
-c5ODA0NDUsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTQ1MTY2MjI1MywtMzc1ODg1MjAyLC0yMT
+M1NDI4MzEsLTE1Nzk4MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
