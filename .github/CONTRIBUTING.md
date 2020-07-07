@@ -37,6 +37,8 @@ Also feel free to ask for help; everyone is a beginner at first :smile_cat:
 Here is how make a contribution to to Agents.Net:
 1. [Fork Agents.Net][fork-manual] and create a new branch
 2. Check that [all tests are running][run-tests]
+3. Implement your fix or enhancement
+4. 
 
 >For something that is bigger than a one or two line fix:
 
@@ -150,8 +152,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [documentation-issues]:https://github.com/agents-net/agents.net/labels/documentation
 [enhancement-issues]:https://github.com/agents-net/agents.net/labels/enhancement
 [fork-manual]:https://help.github.com/articles/fork-a-repo
-[run-tests]:https://github.com/agents-net/agents.net#run
+[run-tests]:https://github.com/agents-net/agents.net#run-tests
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTExMDQ1MTIxLC0yMTM1NDI4MzEsLTE1Nz
+eyJoaXN0b3J5IjpbMzkxNDEwMDcyLC0yMTM1NDI4MzEsLTE1Nz
 k4MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
