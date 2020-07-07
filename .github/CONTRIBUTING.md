@@ -105,12 +105,11 @@ Once you started a pull request the Github CI will run automatic checks such as 
 # Community
 Stuck? Try one of the following:
 
--   See the  [Troubleshooting](https://cookiecutter.readthedocs.io/en/latest/troubleshooting.html)  page.
 -   Ask for help on  [Stack Overflow](https://stackoverflow.com/questions/tagged/agents-net).
--   You are strongly encouraged to  [file an issue][bug-template]  about the problem, even if it's just "I can't get it to work on this cookiecutter" with a link to your cookiecutter. Don't worry about naming/pinpointing the issue properly.
--   Ask for help on  [Slack](https://join.slack.com/t/cookie-cutter/shared_invite/enQtNzI0Mzg5NjE5Nzk5LTRlYWI2YTZhYmQ4YmU1Y2Q2NmE1ZjkwOGM0NDQyNTIwY2M4ZTgyNDVkNjMxMDdhZGI5ZGE5YmJjM2M3ODJlY2U)  if you must (but please try one of the other options first, so that others can benefit from the discussion).
+-   You are strongly encouraged to  [file an issue][bug-template]  about the problem.
+-   Ask for help on  [Discord][discord-link].
 
-Development on Cookiecutter is community-driven:
+Development on Agnets.Net is community-driven:
 
 -   Huge thanks to all the  [contributors](https://github.com/cookiecutter/cookiecutter/blob/master/AUTHORS.md)  who have pitched in to help make Cookiecutter an even better tool.
 -   Everyone is invited to contribute. Read the  [contributing instructions](https://github.com/cookiecutter/cookiecutter/blob/master/CONTRIBUTING.md), then get started.
@@ -160,8 +159,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU5ODYyNjM3NSwtMTcyNzQzOTE5NywtMT
-M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
-MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
-UsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTEyNDQwMDQ0MDMsLTE3Mjc0MzkxOTcsLT
+EzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0
+MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwND
+Q1LDU2ODIwMDQ0NV19
 -->
