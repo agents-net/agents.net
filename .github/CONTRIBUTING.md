@@ -24,6 +24,8 @@ For all contributions, please respect the following guidelines:
 # Your First Contribution
 Unsure where to begin contributing? You can start by looking for [beginner issues][beginner-issues].
 If there are no beginner issues available or you want to look for something a bit more challenging? Then look out for these labels:
+[Bug][bug-issues] - all currently known bugs
+[Documentation][documentation-issues] - 
 > Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
 > Beginner issues - issues which should only require a few lines of code, and a test or two.
 > Help wanted issues - issues which should be a bit more involved than beginner issues.
@@ -161,6 +163,6 @@ These sections are not necessary, but can help streamline the contributions you 
 [discord-link]:https://discord.gg/gn3dqG4
 [beginner-issues]:https://github.com/agents-net/agents.net/labels/good%20first%20issue
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NjExNzU5MDcsLTE1Nzk4MDQ0NSw1Nj
-gyMDA0NDVdfQ==
+eyJoaXN0b3J5IjpbMTM4OTM3NjUwMiwtMTU3OTgwNDQ1LDU2OD
+IwMDQ0NV19
 -->
