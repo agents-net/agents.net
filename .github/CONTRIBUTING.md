@@ -10,7 +10,7 @@ Please, don't use the issue tracker for questions. There is a [discord server][d
 
 # Ground Rules
 
-This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
+This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [our mail list](mailto:agents-net@freelists.org).
 
 For all contributions, please respect the following guidelines:
 
@@ -70,13 +70,13 @@ If a maintainer asks you to "rebase" your PR, they're saying that a lot of code 
 In this section you can find the process to create a bug report.
 
 ### Security issues
-Any security issues should be submitted directly to [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
+Any security issues should be submitted directly to [our mail list](mailto:agents-net@freelists.org).
 In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 
 -   Can I access something that’s not mine, or something I shouldn’t have access to?
 -   Can I disable something for other people?
 
-If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at [tobias.wilker@gmail.com](mailto:tobias.wilker@gmail.com).
+If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us [on our mail list](mailto:agents-net@freelists.org).
 
 ### Reporting a bug
 Before filling a new bug please check the issues whether someone all ready reported the same or a related issue.
@@ -142,8 +142,8 @@ Waiting for a response to an issue/question?
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk5NzAyMjk1MCwtMTcyNzQzOTE5NywtMT
-M0Mzc2ODk2OCwtNzg5NDY4OTQwLDEzNzYwNzkwMTQsLTE5NTQy
-MDIwNjEsLTM3NTg4NTIwMiwtMjEzNTQyODMxLC0xNTc5ODA0ND
-UsNTY4MjAwNDQ1XX0=
+eyJoaXN0b3J5IjpbLTYyMDE1NzY2OCwxOTk3MDIyOTUwLC0xNz
+I3NDM5MTk3LC0xMzQzNzY4OTY4LC03ODk0Njg5NDAsMTM3NjA3
+OTAxNCwtMTk1NDIwMjA2MSwtMzc1ODg1MjAyLC0yMTM1NDI4Mz
+EsLTE1Nzk4MDQ0NSw1NjgyMDA0NDVdfQ==
 -->
