@@ -100,7 +100,7 @@ If you find yourself wishing for a feature that doesn't exist in Agents.Net, ope
 
 # Code review process
 
-Once you started a pull request the Github CI will run automatic checks such as checks for build errors or test failures. Pull requests can only be merged by maintainers. 
+Once you started a pull request the Github CI will run automatic checks such as checks for build errors or test failures. Pull requests can only be merged by collaborators. If you are a collaborator please request a review of your own pull request if you are not sure if the changes are good enough. If you w
 
 # Community
 If there are other channels you use besides GitHub to discuss contributions, mention them here. You can also list the author, maintainers, and/or contributors here, or set expectations for response time.
@@ -135,8 +135,8 @@ These sections are not necessary, but can help streamline the contributions you 
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3Mjc0MzkxOTcsLTEzNDM3Njg5NjgsLT
-c4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4
-ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV
-19
+eyJoaXN0b3J5IjpbLTE0MDAwODU1MzUsLTE3Mjc0MzkxOTcsLT
+EzNDM3Njg5NjgsLTc4OTQ2ODk0MCwxMzc2MDc5MDE0LC0xOTU0
+MjAyMDYxLC0zNzU4ODUyMDIsLTIxMzU0MjgzMSwtMTU3OTgwND
+Q1LDU2ODIwMDQ0NV19
 -->
