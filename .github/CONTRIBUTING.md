@@ -22,7 +22,7 @@ For all contributions, please respect the following guidelines:
 -   If your pull request is merged, please do not ask for an immediate release. Releases are scheduled every half year. Only major issues will be released as a patch.
 
 # Your First Contribution
-Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
+Unsure where to begin contributing? You can start by looking for special beginner issues
 [Beginner issues](https://github.com/agents-net/agents.net/labels/good%20first%20issue )
 > Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
 > Beginner issues - issues which should only require a few lines of code, and a test or two.
@@ -159,7 +159,8 @@ These sections are not necessary, but can help streamline the contributions you 
 **Need inspiration?** [1] [StandardIssueLabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2] [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
 
 [discord-link]:https://discord.gg/gn3dqG4
+[beginner-issues]:https://github.com/agents-net/agents.net/labels/good%20first%20issue
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MjI1ODQ3MTIsLTE1Nzk4MDQ0NSw1Nj
+eyJoaXN0b3J5IjpbLTIwODcwNjAxMjgsLTE1Nzk4MDQ0NSw1Nj
 gyMDA0NDVdfQ==
 -->
