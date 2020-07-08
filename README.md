@@ -177,7 +177,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 <!-- CONTACT -->
 ## Contact
 
-Mail List - [agents-net@freelists.org](mailto:agents-net@freelists.org)
+Mail List - [agents-net@googlegroups.com](mailto:agents-net@googlegroups.com)
 
 Project Link: [https://github.com/agents-net/agents.net](https://github.com/agents-net/agents.net)
 
@@ -215,9 +215,3 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [product-homepage]:https://github.com/agents-net/agents.net
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5ODU1NDkxOTAsLTIxMDM5ODc3MDgsMT
-IzNTIzMDM5NiwtMjQzMjQ1OTI4LC0xNjg2NjUwNTE4LC04NjE2
-ODQ2MjEsLTE2NzcyMzE5NjEsLTQwNzQwMTkwOCwtMTcyNzU2NT
-kxNSw0MzQwMjk1NTBdfQ==
--->
