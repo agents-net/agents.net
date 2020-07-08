@@ -10,7 +10,7 @@ Please, don't use the issue tracker for questions. There is a [discord server][d
 
 # Ground Rules
 
-This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [our mail list](mailto:agents-net@freelists.org).
+This project and everyone participating in it is governed by the [Agents.Net Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [our mail list](mailto:agents-net@googlegroups.com).
 
 For all contributions, please respect the following guidelines:
 
@@ -76,7 +76,7 @@ In order to determine whether you are dealing with a security issue, ask yoursel
 -   Can I access something that’s not mine, or something I shouldn’t have access to?
 -   Can I disable something for other people?
 
-If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us [on our mail list](mailto:agents-net@freelists.org).
+If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us [on our mail list](mailto:agents-net@googlegroups.com).
 
 ### Reporting a bug
 Before filling a new bug please check the issues whether someone all ready reported the same or a related issue.
@@ -107,13 +107,14 @@ Stuck? Try one of the following:
 
 -   Ask for help on  [Stack Overflow](https://stackoverflow.com/questions/tagged/agents-net).
 -   You are strongly encouraged to  [file an issue][bug-template]  about the problem.
+-   Ask for help using the [on our mail list](mailto:agents-net@googlegroups.com)
 -   Ask for help on  [Discord][discord-link].
 
 Development on Agnets.Net is community-driven:
 
 -   Huge thanks to all the  [contributors][contributors-url].
 -   Everyone is invited to contribute.
--   Connect with other Cookiecutter contributors and users on [Discord][discord-link].
+-   Connect with other Agents.Net contributors and users on [Discord][discord-link] or [on our mail list](https://groups.google.com/g/agents-net).
 
 Encouragement is unbelievably motivating. If you want more work done on Agents.Net, show support:
 
@@ -122,7 +123,7 @@ Encouragement is unbelievably motivating. If you want more work done on Agents.N
 
 Got criticism or complaints?
 
--   [File an issue][bug-template]  so that Cookiecutter can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
+-   [File an issue][bug-template]  so that Agents.Net can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
 -   Be encouraging. A comment like "This function ought to be rewritten like this" is much more likely to result in action than a comment like "Eww, look how bad this function is."
 
 Waiting for a response to an issue/question?
@@ -141,9 +142,3 @@ Waiting for a response to an issue/question?
 [bug-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=
 [feature-template]:https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
 [contributors-url]: https://github.com/agents-net/agents.net/graphs/contributors
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkyMjQzOTE0MiwtNjIwMTU3NjY4LDE5OT
-cwMjI5NTAsLTE3Mjc0MzkxOTcsLTEzNDM3Njg5NjgsLTc4OTQ2
-ODk0MCwxMzc2MDc5MDE0LC0xOTU0MjAyMDYxLC0zNzU4ODUyMD
-IsLTIxMzU0MjgzMSwtMTU3OTgwNDQ1LDU2ODIwMDQ0NV19
--->
