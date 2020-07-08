@@ -123,7 +123,7 @@ Encouragement is unbelievably motivating. If you want more work done on Agents.N
 
 Got criticism or complaints?
 
--   [File an issue][bug-template]  so that Cookiecutter can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
+-   [File an issue][bug-template]  so that Agents.Net can be improved. Be friendly and constructive about what could be better. Make detailed suggestions.
 -   Be encouraging. A comment like "This function ought to be rewritten like this" is much more likely to result in action than a comment like "Eww, look how bad this function is."
 
 Waiting for a response to an issue/question?

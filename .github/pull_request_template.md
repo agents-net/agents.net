@@ -22,6 +22,3 @@ Please describe the tests that you ran to verify your changes. Mention new and c
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] I have checked my code and corrected any misspellings
 - [ ] I have added an entry to the [changelog](https://github.com/agents-net/agents.net/blob/master/CHANGELOG.md) if necessary
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4OTg4NjE1XX0=
--->
