@@ -7,3 +7,4 @@
 launchSettings.json
 TestResults.xml
 *.csproj.user
+/BenchmarkDotNet.Artifacts
