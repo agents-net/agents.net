@@ -44,7 +44,6 @@ namespace Agents.Net.Tests.Features
 	the actual implementation.
 
 	Not Implemented Use Cases:
-	Implicit parallelisation (agents executed parallel) - use HelloWorldCommunity
 	Explicit parallelisation (agents executed parallel; community ran to finish (count executed agents))
 	Message collector collects message from parent and child domain with explicit parallelisation _î
 	Interceptor decorates a message
@@ -92,16 +91,14 @@ namespace Agents.Net.Tests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Hello World community prints to console")]
-        [NUnit.Framework.CategoryAttribute("CollectExecutionOrderInfo")]
         public virtual void HelloWorldCommunityPrintsToConsole()
         {
-            string[] tagsOfScenario = new string[] {
-                    "CollectExecutionOrderInfo"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hello World community prints to console", "This scenario shows a simple use case where two agents start simultaneously \r\nwit" +
                     "h the initialization message. They are than collected by another agent and\r\nfina" +
                     "lly printed as message to the console.", tagsOfScenario, argumentsOfScenario);
-#line 22
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -121,17 +118,59 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 24
  testRunner.Given("I have loaded the community HelloWorldCommunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 25
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 26
  testRunner.Then("the message \"Hello World\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 29
+#line 27
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Hello World community executes agents parallel")]
+        public virtual void HelloWorldCommunityExecutesAgentsParallel()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hello World community executes agents parallel", "This scenario shows that the HelloAgent and the WorldAgent are executed\r\nparallel" +
+                    ", although it was not specified this way. It is simply coincidence\r\nthat the req" +
+                    "uirements (InitializeMessage) of both agents are satisfied at\r\nthe same time.", tagsOfScenario, argumentsOfScenario);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 34
+ testRunner.Given("I have loaded the community HelloWorldCommunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 35
+ testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 36
+ testRunner.Then("the agents HelloAgent, WorldAgent were executed parallel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

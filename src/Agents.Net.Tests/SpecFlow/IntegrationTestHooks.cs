@@ -24,12 +24,13 @@ namespace Agents.Net.Tests.SpecFlow
             context = injectedContext;
         }
 
-        [BeforeScenario("CollectExecutionOrderInfo")]
+        [BeforeScenario]
         public void BeforeScenario()
         {
             LoggingConfiguration emptyConfiguration = LogManager.Configuration;
             ExecutionOrder executionOrder = new ExecutionOrder();
             context.Set(emptyConfiguration);
+            context.Set(executionOrder);
             LoggingConfiguration executionOrderConfiguration = new LoggingConfiguration();
             Target executionOrderLogger = new MethodCallTarget("ExecutionOrderLog", (info, objects) =>
             {
@@ -41,12 +42,6 @@ namespace Agents.Net.Tests.SpecFlow
             });
             executionOrderConfiguration.AddRule(LogLevel.Trace, LogLevel.Trace, executionOrderLogger);
             LogManager.Configuration = executionOrderConfiguration;
-        }
-
-        [AfterScenario("CollectExecutionOrderInfo")]
-        public void AfterScenario()
-        {
-            LogManager.Configuration = context.Get<LoggingConfiguration>();
         }
     }
 }

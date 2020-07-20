@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Agents.Net.Tests.Tools;
 using FluentAssertions;
 using TechTalk.SpecFlow;
@@ -20,6 +21,14 @@ namespace Agents.Net.Tests.SpecFlow
         {
             context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(100)
                    .Should().BeTrue("program should have been terminated.");
+        }
+
+        [Then("the agents (.*) were executed parallel")]
+        public void ThenTheProgramWasTerminated(string agentsString)
+        {
+            string[] agents = agentsString.Split(", ",StringSplitOptions.RemoveEmptyEntries);
+            context.Get<WaitingConsole>().WaitForMessage(out _);
+            context.Get<ExecutionOrder>().CheckParallelExecution(agents);
         }
     }
 }

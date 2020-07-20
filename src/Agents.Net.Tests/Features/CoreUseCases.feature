@@ -8,7 +8,6 @@
 	the actual implementation.
 
 	Not Implemented Use Cases:
-	Implicit parallelisation (agents executed parallel) - use HelloWorldCommunity
 	Explicit parallelisation (agents executed parallel; community ran to finish (count executed agents))
 	Message collector collects message from parent and child domain with explicit parallelisation _î
 	Interceptor decorates a message
@@ -18,7 +17,6 @@
 	Interceptor implements reactive design (delay last message until same process finished)
 	Transaction with undo redo stack?
 
-@CollectExecutionOrderInfo
 Scenario: Hello World community prints to console
 This scenario shows a simple use case where two agents start simultaneously 
 with the initialization message. They are than collected by another agent and
@@ -27,3 +25,12 @@ finally printed as message to the console.
 	When I start the message board
 	Then the message "Hello World" was posted after a while
 	And the program was terminated
+
+Scenario: Hello World community executes agents parallel
+This scenario shows that the HelloAgent and the WorldAgent are executed
+parallel, although it was not specified this way. It is simply coincidence
+that the requirements (InitializeMessage) of both agents are satisfied at
+the same time.
+	Given I have loaded the community HelloWorldCommunity
+	When I start the message board
+	Then the agents HelloAgent, WorldAgent were executed parallel

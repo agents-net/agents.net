@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Agents.Net.Tests.Tools.Log;
+using FluentAssertions;
 
 namespace Agents.Net.Tests.Tools
 {
@@ -25,41 +26,78 @@ namespace Agents.Net.Tests.Tools
                     }
 
                     activeAgents[log.Agent].Collect(log.Message);
-                    if (activeStep == null && steps.LastOrDefault()?.Contains(activeAgents[log.Agent]) == false)
+                    if (activeStep == null && steps.LastOrDefault()?.Contains(activeAgents[log.Agent]) != true)
                     {
-                        activeStep = new ExecutionOrderStep();
+                        activeStep = new ExecutionOrderStep(activeAgents.Values);
                     }
 
                     activeStep?.Collect(activeAgents[log.Agent]);
                 }
                 else
                 {
-                    //Add produced message
-                    //First time add collecting agent into steps based on last produced message
-                    //Afterward only add produced messages
+                    AgentCollector remainingCollector = activeAgents[log.Agent].Finish(log.Message);
+                    if (remainingCollector == null)
+                    {
+                        activeAgents.Remove(log.Agent);
+                    }
+
+                    if (activeStep != null)
+                    {
+                        steps.Add(activeStep);
+                        activeStep = null;
+                    }
                 }
             }
         }
 
+        public void CheckParallelExecution(string[] agents)
+        {
+            steps.Any(s => agents.All(a => s.Agents.Any(stepAgent => stepAgent.EndsWith(a))))
+                .Should().BeTrue("agents should have been executed parallel. Following steps were recorded: " +
+                                 $"{string.Join(", ", steps.Select(s => $"[{string.Join(", ", s.Agents)}]"))}");
+        }
+
         private class AgentCollector
         {
-            private readonly string agent;
             private readonly Dictionary<Guid, MessageLog> incomingMessages = new Dictionary<Guid, MessageLog>();
 
             public AgentCollector(string agent)
             {
-                this.agent = agent;
+                this.Agent = agent;
+            }
+
+            public string Agent { get; }
+
+            private AgentCollector(string agent, IEnumerable<MessageLog> remaining) : this(agent)
+            {
+                incomingMessages = remaining.ToDictionary(l => l.Id, l => l);
             }
 
             public void Collect(MessageLog message)
             {
                 incomingMessages.Add(message.Id, message);
             }
+
+            public AgentCollector Finish(MessageLog publishedMessage)
+            {
+                List<MessageLog> remaining = incomingMessages
+                    .Where(incomingMessage => !publishedMessage.Predecessors.Contains(incomingMessage.Key))
+                    .Select(incomingMessage => incomingMessage.Value).ToList();
+
+                return remaining.Any() ? new AgentCollector(Agent, remaining) : null;
+            }
         }
 
         private class ExecutionOrderStep
         {
-            private readonly HashSet<AgentCollector> activeAgents = new HashSet<AgentCollector>();
+            private readonly HashSet<AgentCollector> activeAgents;
+
+            public ExecutionOrderStep(IEnumerable<AgentCollector> activeAgents)
+            {
+                this.activeAgents = new HashSet<AgentCollector>(activeAgents);
+            }
+
+            public IEnumerable<string> Agents => activeAgents.Select(a => a.Agent);
 
             public void Collect(AgentCollector agentCollector)
             {
