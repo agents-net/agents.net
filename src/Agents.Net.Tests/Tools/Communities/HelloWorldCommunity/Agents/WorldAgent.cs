@@ -10,7 +10,10 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 
         [AgentDefinition]
         public static AgentDefinition WorldAgentDefinition { get; }
-            = new AgentDefinition(Array.Empty<MessageDefinition>(),
+            = new AgentDefinition(new []
+                                  {
+                                      InitializeMessage.InitializeMessageDefinition
+                                  },
                                   new []
                                   {
                                       WorldConsoleMessage.WorldConsoleMessageDefinition
@@ -24,7 +27,7 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 
         protected override void ExecuteCore(Message messageData)
         {
-            throw new NotImplementedException();
+            OnMessage(new WorldConsoleMessage("World", messageData));
         }
     }
 }

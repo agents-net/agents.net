@@ -18,13 +18,19 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 
         #endregion
 
-        public ConsoleMessageDisplayAgent(IMessageBoard messageBoard) : base(ConsoleMessageDisplayAgentDefinition, messageBoard)
+        private readonly IConsole console;
+        private readonly Action terminateAction;
+
+        public ConsoleMessageDisplayAgent(IMessageBoard messageBoard, IConsole console, Action terminateAction) : base(ConsoleMessageDisplayAgentDefinition, messageBoard)
         {
+            this.console = console;
+            this.terminateAction = terminateAction;
         }
 
         protected override void ExecuteCore(Message messageData)
         {
-            throw new NotImplementedException();
+            console.WriteLine(messageData.Get<ConsoleMessageCreated>().Message);
+            terminateAction();
         }
     }
 }

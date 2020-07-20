@@ -14,6 +14,7 @@ namespace Agents.Net.Tests.Tools
         public void WriteLine(string message)
         {
             messages.Push(message);
+            messageReceived.Set();
         }
 
         public bool WaitForMessage(out string message, int timeout = 100)

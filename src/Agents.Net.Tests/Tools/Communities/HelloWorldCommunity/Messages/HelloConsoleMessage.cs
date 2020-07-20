@@ -13,19 +13,24 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages
 
         #endregion
 
-        public HelloConsoleMessage(Message predecessorMessage, params Message[] childMessages)
+        public HelloConsoleMessage(string message, Message predecessorMessage, params Message[] childMessages)
 			: base(predecessorMessage, HelloConsoleMessageDefinition, childMessages)
         {
+            Message = message;
         }
 
-        public HelloConsoleMessage(IEnumerable<Message> predecessorMessages, params Message[] childMessages)
+        public HelloConsoleMessage(string message, IEnumerable<Message> predecessorMessages,
+                                   params Message[] childMessages)
 			: base(predecessorMessages, HelloConsoleMessageDefinition, childMessages)
         {
+            Message = message;
         }
+
+        public string Message { get; }
 
         protected override string DataToString()
         {
-            return string.Empty;
+            return $"{nameof(Message)}: {Message}";
         }
     }
 }

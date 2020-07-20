@@ -41,7 +41,18 @@ namespace Agents.Net.Tests.Features
 	The loaded community can be found in the directory 
 	""<ProjectDirectory>/Tools/Communities/<name>"". There is the Agents.Net
 	Designer model (.amodel), a svg visualization of the community as well as
-	the actual implementation.", ProgrammingLanguage.CSharp, ((string[])(null)));
+	the actual implementation.
+
+	Not Implemented Use Cases:
+	Implicit parallelisation (agents executed parallel) - use HelloWorldCommunity
+	Explicit parallelisation (agents executed parallel; community ran to finish (count executed agents))
+	Message collector collects message from parent and child domain with explicit parallelisation _î
+	Interceptor decorates a message
+	Interceptor replaces a message with a changed value
+	Interceptor delays a message while waiting on a self created message chain
+	Interceptor checks precondition
+	Interceptor implements reactive design (delay last message until same process finished)
+	Transaction with undo redo stack?", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,14 +92,16 @@ namespace Agents.Net.Tests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Hello World community prints to console")]
+        [NUnit.Framework.CategoryAttribute("CollectExecutionOrderInfo")]
         public virtual void HelloWorldCommunityPrintsToConsole()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "CollectExecutionOrderInfo"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hello World community prints to console", "This scenario shows a simple use case where two agents start simultaneously \r\nwit" +
                     "h the initialization message. They are than collected by another agent and\r\nfina" +
                     "lly printed as message to the console.", tagsOfScenario, argumentsOfScenario);
-#line 10
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -108,14 +121,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
+#line 26
  testRunner.Given("I have loaded the community HelloWorldCommunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 27
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 28
  testRunner.Then("the message \"Hello World\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 29
+ testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -27,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="StepDefinitions\IntegrationTestStepDefinitions.Then.cs">
+    <Compile Update="SpecFlow\IntegrationTestStepDefinitions.Then.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="StepDefinitions\IntegrationTestStepDefinitions.When.cs">
+    <Compile Update="SpecFlow\IntegrationTestStepDefinitions.When.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
