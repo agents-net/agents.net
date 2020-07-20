@@ -191,9 +191,9 @@ namespace Agents.Net
             jsonFormat.Append(Id);
             jsonFormat.Append("\", \"Definition\": \"");
             jsonFormat.Append(Definition);
-            jsonFormat.Append("\", \"Predecessors\": \"");
-            jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => m.Id)));
-            jsonFormat.Append("\", \"MessageDomain\": \"");
+            jsonFormat.Append("\", \"Predecessors\": [");
+            jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => $"\"{m.Id}\"")));
+            jsonFormat.Append("], \"MessageDomain\": \"");
             jsonFormat.Append(MessageDomain.Root.Id);
             jsonFormat.Append("\", \"Data\": \"");
             jsonFormat.Append(DataToString());
