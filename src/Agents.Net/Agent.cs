@@ -36,6 +36,7 @@ namespace Agents.Net
             {
                 throw new ArgumentNullException(nameof(messageData));
             }
+            Logger.Trace(new AgentLog(messageData, "Executing", agentName));
 
             try
             {
@@ -92,7 +93,9 @@ namespace Agents.Net
                 messageBuilder.Append(message.ToStringBuilder());
                 messageBuilder.Append(", \"Agent\": \"");
                 messageBuilder.Append(agentName);
-                messageBuilder.Append("\", \"Type\": \"Publishing\"}");
+                messageBuilder.Append("\", \"Type\": \"");
+                messageBuilder.Append(type);
+                messageBuilder.Append("\"}");
                 return messageBuilder.ToString();
             }
         }

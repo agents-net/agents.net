@@ -1,0 +1,65 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.HelloWorldCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Name": "HelloAgent",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "InitializeMessage"
+      ],
+      "ProducedMessages": [
+        "HelloConsoleMessage"
+      ]
+    },
+    {
+      "Name": "WorldAgent",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "InitializeMessage"
+      ],
+      "ProducedMessages": [
+        "WorldConsoleMessage"
+      ]
+    },
+    {
+      "Name": "ConsoleMessageJoiner",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "WorldConsoleMessage",
+        "HelloConsoleMessage"
+      ],
+      "ProducedMessages": [
+        "ConsoleMessageCreated"
+      ]
+    },
+    {
+      "Name": "ConsoleMessageDisplayAgent",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "ConsoleMessageCreated"
+      ],
+      "ProducedMessages": [],
+      "ProducedEvents": [
+        "TerminateProgram",
+        "DisplayMessageOnConsole"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Name": "HelloConsoleMessage",
+      "Namespace": ".Messages"
+    },
+    {
+      "Name": "WorldConsoleMessage",
+      "Namespace": ".Messages"
+    },
+    {
+      "Name": "ConsoleMessageCreated",
+      "Namespace": ".Messages"
+    }
+  ]
+}
