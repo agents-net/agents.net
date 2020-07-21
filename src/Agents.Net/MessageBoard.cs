@@ -46,22 +46,39 @@ namespace Agents.Net
             publisher.Publish(messageContainer);
         }
 
-        public void Register(MessageDefinition trigger, Agent agent)
+        public void Register(Agent agent)
         {
             if (disposed)
             {
                 return;
             }
-            publisher.Register(trigger, agent);
+
+            RegisterDefinedConsumingMessages(agent);
+            if (agent is InterceptorAgent interceptorAgent)
+            {
+                RegisterDefinedInterceptingMessages(interceptorAgent);
+            }
         }
 
-        public void RegisterInterceptor(MessageDefinition trigger, InterceptorAgent agent)
+        private void RegisterDefinedInterceptingMessages(InterceptorAgent interceptorAgent)
         {
-            if (disposed)
+            IEnumerable<InterceptsAttribute> attributes = interceptorAgent.GetType()
+                .GetCustomAttributes(typeof(InterceptsAttribute), true)
+                .OfType<InterceptsAttribute>();
+            foreach (InterceptsAttribute attribute in attributes)
             {
-                return;
+                publisher.RegisterInterceptor(attribute.MessageType, interceptorAgent);
             }
-            publisher.RegisterInterceptor(trigger, agent);
+        }
+
+        private void RegisterDefinedConsumingMessages(Agent agent)
+        {
+            IEnumerable<ConsumesAttribute> attributes = agent.GetType().GetCustomAttributes(typeof(ConsumesAttribute), true)
+                                                             .OfType<ConsumesAttribute>().Where(c => !c.Implicitly);
+            foreach (ConsumesAttribute attribute in attributes)
+            {
+                publisher.Register(attribute.MessageType, agent);
+            }
         }
 
         public void Dispose()
@@ -72,13 +89,13 @@ namespace Agents.Net
 
         private class MessagePublisher : IDisposable
         {
-            private readonly Dictionary<MessageDefinition, List<Agent>> registeredAgents =
-                new Dictionary<MessageDefinition, List<Agent>>();
+            private readonly Dictionary<Type, List<Agent>> registeredAgents =
+                new Dictionary<Type, List<Agent>>();
 
-            private readonly Dictionary<MessageDefinition, List<InterceptorAgent>> interceptorAgents = 
-                new Dictionary<MessageDefinition, List<InterceptorAgent>>();
+            private readonly Dictionary<Type, List<InterceptorAgent>> interceptorAgents = 
+                new Dictionary<Type, List<InterceptorAgent>>();
 
-            public void Register(MessageDefinition trigger, Agent agent)
+            public void Register(Type trigger, Agent agent)
             {
                 if (!registeredAgents.ContainsKey(trigger))
                 {
@@ -87,7 +104,7 @@ namespace Agents.Net
                 registeredAgents[trigger].Add(agent);
             }
 
-            public void RegisterInterceptor(MessageDefinition trigger, InterceptorAgent agent)
+            public void RegisterInterceptor(Type trigger, InterceptorAgent agent)
             {
                 if (!interceptorAgents.ContainsKey(trigger))
                 {
@@ -101,7 +118,7 @@ namespace Agents.Net
                 List<InterceptorAgent> interceptors = null;
                 foreach (Message message in messageContainer.Children.Concat(new []{messageContainer}))
                 {
-                    if (!interceptorAgents.TryGetValue(message.Definition, out List<InterceptorAgent> agents))
+                    if (!interceptorAgents.TryGetValue(message.MessageType, out List<InterceptorAgent> agents))
                     {
                         continue;
                     }
@@ -176,7 +193,7 @@ namespace Agents.Net
 
             private void PublishSingleMessage(Message message)
             {
-                if (!registeredAgents.TryGetValue(message.Definition, out List<Agent> agents))
+                if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents))
                 {
                     (message as IDisposable)?.Dispose();
                     return;

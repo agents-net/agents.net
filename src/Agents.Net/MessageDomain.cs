@@ -148,7 +148,7 @@ namespace Agents.Net
 
         private class DefaultMessageDomainMessage : Message
         {
-            public DefaultMessageDomainMessage() : base(Array.Empty<Message>(),new MessageDefinition("DefaultDomain"))
+            public DefaultMessageDomainMessage() : base(Array.Empty<Message>())
             {
             }
 

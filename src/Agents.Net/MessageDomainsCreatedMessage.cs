@@ -14,18 +14,10 @@ namespace Agents.Net
 {
     public class MessageDomainsCreatedMessage : Message
     {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition MessageDomainsCreatedMessageDefinition { get; } =
-            new MessageDefinition(nameof(MessageDomainsCreatedMessage));
-
-        #endregion
-
         public IReadOnlyCollection<MessageDomain> CreatedDomains { get; }
 
         internal MessageDomainsCreatedMessage(IReadOnlyCollection<Message> newDomainRootMessages, IEnumerable<Message> predecessorMessages) 
-            : base(predecessorMessages, MessageDomainsCreatedMessageDefinition)
+            : base(predecessorMessages)
         {
             CreatedDomains = newDomainRootMessages.Select(m => m.MessageDomain).Distinct().ToArray();
         }

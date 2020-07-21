@@ -13,15 +13,7 @@ namespace Agents.Net
 {
     public class InitializeMessage : Message
     {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition InitializeMessageDefinition { get; } =
-            new MessageDefinition(nameof(InitializeMessage));
-
-        #endregion
-
-        public InitializeMessage() : base(Array.Empty<Message>(), InitializeMessageDefinition)
+        public InitializeMessage() : base(Array.Empty<Message>())
         {
         }
 

@@ -19,24 +19,28 @@ namespace Agents.Net
     {
         private Message parent;
         private Message[] predecessorMessages;
+        private readonly string name;
+        
+        internal Type MessageType { get; }
+        
         public Guid Id { get; } = Guid.NewGuid();
 
-        protected Message(Message predecessorMessage, MessageDefinition messageDefinition,
-                          params Message[] childMessages)
-            : this(new[] {predecessorMessage}, messageDefinition, childMessages)
+        protected Message(Message predecessorMessage, string name = null, params Message[] childMessages)
+            : this(new[] {predecessorMessage}, name, childMessages)
         {
         }
 
-        protected Message(IEnumerable<Message> predecessorMessages, MessageDefinition messageDefinition, params Message[] childMessages)
+        protected Message(IEnumerable<Message> predecessorMessages, string name = null, params Message[] childMessages)
         {
-            Definition = messageDefinition;
-            this.Children = childMessages.Concat(childMessages.SelectMany(e => e.Children));
+            this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
+            Children = childMessages.Concat(childMessages.SelectMany(e => e.Children));
             this.predecessorMessages = predecessorMessages.ToArray();
             foreach (Message childMessage in childMessages)
             {
                 childMessage.parent = this;
             }
             MessageDomain = this.predecessorMessages.GetMessageDomain();
+            MessageType = GetType();
         }
         
         /// <summary>
@@ -189,8 +193,8 @@ namespace Agents.Net
         {
             StringBuilder jsonFormat = new StringBuilder("{\"Id\": \"");
             jsonFormat.Append(Id);
-            jsonFormat.Append("\", \"Definition\": \"");
-            jsonFormat.Append(Definition);
+            jsonFormat.Append("\", \"Name\": \"");
+            jsonFormat.Append(name);
             jsonFormat.Append("\", \"Predecessors\": [");
             jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => $"\"{m.Id}\"")));
             jsonFormat.Append("], \"MessageDomain\": \"");
@@ -254,8 +258,6 @@ namespace Agents.Net
         {
             return !Equals(left, right);
         }
-
-        public MessageDefinition Definition { get; }
 
         internal void Used()
         {

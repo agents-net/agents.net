@@ -14,18 +14,10 @@ namespace Agents.Net
 {
     public class MessageDomainTerminatedMessage : Message
     {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition MessageDomainTerminatedMessageDefinition { get; } =
-            new MessageDefinition(nameof(MessageDomainTerminatedMessage));
-
-        #endregion
-
         public IEnumerable<MessageDomain> TerminatedDomains { get; }
 
         internal MessageDomainTerminatedMessage(IEnumerable<Message> lastMessages, IEnumerable<MessageDomain> terminatedDomains) 
-            : base(lastMessages, MessageDomainTerminatedMessageDefinition)
+            : base(lastMessages)
         {
             TerminatedDomains = terminatedDomains;
         }
