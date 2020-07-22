@@ -13,6 +13,6 @@ namespace Agents.Net
     {
         void Publish(Message message);
         void Start();
-        void Register(Agent agent);
+        void Register(params Agent[] agents);
     }
 }

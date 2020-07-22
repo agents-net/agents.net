@@ -114,9 +114,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
                 builder.RegisterModule(new FileManipulationModule(() => { finishedEvent.Set(); }));
                 container = builder.Build();
                 messageBoard = container.Resolve<IMessageBoard>();
-                Community community = container.Resolve<Community>();
                 Agent[] agents = container.Resolve<IEnumerable<Agent>>().ToArray();
-                community.RegisterAgents(agents);
+                messageBoard.Register(agents);
                 messageBoard.Start();
             }
             {
@@ -124,9 +123,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
                 builder.RegisterModule(new ParallelForEachModule(() => { parallelForEachFinishedEvent.Set(); }));
                 parallelForEachContainer = builder.Build();
                 parallelForEachMessageBoard = parallelForEachContainer.Resolve<IMessageBoard>();
-                Community community = parallelForEachContainer.Resolve<Community>();
                 Agent[] agents = parallelForEachContainer.Resolve<IEnumerable<Agent>>().ToArray();
-                community.RegisterAgents(agents);
+                parallelForEachMessageBoard.Register(agents);
                 parallelForEachMessageBoard.Start();
             }
         }

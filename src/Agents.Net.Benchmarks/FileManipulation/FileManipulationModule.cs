@@ -20,7 +20,6 @@ namespace Agents.Net.Benchmarks.FileManipulation
         {
             builder.RegisterInstance(terminateAction);
             builder.RegisterType<MessageBoard>().As<IMessageBoard>().InstancePerLifetimeScope();
-            builder.RegisterType<Community>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<FileCompletedAggregator>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<FileFinder>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<FileManipulator>().As<Agent>().InstancePerLifetimeScope();

@@ -46,22 +46,20 @@ namespace Agents.Net
             publisher.Publish(messageContainer);
         }
 
-        public void Register(Agent agent)
+        public void Register(params Agent[] agents)
         {
-            if (agent == null)
-            {
-                throw new ArgumentNullException(nameof(agent));
-            }
-
             if (disposed)
             {
                 return;
             }
 
-            RegisterDefinedConsumingMessages(agent);
-            if (agent is InterceptorAgent interceptorAgent)
+            foreach (Agent agent in agents)
             {
-                RegisterDefinedInterceptingMessages(interceptorAgent);
+                RegisterDefinedConsumingMessages(agent);
+                if (agent is InterceptorAgent interceptorAgent)
+                {
+                    RegisterDefinedInterceptingMessages(interceptorAgent);
+                }
             }
         }
 
