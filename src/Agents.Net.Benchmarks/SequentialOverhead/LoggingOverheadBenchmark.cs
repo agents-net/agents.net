@@ -50,9 +50,8 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
         public void Setup()
         {
             messageBoard = new MessageBoard();
-            Community community = new Community(messageBoard);
             SpinWaiter waiter = new SpinWaiter(messageBoard, () => finishedEvent.Set(), false);
-            community.RegisterAgents(new Agent[] {waiter});
+            messageBoard.Register(waiter);
             messageBoard.Start();
 
             LoggingConfiguration config = new LoggingConfiguration();

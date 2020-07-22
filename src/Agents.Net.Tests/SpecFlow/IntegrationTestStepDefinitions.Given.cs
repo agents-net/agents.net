@@ -34,9 +34,8 @@ namespace Agents.Net.Tests.SpecFlow
 
         private static void RegisterAgents(IContainer container)
         {
-            Community community = container.Resolve<Community>();
             Agent[] agents = container.Resolve<IEnumerable<Agent>>().ToArray();
-            community.RegisterAgents(agents);
+            container.Resolve<IMessageBoard>().Register(agents);
         }
 
         private void SetScenarioContext(IContainer container, ManualResetEventSlim terminatedEvent)
@@ -57,7 +56,6 @@ namespace Agents.Net.Tests.SpecFlow
             moduleType.Should().NotBeNull($"communityName {communityName} was expected to exist.");
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterModule((IModule) Activator.CreateInstance(moduleType));
-            builder.RegisterType<Community>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<MessageBoard>().As<IMessageBoard>().InstancePerLifetimeScope();
             builder.RegisterType<WaitingConsole>().As<IConsole>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterInstance((Action) Terminate);

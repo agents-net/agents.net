@@ -53,16 +53,14 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
         {
             {
                 messageBoard = new MessageBoard();
-                Community community = new Community(messageBoard);
                 SpinWaiter waiter = new SpinWaiter(messageBoard, () => finishedEvent.Set(), false);
-                community.RegisterAgents(new Agent[] {waiter});
+                messageBoard.Register(waiter);
                 messageBoard.Start();
             }
             {
                 messageBoardReuse = new MessageBoard();
-                Community community = new Community(messageBoardReuse);
                 SpinWaiter waiter = new SpinWaiter(messageBoardReuse, () => finishedEventReuse.Set(), true);
-                community.RegisterAgents(new Agent[] {waiter});
+                messageBoardReuse.Register(waiter);
                 messageBoardReuse.Start();
             }
         }
