@@ -116,9 +116,8 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
             }));
             container = builder.Build();
             messageBoard = container.Resolve<IMessageBoard>();
-            Community community = container.Resolve<Community>();
             Agent[] agents = container.Resolve<IEnumerable<Agent>>().ToArray();
-            community.RegisterAgents(agents);
+            messageBoard.Register(agents);
             messageBoard.Start();
         }
 
