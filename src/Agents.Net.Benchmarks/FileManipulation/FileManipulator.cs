@@ -3,24 +3,11 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(RelevantFileFoundMessage))]
+    [Consumes(typeof(FileFoundMessage), Implicitly = true)]
+    [Produces(typeof(FileCompletedMessage))]
     public class FileManipulator : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition FileManipulatorDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      RelevantFileFoundMessage.RelevantFileFoundMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      FileCompletedMessage.FileCompletedMessageDefinition
-                                  });
-
-        #endregion
-
-        public FileManipulator(IMessageBoard messageBoard) : base(FileManipulatorDefinition, messageBoard)
+    {        public FileManipulator(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

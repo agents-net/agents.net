@@ -5,23 +5,14 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class FileFoundMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition FileFoundMessageDefinition { get; } =
-            new MessageDefinition(nameof(FileFoundMessage));
-
-        #endregion
-
-        public FileFoundMessage(FileInfo file, Message predecessorMessage, params Message[] childMessages)
-            : base(predecessorMessage, FileFoundMessageDefinition, childMessages)
+    {        public FileFoundMessage(FileInfo file, Message predecessorMessage, params Message[] childMessages)
+            : base(predecessorMessage, childMessages:childMessages)
         {
             File = file;
         }
 
         public FileFoundMessage(FileInfo file, IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-            : base(predecessorMessages, FileFoundMessageDefinition, childMessages)
+            : base(predecessorMessages, childMessages:childMessages)
         {
             File = file;
         }

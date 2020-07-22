@@ -15,12 +15,12 @@ namespace Agents.Net
 {
     public abstract class MessageDecorator : Message
     {
-        protected MessageDecorator(Message decoratedMessage, MessageDefinition messageDefinition, IEnumerable<Message> additionalPredecessors = null) 
-            : base(decoratedMessage.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct(), 
-                   messageDefinition)
+        protected MessageDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) 
+            : base(decoratedMessage?.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct()
+            ??Enumerable.Empty<Message>())
         {
-            SwitchDomain(decoratedMessage.MessageDomain);
-            AddChild(decoratedMessage.ReplaceHead(this));
+            SwitchDomain(decoratedMessage?.MessageDomain);
+            AddChild(decoratedMessage?.ReplaceHead(this));
         }
 
         public static bool IsDecorated(Message message)

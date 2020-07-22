@@ -5,17 +5,8 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
     public class StartingWorkloadsMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition StartingWorkloadsMessageDefinition { get; } =
-            new MessageDefinition(nameof(StartingWorkloadsMessage));
-
-        #endregion
-
-        public StartingWorkloadsMessage(int[] workloads)
-            : base(Array.Empty<Message>(), StartingWorkloadsMessageDefinition)
+    {        public StartingWorkloadsMessage(int[] workloads)
+            : base(Array.Empty<Message>())
         {
             Workloads = workloads;
         }

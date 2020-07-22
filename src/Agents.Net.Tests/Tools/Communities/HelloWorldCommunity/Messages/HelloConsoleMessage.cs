@@ -4,24 +4,15 @@ using Agents.Net;
 namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages
 {
     public class HelloConsoleMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition HelloConsoleMessageDefinition { get; } =
-            new MessageDefinition(nameof(HelloConsoleMessage));
-
-        #endregion
-
-        public HelloConsoleMessage(string message, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, HelloConsoleMessageDefinition, childMessages)
+    {        public HelloConsoleMessage(string message, Message predecessorMessage, params Message[] childMessages)
+			: base(predecessorMessage, childMessages:childMessages)
         {
             Message = message;
         }
 
         public HelloConsoleMessage(string message, IEnumerable<Message> predecessorMessages,
                                    params Message[] childMessages)
-			: base(predecessorMessages, HelloConsoleMessageDefinition, childMessages)
+			: base(predecessorMessages, childMessages:childMessages)
         {
             Message = message;
         }

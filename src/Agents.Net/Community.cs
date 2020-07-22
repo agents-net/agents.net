@@ -32,18 +32,7 @@ namespace Agents.Net
         {
             foreach (Agent agent in agents)
             {
-                foreach (MessageDefinition trigger in agent.Definition.ConsumingTriggers)
-                {
-                    messageBoard.Register(trigger, agent);
-                }
-            }
-
-            foreach (InterceptorAgent interceptorAgent in agents.OfType<InterceptorAgent>())
-            {
-                foreach (MessageDefinition interceptedMessage in interceptorAgent.InterceptorDefinition.InterceptedMessages)
-                {
-                    messageBoard.RegisterInterceptor(interceptedMessage, interceptorAgent);
-                }
+                messageBoard.Register(agent);
             }
         }
     }

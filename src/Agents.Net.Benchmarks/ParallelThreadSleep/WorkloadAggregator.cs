@@ -5,24 +5,12 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
+    [Consumes(typeof(WorkloadExecutedMessage))]
     public class WorkloadAggregator : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition WorkloadAggregatorDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      WorkloadExecutedMessage.WorkloadExecutedMessageDefinition
-                                  },
-                                  Array.Empty<MessageDefinition>());
-
-        #endregion
-
-        private readonly MessageAggregator<WorkloadExecutedMessage> aggregator;
+    {        private readonly MessageAggregator<WorkloadExecutedMessage> aggregator;
         private readonly Action terminateAction;
 
-        public WorkloadAggregator(IMessageBoard messageBoard, Action terminateAction) : base(WorkloadAggregatorDefinition, messageBoard)
+        public WorkloadAggregator(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
         {
             this.terminateAction = terminateAction;
             aggregator = new MessageAggregator<WorkloadExecutedMessage>(OnAggregated);

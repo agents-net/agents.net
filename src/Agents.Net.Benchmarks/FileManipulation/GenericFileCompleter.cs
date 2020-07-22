@@ -3,24 +3,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(FileFoundMessage))]
+    [Produces(typeof(FileCompletedMessage))]
     public class GenericFileCompleter : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition GenericFileCompleterDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      FileFoundMessage.FileFoundMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      FileCompletedMessage.FileCompletedMessageDefinition
-                                  });
-
-        #endregion
-
-        public GenericFileCompleter(IMessageBoard messageBoard) : base(GenericFileCompleterDefinition, messageBoard)
+    {        public GenericFileCompleter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

@@ -56,7 +56,7 @@ namespace Agents.Net.Tests
 
         private class TestDecorator : MessageDecorator
         {
-            public TestDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) : base(decoratedMessage, new MessageDefinition("TestDecorator"), additionalPredecessors)
+            public TestDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) : base(decoratedMessage, additionalPredecessors)
             {
             }
 

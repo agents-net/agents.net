@@ -4,24 +4,12 @@ using Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages;
 
 namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 {
+    [Consumes(typeof(ConsoleMessageCreated))]
     public class ConsoleMessageDisplayAgent : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition ConsoleMessageDisplayAgentDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      ConsoleMessageCreated.ConsoleMessageCreatedDefinition
-                                  },
-                                  Array.Empty<MessageDefinition>());
-
-        #endregion
-
-        private readonly IConsole console;
+    {        private readonly IConsole console;
         private readonly Action terminateAction;
 
-        public ConsoleMessageDisplayAgent(IMessageBoard messageBoard, IConsole console, Action terminateAction) : base(ConsoleMessageDisplayAgentDefinition, messageBoard)
+        public ConsoleMessageDisplayAgent(IMessageBoard messageBoard, IConsole console, Action terminateAction) : base(messageBoard)
         {
             this.console = console;
             this.terminateAction = terminateAction;

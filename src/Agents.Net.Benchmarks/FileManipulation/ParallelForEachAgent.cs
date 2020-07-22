@@ -4,24 +4,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(AllRelevantFilesFoundMessage))]
+    [Produces(typeof(FilesCompletedMessage))]
     public class ParallelForEachAgent : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition ParallelForEachAgentDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      AllRelevantFilesFoundMessage.AllRelevantFilesFoundMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      FilesCompletedMessage.FilesCompletedMessageDefinition
-                                  });
-
-        #endregion
-
-        public ParallelForEachAgent(IMessageBoard messageBoard) : base(ParallelForEachAgentDefinition, messageBoard)
+    {        public ParallelForEachAgent(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

@@ -6,25 +6,16 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class AllFilesFoundMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition AllFilesFoundMessageDefinition { get; } =
-            new MessageDefinition(nameof(AllFilesFoundMessage));
-
-        #endregion
-
-        public AllFilesFoundMessage(IEnumerable<FileInfo> infos, Message predecessorMessage,
+    {        public AllFilesFoundMessage(IEnumerable<FileInfo> infos, Message predecessorMessage,
                                     params Message[] childMessages)
-            : base(predecessorMessage, AllFilesFoundMessageDefinition, childMessages)
+            : base(predecessorMessage, childMessages:childMessages)
         {
             Infos = infos;
         }
 
         public AllFilesFoundMessage(IEnumerable<FileInfo> infos, IEnumerable<Message> predecessorMessages,
                                     params Message[] childMessages)
-            : base(predecessorMessages, AllFilesFoundMessageDefinition, childMessages)
+            : base(predecessorMessages, childMessages:childMessages)
         {
             Infos = infos;
         }
