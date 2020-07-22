@@ -48,6 +48,11 @@ namespace Agents.Net
 
         public void Register(Agent agent)
         {
+            if (agent == null)
+            {
+                throw new ArgumentNullException(nameof(agent));
+            }
+
             if (disposed)
             {
                 return;

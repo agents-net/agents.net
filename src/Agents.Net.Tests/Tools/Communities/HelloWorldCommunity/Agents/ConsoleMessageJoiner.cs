@@ -4,27 +4,13 @@ using Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages;
 
 namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 {
+    [Consumes(typeof(WorldConsoleMessage))]
+    [Consumes(typeof(HelloConsoleMessage))]
+    [Produces(typeof(ConsoleMessageCreated))]
     public class ConsoleMessageJoiner : Agent
-    {
-        #region Definition
+    {        private readonly MessageCollector<HelloConsoleMessage, WorldConsoleMessage> collector;
 
-        [AgentDefinition]
-        public static AgentDefinition ConsoleMessageJoinerDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      WorldConsoleMessage.WorldConsoleMessageDefinition,
-                                      HelloConsoleMessage.HelloConsoleMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      ConsoleMessageCreated.ConsoleMessageCreatedDefinition
-                                  });
-
-        #endregion
-
-        private readonly MessageCollector<HelloConsoleMessage, WorldConsoleMessage> collector;
-
-        public ConsoleMessageJoiner(IMessageBoard messageBoard) : base(ConsoleMessageJoinerDefinition, messageBoard)
+        public ConsoleMessageJoiner(IMessageBoard messageBoard) : base(messageBoard)
         {
             collector = new MessageCollector<HelloConsoleMessage, WorldConsoleMessage>(OnMessagesCollected);
         }

@@ -5,27 +5,18 @@ using Agents.Net;
 namespace Agents.Net.Tests
 {
     public class TestMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition TestMessageDefinition { get; } =
-            new MessageDefinition(nameof(TestMessage));
-
-        #endregion
-
-        public TestMessage(Message predecessorMessage, params Message[] childMessages)
-            : base(predecessorMessage, TestMessageDefinition, childMessages)
+    {        public TestMessage(Message predecessorMessage, params Message[] childMessages)
+            : base(predecessorMessage, childMessages:childMessages)
         {
         }
 
         public TestMessage(IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-            : base(predecessorMessages, TestMessageDefinition, childMessages)
+            : base(predecessorMessages, childMessages:childMessages)
         {
         }
 
         public TestMessage()
-            : base(Array.Empty<Message>(), TestMessageDefinition)
+            : base(Array.Empty<Message>())
         {
         }
 

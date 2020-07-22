@@ -3,24 +3,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(RootDirectoryDefinedMessage))]
+    [Produces(typeof(AllFilesFoundMessage))]
     public class ParallelFileFinder : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition ParallelFileFinderDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      RootDirectoryDefinedMessage.RootDirectoryDefinedMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      AllFilesFoundMessage.AllFilesFoundMessageDefinition
-                                  });
-
-        #endregion
-
-        public ParallelFileFinder(IMessageBoard messageBoard) : base(ParallelFileFinderDefinition, messageBoard)
+    {        public ParallelFileFinder(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

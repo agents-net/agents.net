@@ -4,27 +4,13 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.SequentialOverhead
 {
+    [Consumes(typeof(SpinWaitCountedMessage))]
+    [Produces(typeof(SpinWaitCountedMessage))]
     public class SpinWaiter : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition SpinWaiterDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      SpinWaitCountedMessage.SpinWaitCountedMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      SpinWaitCountedMessage.SpinWaitCountedMessageDefinition
-                                  });
-
-        #endregion
-
-        private readonly Action finishAction;
+    {        private readonly Action finishAction;
         private readonly bool reuseMessage;
 
-        public SpinWaiter(IMessageBoard messageBoard, Action finishAction, bool reuseMessage) : base(SpinWaiterDefinition, messageBoard)
+        public SpinWaiter(IMessageBoard messageBoard, Action finishAction, bool reuseMessage) : base(messageBoard)
         {
             this.finishAction = finishAction;
             this.reuseMessage = reuseMessage;

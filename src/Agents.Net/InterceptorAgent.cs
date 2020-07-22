@@ -12,6 +12,7 @@ using System.Runtime.ExceptionServices;
 
 namespace Agents.Net
 {
+    [Produces(typeof(ExceptionMessage))]
     public abstract class InterceptorAgent : Agent
     {
         protected InterceptorAgent(IMessageBoard messageBoard) : base(messageBoard)

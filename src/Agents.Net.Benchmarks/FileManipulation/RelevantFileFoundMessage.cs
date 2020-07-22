@@ -4,17 +4,8 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class RelevantFileFoundMessage : MessageDecorator
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition RelevantFileFoundMessageDefinition { get; } =
-            new MessageDefinition(nameof(RelevantFileFoundMessage));
-
-        #endregion
-
-        private RelevantFileFoundMessage(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) :
-            base(decoratedMessage, RelevantFileFoundMessageDefinition, additionalPredecessors)
+    {        private RelevantFileFoundMessage(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) :
+            base(decoratedMessage, additionalPredecessors)
         {
         }
         

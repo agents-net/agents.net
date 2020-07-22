@@ -4,24 +4,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Intercepts(typeof(AllFilesFoundMessage))]
+    [Produces(typeof(AllRelevantFilesFoundMessage))]
     public class ParallelFileFilter : InterceptorAgent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static InterceptorAgentDefinition ParallelFileFilterDefinition { get; }
-            = new InterceptorAgentDefinition(new []
-                                             {
-                                                 AllFilesFoundMessage.AllFilesFoundMessageDefinition
-                                             },
-                                             new []
-                                             {
-                                                 AllRelevantFilesFoundMessage.AllRelevantFilesFoundMessageDefinition
-                                             });
-
-        #endregion
-
-        public ParallelFileFilter(IMessageBoard messageBoard) : base(ParallelFileFilterDefinition, messageBoard)
+    {        public ParallelFileFilter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

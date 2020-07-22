@@ -4,24 +4,10 @@ using Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages;
 
 namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 {
+    [Consumes(typeof(InitializeMessage))]
+    [Produces(typeof(HelloConsoleMessage))]
     public class HelloAgent : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition HelloAgentDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      InitializeMessage.InitializeMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      HelloConsoleMessage.HelloConsoleMessageDefinition
-                                  });
-
-        #endregion
-
-        public HelloAgent(IMessageBoard messageBoard) : base(HelloAgentDefinition, messageBoard)
+    {        public HelloAgent(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

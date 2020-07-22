@@ -16,10 +16,11 @@ namespace Agents.Net
     public abstract class MessageDecorator : Message
     {
         protected MessageDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) 
-            : base(decoratedMessage.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct())
+            : base(decoratedMessage?.Predecessors.Concat(additionalPredecessors ?? Enumerable.Empty<Message>()).Distinct()
+            ??Enumerable.Empty<Message>())
         {
-            SwitchDomain(decoratedMessage.MessageDomain);
-            AddChild(decoratedMessage.ReplaceHead(this));
+            SwitchDomain(decoratedMessage?.MessageDomain);
+            AddChild(decoratedMessage?.ReplaceHead(this));
         }
 
         public static bool IsDecorated(Message message)

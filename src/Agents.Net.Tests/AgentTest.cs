@@ -87,7 +87,7 @@ namespace Agents.Net.Tests
 
         private class TestAgent : Agent
         {
-            public TestAgent(IMessageBoard messageBoard) : base(new AgentDefinition(new MessageDefinition[0], new MessageDefinition[0]), messageBoard)
+            public TestAgent(IMessageBoard messageBoard) : base(messageBoard)
             {
             }
 
@@ -109,7 +109,7 @@ namespace Agents.Net.Tests
                 base.OnMessage(message);
             }
 
-            public new void OnMessages(bool publishCreated, params Message[] messages)
+            public void OnMessages(bool publishCreated, params Message[] messages)
             {
                 base.OnMessages(messages, publishCreated);
             }
