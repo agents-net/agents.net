@@ -4,18 +4,9 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.SequentialOverhead
 {
     public class SpinWaitCountedMessage : Message
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition SpinWaitCountedMessageDefinition { get; } =
-            new MessageDefinition(nameof(SpinWaitCountedMessage));
-
-        #endregion
-
-        public SpinWaitCountedMessage(int countDown, int duration, Message predecessorMessage,
+    {        public SpinWaitCountedMessage(int countDown, int duration, Message predecessorMessage,
                                       params Message[] childMessages)
-            : base(predecessorMessage, SpinWaitCountedMessageDefinition, childMessages)
+            : base(predecessorMessage, childMessages:childMessages)
         {
             CountDown = countDown;
             Duration = duration;
@@ -23,7 +14,7 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
 
         public SpinWaitCountedMessage(int countDown, int duration, IEnumerable<Message> predecessorMessages,
                                       params Message[] childMessages)
-            : base(predecessorMessages, SpinWaitCountedMessageDefinition, childMessages)
+            : base(predecessorMessages, childMessages:childMessages)
         {
             CountDown = countDown;
             Duration = duration;

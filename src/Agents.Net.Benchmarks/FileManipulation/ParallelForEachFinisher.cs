@@ -3,23 +3,11 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(FilesCompletedMessage))]
     public class ParallelForEachFinisher : Agent
-    {
-        #region Definition
+    {        private readonly Action finishAction;
 
-        [AgentDefinition]
-        public static AgentDefinition ParallelForEachFinisherDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      FilesCompletedMessage.FilesCompletedMessageDefinition
-                                  },
-                                  Array.Empty<MessageDefinition>());
-
-        #endregion
-
-        private readonly Action finishAction;
-
-        public ParallelForEachFinisher(IMessageBoard messageBoard, Action finishAction) : base(ParallelForEachFinisherDefinition, messageBoard)
+        public ParallelForEachFinisher(IMessageBoard messageBoard, Action finishAction) : base(messageBoard)
         {
             this.finishAction = finishAction;
         }

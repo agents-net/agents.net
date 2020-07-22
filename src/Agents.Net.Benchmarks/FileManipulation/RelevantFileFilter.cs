@@ -3,24 +3,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Intercepts(typeof(FileFoundMessage))]
+    [Produces(typeof(RelevantFileFoundMessage))]
     public class RelevantFileFilter : InterceptorAgent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static InterceptorAgentDefinition RelevantFileFilterDefinition { get; }
-            = new InterceptorAgentDefinition(new []
-                                             {
-                                                 FileFoundMessage.FileFoundMessageDefinition
-                                             },
-                                             new []
-                                             {
-                                                 RelevantFileFoundMessage.RelevantFileFoundMessageDefinition
-                                             });
-
-        #endregion
-
-        public RelevantFileFilter(IMessageBoard messageBoard) : base(RelevantFileFilterDefinition, messageBoard)
+    {        public RelevantFileFilter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

@@ -5,24 +5,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(RootDirectoryDefinedMessage))]
+    [Produces(typeof(FileFoundMessage))]
     public class FileFinder : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition FileFinderDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      RootDirectoryDefinedMessage.RootDirectoryDefinedMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      FileFoundMessage.FileFoundMessageDefinition
-                                  });
-
-        #endregion
-
-        public FileFinder(IMessageBoard messageBoard) : base(FileFinderDefinition, messageBoard)
+    {        public FileFinder(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

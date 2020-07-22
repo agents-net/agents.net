@@ -12,14 +12,12 @@ using System.Runtime.ExceptionServices;
 
 namespace Agents.Net
 {
+    [Produces(typeof(ExceptionMessage))]
     public abstract class InterceptorAgent : Agent
     {
-        protected InterceptorAgent(InterceptorAgentDefinition interceptorDefinition, IMessageBoard messageBoard) : base(interceptorDefinition, messageBoard)
+        protected InterceptorAgent(IMessageBoard messageBoard) : base(messageBoard)
         {
-            InterceptorDefinition = interceptorDefinition;
         }
-
-        public InterceptorAgentDefinition InterceptorDefinition { get; }
 
         protected override void ExecuteCore(Message messageData)
         {

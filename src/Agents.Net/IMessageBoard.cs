@@ -13,7 +13,6 @@ namespace Agents.Net
     {
         void Publish(Message message);
         void Start();
-        void Register(MessageDefinition trigger, Agent agent);
-        void RegisterInterceptor(MessageDefinition trigger, InterceptorAgent agent);
+        void Register(Agent agent);
     }
 }

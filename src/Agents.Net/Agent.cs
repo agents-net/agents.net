@@ -21,14 +21,11 @@ namespace Agents.Net
         private readonly IMessageBoard messageBoard;
         private readonly string agentName;
 
-        protected Agent(AgentDefinition definition, IMessageBoard messageBoard, string name = null)
+        protected Agent(IMessageBoard messageBoard, string name = null)
         {
             this.messageBoard = messageBoard;
-            Definition = definition;
             agentName = string.IsNullOrEmpty(name) ? GetType().Name : name;
         }
-
-        public AgentDefinition Definition { get; }
 
         public void Execute(Message messageData)
         {

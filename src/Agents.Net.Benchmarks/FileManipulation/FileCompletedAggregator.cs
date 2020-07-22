@@ -5,24 +5,12 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
 {
+    [Consumes(typeof(FileCompletedMessage))]
     public class FileCompletedAggregator : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition FileCompletedAggregatorDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      FileCompletedMessage.FileCompletedMessageDefinition
-                                  },
-                                  Array.Empty<MessageDefinition>());
-
-        #endregion
-
-        private readonly MessageAggregator<FileCompletedMessage> aggregator;
+    {        private readonly MessageAggregator<FileCompletedMessage> aggregator;
         private readonly Action terminateAction;
 
-        public FileCompletedAggregator(IMessageBoard messageBoard, Action terminateAction) : base(FileCompletedAggregatorDefinition, messageBoard)
+        public FileCompletedAggregator(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
         {
             this.terminateAction = terminateAction;
             aggregator = new MessageAggregator<FileCompletedMessage>(OnAggregated);

@@ -6,17 +6,8 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class AllRelevantFilesFoundMessage : MessageDecorator
-    {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition AllRelevantFilesFoundMessageDefinition { get; } =
-            new MessageDefinition(nameof(AllRelevantFilesFoundMessage));
-
-        #endregion
-
-        private AllRelevantFilesFoundMessage(Message decoratedMessage, IEnumerable<FileInfo> relevantInfos, IEnumerable<Message> additionalPredecessors = null) :
-            base(decoratedMessage, AllRelevantFilesFoundMessageDefinition, additionalPredecessors)
+    {        private AllRelevantFilesFoundMessage(Message decoratedMessage, IEnumerable<FileInfo> relevantInfos, IEnumerable<Message> additionalPredecessors = null) :
+            base(decoratedMessage, additionalPredecessors)
         {
             RelevantInfos = relevantInfos;
         }

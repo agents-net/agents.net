@@ -13,17 +13,15 @@ namespace Agents.Net
 {
     public class HandledExceptionMessageDecorator : MessageDecorator
     {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition HandledExceptionMessageDecoratorDefinition { get; } =
-            new MessageDefinition(nameof(HandledExceptionMessageDecorator));
-
-        #endregion
-
-        public HandledExceptionMessageDecorator(ExceptionMessage decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
-            : base(decoratedMessage, HandledExceptionMessageDecoratorDefinition, additionalPredecessors)
+        private HandledExceptionMessageDecorator(ExceptionMessage decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
+            : base(decoratedMessage, additionalPredecessors)
         {
+        }
+
+        public static HandledExceptionMessageDecorator Decorate(ExceptionMessage exceptionMessage,
+            params Message[] additionalPredecessors)
+        {
+            return new HandledExceptionMessageDecorator(exceptionMessage, additionalPredecessors);
         }
 
         protected override string DataToString()

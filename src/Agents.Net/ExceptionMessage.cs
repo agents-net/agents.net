@@ -14,41 +14,33 @@ namespace Agents.Net
 {
     public class ExceptionMessage : Message
     {
-        #region Definition
-
-        [MessageDefinition]
-        public static MessageDefinition ExceptionMessageDefinition { get; } =
-            new MessageDefinition(nameof(ExceptionMessage));
-
-        #endregion
-
         public ExceptionDispatchInfo ExceptionInfo { get; }
         public string CustomMessage { get; }
         public IEnumerable<Message> Messages { get; }
         public Agent Agent { get; }
 
-        public ExceptionMessage(ExceptionDispatchInfo exceptionInfo, Message message, Agent agent) : base(message, ExceptionMessageDefinition)
+        public ExceptionMessage(ExceptionDispatchInfo exceptionInfo, Message message, Agent agent) : base(message)
         {
             ExceptionInfo = exceptionInfo;
             Messages = new []{message};
             Agent = agent;
         }
 
-        public ExceptionMessage(string customMessage, Message message, Agent agent) : base(message, ExceptionMessageDefinition)
+        public ExceptionMessage(string customMessage, Message message, Agent agent) : base(message)
         {
             CustomMessage = customMessage;
             Messages = new []{message};
             Agent = agent;
         }
 
-        public ExceptionMessage(ExceptionDispatchInfo exceptionInfo, IEnumerable<Message> messages, Agent agent) : base(messages, ExceptionMessageDefinition)
+        public ExceptionMessage(ExceptionDispatchInfo exceptionInfo, IEnumerable<Message> messages, Agent agent) : base(messages)
         {
             ExceptionInfo = exceptionInfo;
             Messages = messages;
             Agent = agent;
         }
 
-        public ExceptionMessage(string customMessage, IEnumerable<Message> messages, Agent agent) : base(messages, ExceptionMessageDefinition)
+        public ExceptionMessage(string customMessage, IEnumerable<Message> messages, Agent agent) : base(messages)
         {
             CustomMessage = customMessage;
             Messages = messages;

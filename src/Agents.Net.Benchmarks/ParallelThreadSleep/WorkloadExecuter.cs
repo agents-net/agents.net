@@ -4,24 +4,10 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
+    [Consumes(typeof(WorkloadDefinedMessage))]
+    [Produces(typeof(WorkloadExecutedMessage))]
     public class WorkloadExecuter : Agent
-    {
-        #region Definition
-
-        [AgentDefinition]
-        public static AgentDefinition WorkloadExecuterDefinition { get; }
-            = new AgentDefinition(new []
-                                  {
-                                      WorkloadDefinedMessage.WorkloadDefinedMessageDefinition
-                                  },
-                                  new []
-                                  {
-                                      WorkloadExecutedMessage.WorkloadExecutedMessageDefinition
-                                  });
-
-        #endregion
-
-        public WorkloadExecuter(IMessageBoard messageBoard) : base(WorkloadExecuterDefinition, messageBoard)
+    {        public WorkloadExecuter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 
