@@ -19,6 +19,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Changed
 - **Breaking Change:** Switch from magic string based agent definition to type based agent definition
 
+### Removed
+- **Breaking Change:** Removed Community class. Register agents directly with IMessageBoard
+
 ## 2020.6.0
 ### Added
 - Some unit tests.
