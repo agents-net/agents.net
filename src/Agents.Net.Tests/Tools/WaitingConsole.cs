@@ -17,7 +17,7 @@ namespace Agents.Net.Tests.Tools
             messageReceived.Set();
         }
 
-        public bool WaitForMessage(out string message, int timeout = 100)
+        public bool WaitForMessage(out string message, int timeout = 200)
         {
             while (messageReceived.WaitOne(timeout)) { }
 

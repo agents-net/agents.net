@@ -7,7 +7,8 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
     [Consumes(typeof(WorkloadExecutedMessage))]
     public class WorkloadAggregator : Agent
-    {        private readonly MessageAggregator<WorkloadExecutedMessage> aggregator;
+    {
+        private readonly MessageAggregator<WorkloadExecutedMessage> aggregator;
         private readonly Action terminateAction;
 
         public WorkloadAggregator(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
@@ -16,10 +17,9 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
             aggregator = new MessageAggregator<WorkloadExecutedMessage>(OnAggregated);
         }
 
-        private void OnAggregated(ICollection<WorkloadExecutedMessage> aggregate)
+        private void OnAggregated(IReadOnlyCollection<WorkloadExecutedMessage> aggregate)
         {
-            WorkloadExecutedMessage[] messageCollection = aggregate.ToArray();
-            MessageDomain.TerminateDomainsOf(messageCollection);
+            MessageDomain.TerminateDomainsOf(aggregate);
             terminateAction();
         }
 

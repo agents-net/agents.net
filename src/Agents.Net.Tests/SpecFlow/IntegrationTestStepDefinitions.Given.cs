@@ -24,7 +24,7 @@ namespace Agents.Net.Tests.SpecFlow
             context = injectedContext;
         }
 
-        [Given("I have loaded the community (.*)")]
+        [Given("I have loaded the community \"(.*)\"")]
         public void GivenIHavenLoadedTheCommunity(string communityName)
         {
             IContainer container = BuildContainer(communityName, out ManualResetEventSlim terminatedEvent);

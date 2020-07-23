@@ -57,6 +57,16 @@ namespace Agents.Net.Tests.Tools
                                  $"{string.Join(", ", steps.Select(s => $"[{string.Join(", ", s.Agents)}]"))}");
         }
 
+        public void CheckParallelMessages(string agent, int messageCount)
+        {
+            steps.Any(s => s.Agents.FirstOrDefault(a => a.EndsWith(agent)) != null &&
+                           s.AgentMessages[s.Agents.First(a => a.EndsWith(agent))]
+                               .GroupBy(m => m.Name)
+                               .Any(g => g.Count() == messageCount))
+                .Should().BeTrue($"agent {agent} should have executed {messageCount} messages parallel. The following steps were recorded: " +
+                                 string.Join(", ", steps.Select(s => $"[{string.Join(", ", s.Agents.Select(a => $"{a}: {s.AgentMessages[a].Count()}"))}]")));
+        }
+
         private class AgentCollector
         {
             private readonly Dictionary<Guid, MessageLog> incomingMessages = new Dictionary<Guid, MessageLog>();
@@ -67,6 +77,8 @@ namespace Agents.Net.Tests.Tools
             }
 
             public string Agent { get; }
+
+            public IEnumerable<MessageLog> Messages => incomingMessages.Values;
 
             private AgentCollector(string agent, IEnumerable<MessageLog> remaining) : this(agent)
             {
@@ -98,6 +110,9 @@ namespace Agents.Net.Tests.Tools
             }
 
             public IEnumerable<string> Agents => activeAgents.Select(a => a.Agent);
+
+            public IDictionary<string, IEnumerable<MessageLog>> AgentMessages =>
+                activeAgents.ToDictionary(a => a.Agent, a => a.Messages);
 
             public void Collect(AgentCollector agentCollector)
             {
