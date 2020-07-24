@@ -58,6 +58,30 @@ namespace Agents.Net
             return result;
         }
 
+        internal void Remove(Message message)
+        {
+            lock (dictionaryLock)
+            {
+                RemoveMessage(message);
+            }
+        }
+
+        protected virtual void RemoveMessage(Message message)
+        {
+            if (message is T1 message1)
+            {
+                Messages1.Remove(message1.MessageDomain);
+            }
+            else if (message is T2 message2)
+            {
+                Messages2.Remove(message2.MessageDomain);
+            }
+            else
+            {
+                throw new ArgumentException($"There is no message type {message} in this collection.", nameof(message));
+            }
+        }
+
         public IEnumerable<MessageCollection<T1, T2>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
@@ -96,7 +120,7 @@ namespace Agents.Net
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
                 TryGetMessageFittingDomain(domain, Messages2, out MessageStore<T2> message2))
             {
-                messageCollection = new MessageCollection<T1, T2>(message1, message2);
+                messageCollection = new MessageCollection<T1, T2>(message1, message2, this);
                 return true;
             }
 
@@ -250,12 +274,24 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages2, out MessageStore<T2> message2) &&
                 TryGetMessageFittingDomain(domain, Messages3, out MessageStore<T3> message3))
             {
-                messageCollection = new MessageCollection<T1, T2, T3>(message1, message2, message3);
+                messageCollection = new MessageCollection<T1, T2, T3>(message1, message2, message3, this);
                 return true;
             }
 
             messageCollection = null;
             return false;
+        }
+
+        protected override void RemoveMessage(Message message)
+        {
+            if (message is T3 message3)
+            {
+                Messages3.Remove(message3.MessageDomain);
+            }
+            else
+            {
+                base.RemoveMessage(message);
+            }
         }
 
         public new IEnumerable<MessageCollection<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
@@ -306,12 +342,24 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages3, out MessageStore<T3> message3) &&
                 TryGetMessageFittingDomain(domain, Messages4, out MessageStore<T4> message4))
             {
-                messageCollection = new MessageCollection<T1, T2, T3, T4>(message1, message2, message3, message4);
+                messageCollection = new MessageCollection<T1, T2, T3, T4>(message1, message2, message3, message4, this);
                 return true;
             }
 
             messageCollection = null;
             return false;
+        }
+
+        protected override void RemoveMessage(Message message)
+        {
+            if (message is T4 message4)
+            {
+                Messages4.Remove(message4.MessageDomain);
+            }
+            else
+            {
+                base.RemoveMessage(message);
+            }
         }
 
         public new IEnumerable<MessageCollection<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
@@ -364,12 +412,24 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages4, out MessageStore<T4> message4) &&
                 TryGetMessageFittingDomain(domain, Messages5, out MessageStore<T5> message5))
             {
-                messageCollection = new MessageCollection<T1, T2, T3, T4, T5>(message1, message2, message3, message4, message5);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5>(message1, message2, message3, message4, message5, this);
                 return true;
             }
 
             messageCollection = null;
             return false;
+        }
+
+        protected override void RemoveMessage(Message message)
+        {
+            if (message is T5 message5)
+            {
+                Messages5.Remove(message5.MessageDomain);
+            }
+            else
+            {
+                base.RemoveMessage(message);
+            }
         }
 
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
@@ -424,12 +484,24 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages5, out MessageStore<T5> message5) &&
                 TryGetMessageFittingDomain(domain, Messages6, out MessageStore<T6> message6))
             {
-                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6>(message1, message2, message3, message4, message5, message6);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6>(message1, message2, message3, message4, message5, message6, this);
                 return true;
             }
 
             messageCollection = null;
             return false;
+        }
+
+        protected override void RemoveMessage(Message message)
+        {
+            if (message is T3 message6)
+            {
+                Messages6.Remove(message6.MessageDomain);
+            }
+            else
+            {
+                base.RemoveMessage(message);
+            }
         }
 
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
@@ -486,12 +558,24 @@ namespace Agents.Net
                 TryGetMessageFittingDomain(domain, Messages6, out MessageStore<T6> message6) &&
                 TryGetMessageFittingDomain(domain, Messages7, out MessageStore<T7> message7))
             {
-                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6, T7>(message1, message2, message3, message4, message5, message6, message7);
+                messageCollection = new MessageCollection<T1, T2, T3, T4, T5, T6, T7>(message1, message2, message3, message4, message5, message6, message7, this);
                 return true;
             }
 
             messageCollection = null;
             return false;
+        }
+
+        protected override void RemoveMessage(Message message)
+        {
+            if (message is T3 message7)
+            {
+                Messages7.Remove(message7.MessageDomain);
+            }
+            else
+            {
+                base.RemoveMessage(message);
+            }
         }
 
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)

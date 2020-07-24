@@ -31,6 +31,8 @@ namespace Agents.Net
             return GetEnumerator();
         }
 
+        public abstract void MarkAsConsumed(Message message);
+
         protected abstract void Dispose(bool disposing);
 
         public void Dispose()
@@ -46,11 +48,13 @@ namespace Agents.Net
     {
         private readonly MessageStore<T1> message1;
         private readonly MessageStore<T2> message2;
+        private readonly MessageCollector<T1, T2> collector;
 
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageCollector<T1, T2> collector)
         {
             this.message1 = message1;
             this.message2 = message2;
+            this.collector = collector;
         }
 
         public T1 Message1 => message1;
@@ -60,6 +64,11 @@ namespace Agents.Net
         protected override IEnumerable<Message> GetAllMessages()
         {
             return base.GetAllMessages().Concat(new Message[] {Message1, Message2});
+        }
+
+        public override void MarkAsConsumed(Message message)
+        {
+            collector.Remove(message);
         }
 
         protected override void Dispose(bool disposing)
@@ -79,7 +88,8 @@ namespace Agents.Net
     {
         private readonly MessageStore<T3> message3;
 
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3) : base(message1, message2)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageCollector<T1, T2> collector) 
+            : base(message1, message2, collector)
         {
             this.message3 = message3;
         }
@@ -109,7 +119,8 @@ namespace Agents.Net
     {
         private readonly MessageStore<T4> message4;
 
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4) : base(message1, message2, message3)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageCollector<T1, T2> collector) 
+            : base(message1, message2, message3, collector)
         {
             this.message4 = message4;
         }
@@ -140,7 +151,8 @@ namespace Agents.Net
     {
         private readonly MessageStore<T5> message5;
 
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5) : base(message1, message2, message3, message4)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5, MessageCollector<T1, T2> collector) 
+            : base(message1, message2, message3, message4, collector)
         {
             this.message5 = message5;
         }
@@ -172,7 +184,8 @@ namespace Agents.Net
     {
         private readonly MessageStore<T6> message6;
 
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5, MessageStore<T6> message6) : base(message1, message2, message3, message4, message5)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5, MessageStore<T6> message6, MessageCollector<T1, T2> collector) 
+            : base(message1, message2, message3, message4, message5, collector)
         {
             this.message6 = message6;
         }
@@ -204,8 +217,8 @@ namespace Agents.Net
         where T7 : Message
     {
         private readonly MessageStore<T7> message7;
-
-        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5, MessageStore<T6> message6, MessageStore<T7> message7) : base(message1, message2, message3, message4, message5, message6)
+        public MessageCollection(MessageStore<T1> message1, MessageStore<T2> message2, MessageStore<T3> message3, MessageStore<T4> message4, MessageStore<T5> message5, MessageStore<T6> message6, MessageStore<T7> message7, MessageCollector<T1, T2> collector) 
+            : base(message1, message2, message3, message4, message5, message6, collector)
         {
             this.message7 = message7;
         }
