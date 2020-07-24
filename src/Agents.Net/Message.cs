@@ -78,7 +78,7 @@ namespace Agents.Net
             parent.AddChild(message);
         }
 
-        internal IEnumerable<Message> Predecessors => predecessorMessages;
+        public IEnumerable<Message> Predecessors => predecessorMessages;
 
         internal Message HeadMessage
         {
