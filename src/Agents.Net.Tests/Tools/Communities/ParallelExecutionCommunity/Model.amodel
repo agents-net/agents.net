@@ -1,0 +1,79 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Name": "WorkScheduler",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "InitializeMessage"
+      ],
+      "ProducedMessages": [
+        "WorkScheduled"
+      ]
+    },
+    {
+      "Name": "InformationBroker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "InitializeMessage"
+      ],
+      "ProducedMessages": [
+        "InformationGathered"
+      ]
+    },
+    {
+      "Name": "Worker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "InformationGathered",
+        "WorkScheduled"
+      ],
+      "ProducedMessages": [
+        "WorkDone"
+      ]
+    },
+    {
+      "Name": "WorkDoneAggregator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "WorkDone"
+      ],
+      "ProducedMessages": [
+        "WorkloadFinished"
+      ]
+    },
+    {
+      "Name": "ResultReporter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "WorkloadFinished"
+      ],
+      "ProducedMessages": [],
+      "ProducedEvents": [
+        "Terminate Program",
+        "Report to Console"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Name": "WorkScheduled",
+      "Namespace": ".Messages"
+    },
+    {
+      "Name": "InformationGathered",
+      "Namespace": ".Messages"
+    },
+    {
+      "Name": "WorkDone",
+      "Namespace": ".Messages"
+    },
+    {
+      "Name": "WorkloadFinished",
+      "Namespace": ".Messages"
+    }
+  ]
+}

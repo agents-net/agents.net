@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ### Changed
 - **Breaking Change:** Switch from magic string based agent definition to type based agent definition
+- **Breaking Change:** Change execution method of aggregator to IReadonlyCollection so that it can be passed directly to TerminateDomainsOf
 
 ### Removed
 - **Breaking Change:** Removed Community class. Register agents directly with IMessageBoard

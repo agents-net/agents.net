@@ -30,5 +30,12 @@ namespace Agents.Net.Tests.SpecFlow
             context.Get<WaitingConsole>().WaitForMessage(out _);
             context.Get<ExecutionOrder>().CheckParallelExecution(agents);
         }
+
+        [Then("the agent (.*) executed (\\d+) messages parallel")]
+        public void TheAgentExecutedMessagesParallel(string agent, int messageCount)
+        {
+            context.Get<WaitingConsole>().WaitForMessage(out _);
+            context.Get<ExecutionOrder>().CheckParallelMessages(agent, messageCount);
+        }
     }
 }
