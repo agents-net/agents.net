@@ -7,7 +7,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
 {
     [Consumes(typeof(FileCompletedMessage))]
     public class FileCompletedAggregator : Agent
-    {        private readonly MessageAggregator<FileCompletedMessage> aggregator;
+    {
+        private readonly MessageAggregator<FileCompletedMessage> aggregator;
         private readonly Action terminateAction;
 
         public FileCompletedAggregator(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
@@ -16,10 +17,9 @@ namespace Agents.Net.Benchmarks.FileManipulation
             aggregator = new MessageAggregator<FileCompletedMessage>(OnAggregated);
         }
 
-        private void OnAggregated(ICollection<FileCompletedMessage> aggregate)
+        private void OnAggregated(IReadOnlyCollection<FileCompletedMessage> aggregate)
         {
-            FileCompletedMessage[] messageCollection = aggregate.ToArray();
-            MessageDomain.TerminateDomainsOf(messageCollection);
+            MessageDomain.TerminateDomainsOf(aggregate);
             terminateAction();
         }
 

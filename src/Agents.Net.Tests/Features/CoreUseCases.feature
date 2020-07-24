@@ -21,7 +21,7 @@ Scenario: Hello World community prints to console
 This scenario shows a simple use case where two agents start simultaneously 
 with the initialization message. They are than collected by another agent and
 finally printed as message to the console.
-	Given I have loaded the community HelloWorldCommunity
+	Given I have loaded the community "HelloWorldCommunity"
 	When I start the message board
 	Then the message "Hello World" was posted after a while
 	And the program was terminated
@@ -31,6 +31,23 @@ This scenario shows that the HelloAgent and the WorldAgent are executed
 parallel, although it was not specified this way. It is simply coincidence
 that the requirements (InitializeMessage) of both agents are satisfied at
 the same time.
-	Given I have loaded the community HelloWorldCommunity
+	Given I have loaded the community "HelloWorldCommunity"
 	When I start the message board
 	Then the agents HelloAgent, WorldAgent were executed parallel
+
+Scenario: Parallel execution community prints to console
+This scenario shows an use case where one agent produces 4 messages of
+the same kind. Once these messages are all executed the result is aggregated
+and printed to the console. Additionally, this scenario shows, that the message
+collector can collect message across message domains as each of the 4 messages
+gets a new domain.
+	Given I have loaded the community "ParallelExecutionCommunity"
+	When I start the message board
+	Then the message "10" was posted after a while
+	And the program was terminated
+
+Scenario: Parallel execution community executes in parallel
+This scenario shows that all 4 message are executed parallel to each other.
+	Given I have loaded the community "ParallelExecutionCommunity"
+	When I start the message board
+	Then the agent Worker executed 4 messages parallel

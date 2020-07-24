@@ -17,9 +17,9 @@ namespace Agents.Net
     public class MessageAggregator<T> where T:Message
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly Action<ICollection<T>> onAggregated;
+        private readonly Action<IReadOnlyCollection<T>> onAggregated;
 
-        public MessageAggregator(Action<ICollection<T>> onAggregated)
+        public MessageAggregator(Action<IReadOnlyCollection<T>> onAggregated)
         {
             this.onAggregated = onAggregated;
         }
