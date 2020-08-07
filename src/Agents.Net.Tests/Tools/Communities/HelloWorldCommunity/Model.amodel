@@ -5,61 +5,84 @@
   },
   "Agents": [
     {
+      "Id": "2e9c3d11-ae1b-45b8-bd64-b0d029bedd27",
       "Name": "HelloAgent",
       "Namespace": ".Agents",
       "ConsumingMessages": [
-        "InitializeMessage"
+        "71f3cd60-e583-431e-a091-2ab6fac97f21"
       ],
       "ProducedMessages": [
-        "HelloConsoleMessage"
-      ]
+        "f780b81f-f9d9-41df-9525-44738fd6ed83"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
     },
     {
+      "Id": "6e6e2a5a-a492-41e7-a139-92850cd8a818",
       "Name": "WorldAgent",
       "Namespace": ".Agents",
       "ConsumingMessages": [
-        "InitializeMessage"
+        "71f3cd60-e583-431e-a091-2ab6fac97f21"
       ],
       "ProducedMessages": [
-        "WorldConsoleMessage"
-      ]
+        "f4a80468-3fc0-4799-908c-d17baf6f08f7"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
     },
     {
+      "Id": "95990613-0722-403f-b910-723d35753ba1",
       "Name": "ConsoleMessageJoiner",
       "Namespace": ".Agents",
       "ConsumingMessages": [
-        "WorldConsoleMessage",
-        "HelloConsoleMessage"
+        "f4a80468-3fc0-4799-908c-d17baf6f08f7",
+        "f780b81f-f9d9-41df-9525-44738fd6ed83"
       ],
       "ProducedMessages": [
-        "ConsoleMessageCreated"
-      ]
+        "94b6391b-7518-434f-9e50-0c34fbc5c8e3"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
     },
     {
+      "Id": "35bfcf55-c5d0-49e1-ad21-44316a108a72",
       "Name": "ConsoleMessageDisplayAgent",
       "Namespace": ".Agents",
       "ConsumingMessages": [
-        "ConsoleMessageCreated"
+        "94b6391b-7518-434f-9e50-0c34fbc5c8e3"
       ],
       "ProducedMessages": [],
+      "IncomingEvents": [],
       "ProducedEvents": [
-        "TerminateProgram",
-        "DisplayMessageOnConsole"
+        "Terminate Program",
+        "Display Message On Console"
       ]
     }
   ],
   "Messages": [
     {
+      "Id": "71f3cd60-e583-431e-a091-2ab6fac97f21",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "f780b81f-f9d9-41df-9525-44738fd6ed83",
       "Name": "HelloConsoleMessage",
-      "Namespace": ".Messages"
+      "Namespace": ".Messages",
+      "BuildIn": false
     },
     {
+      "Id": "f4a80468-3fc0-4799-908c-d17baf6f08f7",
       "Name": "WorldConsoleMessage",
-      "Namespace": ".Messages"
+      "Namespace": ".Messages",
+      "BuildIn": false
     },
     {
+      "Id": "94b6391b-7518-434f-9e50-0c34fbc5c8e3",
       "Name": "ConsoleMessageCreated",
-      "Namespace": ".Messages"
+      "Namespace": ".Messages",
+      "BuildIn": false
     }
   ]
 }
