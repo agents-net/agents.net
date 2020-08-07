@@ -8,8 +8,6 @@
 	the actual implementation.
 
 	Not Implemented Use Cases:
-	Explicit parallelisation (agents executed parallel; community ran to finish (count executed agents))
-	Message collector collects message from parent and child domain with explicit parallelisation _î
 	Interceptor decorates a message
 	Interceptor replaces a message with a changed value
 	Interceptor delays a message while waiting on a self created message chain
@@ -51,3 +49,15 @@ This scenario shows that all 4 message are executed parallel to each other.
 	Given I have loaded the community "ParallelExecutionCommunity"
 	When I start the message board
 	Then the agent Worker executed 4 messages parallel
+
+Scenario: Decorating interceptor community prints to console
+This scenario shows an use case where a message is intercepted. Based
+on a check of the original message the original message is than decorated.
+Another agent consumes the intercepted message and checks wether is contains
+the decorator or not. If the message is decorated the decorated information
+is displayed too. This shows that interceptors always are executed before
+the acutal consuming agents.
+	Given I have loaded the community "DecoratingInterceptorCommunity"
+	When I start the message board
+	Then the message "Information Detailed" was posted after a while
+	And the program was terminated
