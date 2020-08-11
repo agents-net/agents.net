@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Agents.Net.Tests.Tools;
 using FluentAssertions;
@@ -11,9 +12,9 @@ namespace Agents.Net.Tests.SpecFlow
         [Then("the message \"(.*)\" was posted after a while")]
         public void ThenTheMessageWasPostedToTheConsoleAfterAWhile(string message)
         {
-            context.Get<WaitingConsole>().WaitForMessage(out string receivedMessage)
+            context.Get<WaitingConsole>().WaitForMessages(out IEnumerable<string> receivedMessages)
                    .Should().BeTrue("a message was expected, but none was found.");
-            receivedMessage.Should().BeEquivalentTo(message);
+            receivedMessages.Should().ContainEquivalentOf(message);
         }
 
         [Then("the program was terminated")]
@@ -27,14 +28,14 @@ namespace Agents.Net.Tests.SpecFlow
         public void ThenTheProgramWasTerminated(string agentsString)
         {
             string[] agents = agentsString.Split(", ",StringSplitOptions.RemoveEmptyEntries);
-            context.Get<WaitingConsole>().WaitForMessage(out _);
+            context.Get<WaitingConsole>().WaitForMessages(out _);
             context.Get<ExecutionOrder>().CheckParallelExecution(agents);
         }
 
         [Then("the agent (.*) executed (\\d+) messages parallel")]
         public void TheAgentExecutedMessagesParallel(string agent, int messageCount)
         {
-            context.Get<WaitingConsole>().WaitForMessage(out _);
+            context.Get<WaitingConsole>().WaitForMessages(out _);
             context.Get<ExecutionOrder>().CheckParallelMessages(agent, messageCount);
         }
     }

@@ -71,3 +71,21 @@ property of a message based on a specific condition this is the only option.
 	When I start the message board
 	Then the message "Replaced Information" was posted after a while
 	And the program was terminated
+
+Scenario: Delay community prints multiple messages to console
+This scenario shows an use case where a message is intercepted. Based
+on a check of the original message the original message is than delayed until
+another chain of agents is completed. This scenario is useful if based on some
+condition a specific action needs to be executed without letting the original
+chain of messages know about it. A more concrete example would be the follwing.
+Assuming I have a chain of agents which commits changes to a git repository and
+pushes it to the remote repository. Now if the repository contains a submodule,
+I want the update the submodule before the changes are commited. The original
+chain of agents (creating a change, commiting, pushing) does not need to know 
+about submodules. The submodule updated is done by delaying the message the
+commiting agent is using.
+	Given I have loaded the community "DelayCommunity"
+	When I start the message board
+	Then the message "Transformed Information" was posted after a while
+	And the message "Special Information" was posted after a while
+	And the program was terminated
