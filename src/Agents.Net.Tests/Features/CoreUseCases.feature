@@ -8,8 +8,6 @@
 	the actual implementation.
 
 	Not Implemented Use Cases:
-	Interceptor decorates a message
-	Interceptor replaces a message with a changed value
 	Interceptor delays a message while waiting on a self created message chain
 	Interceptor checks precondition
 	Interceptor implements reactive design (delay last message until same process finished)
@@ -60,4 +58,16 @@ the acutal consuming agents.
 	Given I have loaded the community "DecoratingInterceptorCommunity"
 	When I start the message board
 	Then the message "Information Detailed" was posted after a while
+	And the program was terminated
+
+Scenario: Replacing interceptor community prints to console
+This scenario shows an use case where a message is intercepted. Based
+on a check of the original message the original message is than replaced.
+Replacing a message means that the new message pretends to be the old message
+by providing the same parent, children and predecessor. This mechanism is useful,
+because all messages should be immutable. If I want to change a certain kind of
+property of a message based on a specific condition this is the only option.
+	Given I have loaded the community "ReplaceMessageCommunity"
+	When I start the message board
+	Then the message "Replaced Information" was posted after a while
 	And the program was terminated

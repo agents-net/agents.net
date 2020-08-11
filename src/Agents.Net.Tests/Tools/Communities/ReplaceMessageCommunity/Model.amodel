@@ -1,0 +1,70 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.ReplaceMessageCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "1046c6de-448d-49ba-a7df-0438c284acde",
+      "Name": "InformationBroker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "4ddb575d-fa13-47da-8320-37474a39b197"
+      ],
+      "ProducedMessages": [
+        "74dec1d4-8d59-4088-8667-d28e80f4ebdd"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "d3c88e7c-d334-4130-892b-1dba354efc86",
+      "Name": "InformationConsoleWriter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "74dec1d4-8d59-4088-8667-d28e80f4ebdd"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write to Console",
+        "Terminate Program"
+      ]
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer",
+      "InterceptingMessages": [
+        "74dec1d4-8d59-4088-8667-d28e80f4ebdd"
+      ],
+      "Id": "49698e08-d8df-4591-a900-0f05237af79b",
+      "Name": "InformationReplacer",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "74dec1d4-8d59-4088-8667-d28e80f4ebdd"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "4ddb575d-fa13-47da-8320-37474a39b197",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "85174201-2dcc-4176-bc00-d26eb426f6be",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "74dec1d4-8d59-4088-8667-d28e80f4ebdd",
+      "Name": "InformationGathered",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}
