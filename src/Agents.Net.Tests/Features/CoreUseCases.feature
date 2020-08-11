@@ -8,10 +8,7 @@
 	the actual implementation.
 
 	Not Implemented Use Cases:
-	Interceptor delays a message while waiting on a self created message chain
-	Interceptor checks precondition
 	Interceptor implements reactive design (delay last message until same process finished)
-	Transaction with undo redo stack?
 
 Scenario: Hello World community prints to console
 This scenario shows a simple use case where two agents start simultaneously 
@@ -88,4 +85,16 @@ commiting agent is using.
 	When I start the message board
 	Then the message "Transformed Information" was posted after a while
 	And the message "Special Information" was posted after a while
+	And the program was terminated
+
+Scenario: Precondition check community prints error message to console
+This scenario shows an use case where a message is intercepted. The intercepted 
+message is than validated and if it is invalid, the original message is not send.
+Instead an exception message is generated. This is the most simple of use cases
+of interceptors. The consuming agent of the original message does not care if
+the original message is validated or not. Therefore it cannot react on an
+"InformationValidated" message.
+	Given I have loaded the community "PreconditionCheckCommunity"
+	When I start the message board
+	Then the message "Validation Failed" was posted after a while
 	And the program was terminated
