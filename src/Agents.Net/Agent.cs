@@ -71,7 +71,7 @@ namespace Agents.Net
 
         protected abstract void ExecuteCore(Message messageData);
 
-        private class AgentLog
+        protected class AgentLog
         {
             private readonly Message message;
             private readonly string type;
