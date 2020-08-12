@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--SvgWriter version 0.0.0.0-->
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1001.60333333333" height="319.775" id="svg2" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(201.38333333333333,819.7750000000001)">
+    <!--Edges-->
+    <path fill="none" stroke="#0000ff" stroke-opacity="1" stroke-width="1" d="M 0 -716.175 L 0 -686.2875" />
+    <polygon stroke="#0000ff" stroke-opacity="1" stroke-width="1" fill="#0000ff" fill-opacity="1" points="-2.21694663167 -686.2875 0 -676.2875 2.21694663167 -686.2875" />
+    <path fill="none" stroke="#ffa500" stroke-opacity="1" stroke-width="1" d="M 589.5 -716.17525026265 L 589.5 -694.39828228702" />
+    <polygon stroke="#ffa500" stroke-opacity="1" stroke-width="1" fill="#ffa500" fill-opacity="1" points="587.28305336833 -694.39828228702 589.5 -684.39828228702 591.71694663167 -694.39828228702" />
+    <path fill="none" stroke="#ffa500" stroke-opacity="1" stroke-width="1" d="M 680 -574.4875 L 680 -552.8" />
+    <polygon stroke="#ffa500" stroke-opacity="1" stroke-width="1" fill="#ffa500" fill-opacity="1" points="677.78305336833 -552.8 680 -542.8 682.21694663167 -552.8" />
+    <path fill="none" stroke="#008000" stroke-opacity="1" stroke-width="1" d="M 39.83160621762 -659.8875 L 314.81177155483 -603.27824996258" />
+    <polygon stroke="#008000" stroke-opacity="1" stroke-width="1" fill="#008000" fill-opacity="1" points="314.36475046791 -601.10683924244 324.60637233194 -601.26186814927 315.25879264175 -605.44966068272" />
+    <path fill="none" stroke="#ff0000" stroke-opacity="1" stroke-width="1" d="M 0 -649.8875 L 0 -617.2875" />
+    <polygon stroke="#ff0000" stroke-opacity="1" stroke-width="1" fill="#ff0000" fill-opacity="1" points="2.21694663167 -649.8875 0 -659.8875 -2.21694663167 -649.8875" />
+    <polygon stroke="#ff0000" stroke-opacity="1" stroke-width="1" fill="#ff0000" fill-opacity="1" points="-2.21694663167 -617.2875 0 -607.2875 2.21694663167 -617.2875" />
+    <text x="0" y="-624.6875" font-family="Times-Roman" font-size="12" fill="#000000">intercepted</text>
+    <path fill="none" stroke="#ff0000" stroke-opacity="1" stroke-width="1" d="M 407.15211461942 -789.67035207364 L 313.03140416534 -752.1308779619" />
+    <polygon stroke="#ff0000" stroke-opacity="1" stroke-width="1" fill="#ff0000" fill-opacity="1" points="407.9734152936 -787.61114893401 416.44057971015 -793.375 406.33081394523 -791.72955521327" />
+    <polygon stroke="#ff0000" stroke-opacity="1" stroke-width="1" fill="#ff0000" fill-opacity="1" points="312.21010349116 -754.19008110153 303.74293907461 -748.42623003554 313.85270483953 -750.07167482227" />
+    <text x="360.77971014493" y="-766.375" font-family="Times-Roman" font-size="12" fill="#000000">intercepted</text>
+    <path fill="none" stroke="#008000" stroke-opacity="1" stroke-width="1" d="M 486.8725395143 -795.62941097555 L 596.375 -782.575 C660.125 -774.975 692 -753.4640625 692 -718.0421875 L 692 -700.33125 C692 -660.01644016436 690.54273457384 -632.22045113029 687.62820372153 -616.94328289778" />
+    <polygon stroke="#008000" stroke-opacity="1" stroke-width="1" fill="#008000" fill-opacity="1" points="685.48368464611 -617.50532409095 685.0929997381 -607.26998249087 689.77272279696 -616.38124170462" />
+    <path fill="none" stroke="#008000" stroke-opacity="1" stroke-width="1" d="M 455.18260869565 -793.375 L 547.14081382653 -751.90365258804" />
+    <polygon stroke="#008000" stroke-opacity="1" stroke-width="1" fill="#008000" fill-opacity="1" points="546.22940987803 -749.88271339788 556.25668139542 -747.79257505697 548.05221777503 -753.9245917782" />
+    <path fill="none" stroke="#008000" stroke-opacity="1" stroke-width="1" d="M 0 -793.375 L 0 -758.975" />
+    <polygon stroke="#008000" stroke-opacity="1" stroke-width="1" fill="#008000" fill-opacity="1" points="-2.21694663167 -758.975 0 -748.975 2.21694663167 -758.975" />
+    <path fill="none" stroke="#0000ff" stroke-opacity="1" stroke-width="1" d="M 306.32272475065 -716.79877622915 L 405.63176446531 -679.7803271043" />
+    <polygon stroke="#0000ff" stroke-opacity="1" stroke-width="1" fill="#0000ff" fill-opacity="1" points="404.85742333692 -677.70300955886 415.00193836015 -676.2875 406.4061055937 -681.85764464973" />
+    <path fill="none" stroke="#ffa500" stroke-opacity="1" stroke-width="1" d="M 0 -574.4875 L 0 -552.8" />
+    <polygon stroke="#ffa500" stroke-opacity="1" stroke-width="1" fill="#ffa500" fill-opacity="1" points="-2.21694663167 -552.8 0 -542.8 2.21694663167 -552.8" />
+    <path fill="none" stroke="#d88b8b" stroke-opacity="1" stroke-width="1" d="M 437 -676.2875 L 437 -783.375" />
+    <polygon stroke="#d88b8b" stroke-opacity="1" stroke-width="1" fill="#d88b8b" fill-opacity="1" points="439.21694663167 -783.375 437 -793.375 434.78305336833 -783.375" />
+    <text x="437" y="-727.775" font-family="Times-Roman" font-size="12" fill="#000000">decorates</text>
+    <path fill="none" stroke="#008000" stroke-opacity="1" stroke-width="1" d="M 462.81088082902 -659.8875 L 623.72087129171 -608.76712442914" />
+    <polygon stroke="#008000" stroke-opacity="1" stroke-width="1" fill="#008000" fill-opacity="1" points="623.04961815133 -606.65424213492 633.25146740093 -605.73929718785 624.3921244321 -610.88000672335" />
+    <path fill="none" stroke="#ffa500" stroke-opacity="1" stroke-width="1" d="M 375 -574.4875 L 375 -552.8" />
+    <polygon stroke="#ffa500" stroke-opacity="1" stroke-width="1" fill="#ffa500" fill-opacity="1" points="372.78305336833 -552.8 375 -542.8 377.21694663167 -552.8" />
+    <!--nodes-->
+    <ellipse fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="0" cy="-732.575" rx="98.67666666667" ry="16.4" />
+    <text x="-48.33833333333" y="-727.775" font-family="Times-Roman" font-size="12" fill="#000000">InformationBroker</text>
+    <polygon stroke="#000000" stroke-opacity="1" stroke-width="1" fill="#808080" fill-opacity="1" points="497.09 -668.0875 589 -651.6875 680.91 -668.0875 589 -684.4875" />
+    <text x="544.045" y="-663.2875" font-family="Times-Roman" font-size="12" fill="#000000">Write To Console</text>
+    <polygon stroke="#000000" stroke-opacity="1" stroke-width="1" fill="#808080" fill-opacity="1" points="-191.38333333333 -526.4 0 -510 191.38333333333 -526.4 0 -542.8" />
+    <text x="-94.69166666667" y="-521.6" font-family="Times-Roman" font-size="12" fill="#000000">Produces Unrecovereable Exception</text>
+    <ellipse fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="590" cy="-732.575" rx="90.50666666667" ry="16.4" />
+    <text x="545.74666666667" y="-727.775" font-family="Times-Roman" font-size="12" fill="#000000">ExceptionLogger</text>
+    <ellipse fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="680" cy="-590.8875" rx="110.22" ry="16.4" />
+    <text x="625.89" y="-586.0875" font-family="Times-Roman" font-size="12" fill="#000000">ExceptionTerminator</text>
+    <rect fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="-56.585" y="-676.2875" width="113.17" height="16.4" rx="3" ry="3" />
+    <text x="-55.585" y="-663.2875" font-family="Times-Roman" font-size="12" fill="#000000">InformationGathered</text>
+    <rect fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="387.03333333333" y="-809.775" width="99.93333333333" height="16.4" rx="3" ry="3" />
+    <text x="388.03333333333" y="-796.775" font-family="Times-Roman" font-size="12" fill="#000000">ExceptionMessage</text>
+    <rect fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="-46.08833333333" y="-809.775" width="92.17666666667" height="16.4" rx="3" ry="3" />
+    <text x="-45.08833333333" y="-796.775" font-family="Times-Roman" font-size="12" fill="#000000">InitializeMessage</text>
+    <ellipse fill="#fafad2" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="264" cy="-732.575" rx="154.93" ry="16.4" />
+    <text x="187.535" y="-727.775" font-family="Times-Roman" font-size="12" fill="#000000">RecoverableExceptionMarker</text>
+    <ellipse fill="#fafad2" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="0" cy="-590.8875" rx="91.77" ry="16.4" />
+    <text x="-44.885" y="-586.0875" font-family="Times-Roman" font-size="12" fill="#000000">FaultyInterceptor</text>
+    <polygon stroke="#000000" stroke-opacity="1" stroke-width="1" fill="#808080" fill-opacity="1" points="202.27333333333 -526.4 375 -510 547.72666666667 -526.4 375 -542.8" />
+    <text x="289.63666666667" y="-521.6" font-family="Times-Roman" font-size="12" fill="#000000">Produces Recoverable Exception</text>
+    <polygon stroke="#000000" stroke-opacity="1" stroke-width="1" fill="#808080" fill-opacity="1" points="577.05666666667 -526.4 680 -510 782.94333333333 -526.4 680 -542.8" />
+    <text x="629.52833333333" y="-521.6" font-family="Times-Roman" font-size="12" fill="#000000">Terminate Program</text>
+    <rect fill="#fafad2" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="388.01166666667" y="-676.2875" width="97.97666666667" height="16.4" rx="3" ry="3" />
+    <text x="389.01166666667" y="-663.2875" font-family="Times-Roman" font-size="12" fill="#000000">HandledException</text>
+    <ellipse fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" cx="375" cy="-590.8875" rx="65.06666666667" ry="16.4" />
+    <text x="343.46666666667" y="-586.0875" font-family="Times-Roman" font-size="12" fill="#000000">FaultyAgent</text>
+    <!--end of nodes-->
+  </g>
+</svg>

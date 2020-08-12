@@ -7,14 +7,6 @@
 	Designer model (.amodel), a svg visualization of the community as well as
 	the actual implementation.
 
-	Not Implemented Use Cases:
-	Interceptor decorates a message
-	Interceptor replaces a message with a changed value
-	Interceptor delays a message while waiting on a self created message chain
-	Interceptor checks precondition
-	Interceptor implements reactive design (delay last message until same process finished)
-	Transaction with undo redo stack?
-
 Scenario: Hello World community prints to console
 This scenario shows a simple use case where two agents start simultaneously 
 with the initialization message. They are than collected by another agent and
@@ -60,4 +52,70 @@ the acutal consuming agents.
 	Given I have loaded the community "DecoratingInterceptorCommunity"
 	When I start the message board
 	Then the message "Information Detailed" was posted after a while
+	And the program was terminated
+
+Scenario: Replacing interceptor community prints to console
+This scenario shows an use case where a message is intercepted. Based
+on a check of the original message the original message is than replaced.
+Replacing a message means that the new message pretends to be the old message
+by providing the same parent, children and predecessor. This mechanism is useful,
+because all messages should be immutable. If I want to change a certain kind of
+property of a message based on a specific condition this is the only option.
+	Given I have loaded the community "ReplaceMessageCommunity"
+	When I start the message board
+	Then the message "Replaced Information" was posted after a while
+	And the program was terminated
+
+Scenario: Delay community prints multiple messages to console
+This scenario shows an use case where a message is intercepted. Based
+on a check of the original message the original message is than delayed until
+another chain of agents is completed. This scenario is useful if based on some
+condition a specific action needs to be executed without letting the original
+chain of messages know about it. A more concrete example would be the follwing.
+Assuming I have a chain of agents which commits changes to a git repository and
+pushes it to the remote repository. Now if the repository contains a submodule,
+I want the update the submodule before the changes are commited. The original
+chain of agents (creating a change, commiting, pushing) does not need to know 
+about submodules. The submodule updated is done by delaying the message the
+commiting agent is using.
+	Given I have loaded the community "DelayCommunity"
+	When I start the message board
+	Then the message "Transformed Information" was posted after a while
+	And the message "Special Information" was posted after a while
+	And the program was terminated
+
+Scenario: Precondition check community prints error message to console
+This scenario shows an use case where a message is intercepted. The intercepted 
+message is than validated and if it is invalid, the original message is not send.
+Instead an exception message is generated. This is the most simple of use cases
+of interceptors. The consuming agent of the original message does not care if
+the original message is validated or not. Therefore it cannot react on an
+"InformationValidated" message.
+	Given I have loaded the community "PreconditionCheckCommunity"
+	When I start the message board
+	Then the message "Validation Failed" was posted after a while
+	And the program was terminated
+
+Scenario: Defensive programming community does not terminate on recoverable exception
+This scenario shows an use case where it is show how the agent framework can be 
+used to program defensively. In this use case the FaultyAgent produces a recovereable
+exception which is only logged without terminating the whole program. Remember
+if there is not exception message handling agent, the agent framework will treat
+all exception messages as recovereable.
+	Given I pass the command line argument "Recover" to the program
+	And I have loaded the community "DefensiveProgrammingCommunity"
+	When I start the message board
+	Then the message "Recoverable Exception" was posted after a while
+	And the program was not terminated
+
+Scenario: Defensive programming community terminates on unrecoverable exception
+This scenario shows an use case where it is show how the agent framework can be 
+used to program defensively. In this use case the FaultyInterceptor produces an
+unrecovereable exception which is logged and the program is terminated. Remember
+if there is not exception message handling agent, the agent framework will treat
+all exception messages as recovereable.
+	Given I pass the command line argument "Terminate" to the program
+	And I have loaded the community "DefensiveProgrammingCommunity"
+	When I start the message board
+	Then the message "Unrecoverable Exception" was posted after a while
 	And the program was terminated

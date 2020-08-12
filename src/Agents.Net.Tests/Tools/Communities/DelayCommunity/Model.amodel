@@ -1,0 +1,99 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.DelayCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "a41e19f6-a9bf-48d1-b90e-c96b2c91dc37",
+      "Name": "InformationBroker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "a87fbf51-ebcf-4e4f-ba46-fcf72d896d97"
+      ],
+      "ProducedMessages": [
+        "57d905a9-67aa-4955-95fb-71eaf23c76d0"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "01c6983b-8c06-4db3-95c7-04f6c2294bc0",
+      "Name": "InformationConsoleWriter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "57d905a9-67aa-4955-95fb-71eaf23c76d0"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write to Console",
+        "Terminate Program"
+      ]
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer",
+      "InterceptingMessages": [
+        "57d905a9-67aa-4955-95fb-71eaf23c76d0"
+      ],
+      "Id": "9d92cd1e-dcea-4087-8e7d-e90b308d4cea",
+      "Name": "InformationDelayInterceptor",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "8ca07ac3-7026-4754-9e61-7147234e7735"
+      ],
+      "ProducedMessages": [
+        "26e16145-62f7-4870-a549-bf32a8e6a8a4"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "945ee15b-0fc1-4fcd-8f70-8a4cef4da542",
+      "Name": "InformationTransformer",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "26e16145-62f7-4870-a549-bf32a8e6a8a4"
+      ],
+      "ProducedMessages": [
+        "8ca07ac3-7026-4754-9e61-7147234e7735"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write to Console"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "a87fbf51-ebcf-4e4f-ba46-fcf72d896d97",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "cc22f36b-bb3f-4c78-afbc-888751b7d09f",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "57d905a9-67aa-4955-95fb-71eaf23c76d0",
+      "Name": "InformationGathered",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "8ca07ac3-7026-4754-9e61-7147234e7735",
+      "Name": "TransformationCompleted",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "26e16145-62f7-4870-a549-bf32a8e6a8a4",
+      "Name": "TransformingInformation",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}

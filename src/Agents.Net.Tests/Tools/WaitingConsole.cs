@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -17,11 +18,13 @@ namespace Agents.Net.Tests.Tools
             messageReceived.Set();
         }
 
-        public bool WaitForMessage(out string message, int timeout = 200)
+        public bool WaitForMessages(out IEnumerable<string> receivedMessages, int timeout = 200)
         {
             while (messageReceived.WaitOne(timeout)) { }
 
-            return messages.TryPeek(out message);
+            receivedMessages = messages.ToArray();
+
+            return receivedMessages.Any();
         }
 
         public void Dispose()

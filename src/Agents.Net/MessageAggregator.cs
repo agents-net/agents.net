@@ -14,6 +14,7 @@ using NLog;
 
 namespace Agents.Net
 {
+    //TODO Tests for try aggregate and try push
     public class MessageAggregator<T> where T:Message
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

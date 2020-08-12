@@ -74,8 +74,8 @@ namespace Agents.Net
             message.predecessorMessages = predecessorMessages;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
-            parent.RemoveChild(this);
-            parent.AddChild(message);
+            parent?.RemoveChild(this);
+            parent?.AddChild(message);
         }
 
         public IEnumerable<Message> Predecessors => predecessorMessages;

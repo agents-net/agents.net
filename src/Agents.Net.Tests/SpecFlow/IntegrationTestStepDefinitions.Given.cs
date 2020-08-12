@@ -32,6 +32,12 @@ namespace Agents.Net.Tests.SpecFlow
             RegisterAgents(container);
         }
 
+        [Given(@"I pass the command line argument ""(.*)"" to the program")]
+        public void GivenIPassTheCommandLineArgumentToTheProgram(string argument)
+        {
+            context.Set(new CommandLineArgs(argument));
+        }
+        
         private static void RegisterAgents(IContainer container)
         {
             Agent[] agents = container.Resolve<IEnumerable<Agent>>().ToArray();
@@ -46,7 +52,7 @@ namespace Agents.Net.Tests.SpecFlow
             context.Set(terminatedEvent, TerminateEventKey);
         }
 
-        private static IContainer BuildContainer(string communityName, out ManualResetEventSlim terminatedEvent)
+        private IContainer BuildContainer(string communityName, out ManualResetEventSlim terminatedEvent)
         {
             ManualResetEventSlim localEvent = new ManualResetEventSlim(false);
             terminatedEvent = localEvent;
@@ -59,6 +65,10 @@ namespace Agents.Net.Tests.SpecFlow
             builder.RegisterType<MessageBoard>().As<IMessageBoard>().InstancePerLifetimeScope();
             builder.RegisterType<WaitingConsole>().As<IConsole>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterInstance((Action) Terminate);
+            if (context.TryGetValue(out CommandLineArgs args))
+            {
+                builder.RegisterInstance(args);
+            }
             IContainer container = builder.Build();
             return container;
 

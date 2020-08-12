@@ -1,0 +1,84 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.PreconditionCheckCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "4247ceef-9e55-4153-9ba8-ef2b43359e4e",
+      "Name": "InformationBroker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "44ef73b6-d60b-4f14-ae68-b58e9799322a"
+      ],
+      "ProducedMessages": [
+        "fabc4f1f-7a44-455f-8320-adbb9d81d94e"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "bf17798d-b002-4b75-915b-c33b921e6c78",
+      "Name": "InformationConsoleWriter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "fabc4f1f-7a44-455f-8320-adbb9d81d94e"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write To Console",
+        "Terminate Program"
+      ]
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer",
+      "InterceptingMessages": [
+        "fabc4f1f-7a44-455f-8320-adbb9d81d94e"
+      ],
+      "Id": "5b05a3a1-a613-41d5-b842-61a0dcda62e9",
+      "Name": "InformationValidator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "9d8442d4-92ac-4d8a-8865-016be06e97da"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "efea3dd8-1b56-4f59-ba19-6bf576e56643",
+      "Name": "ExceptionConsoleWriter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "9d8442d4-92ac-4d8a-8865-016be06e97da"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write To Console",
+        "Terminate Program"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "44ef73b6-d60b-4f14-ae68-b58e9799322a",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "9d8442d4-92ac-4d8a-8865-016be06e97da",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "fabc4f1f-7a44-455f-8320-adbb9d81d94e",
+      "Name": "InformationGathered",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}

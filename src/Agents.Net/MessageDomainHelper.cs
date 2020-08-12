@@ -70,25 +70,5 @@ namespace Agents.Net
                 }
             }
         }
-
-        
-
-        public static IEnumerable<Message> TerminateDomainsOfMessages(this IEnumerable<Message> terminatedMessages)
-        {
-            foreach (MessageDomain terminatedDomain in terminatedMessages.Select(m => m.MessageDomain).Distinct())
-            {
-                terminatedDomain.Terminate();
-            }
-
-            return terminatedMessages;
-        }
-
-        public static void TerminateDomains(IEnumerable<MessageDomain> terminatedDomains)
-        {
-            foreach (MessageDomain terminatedDomain in terminatedDomains)
-            {
-                terminatedDomain.Terminate();
-            }
-        }
     }
 }
