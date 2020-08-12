@@ -101,10 +101,106 @@ namespace Agents.Net.Tests
             executed.Should().Be(2, "only when consumed message is added again, the collector is executed again.");
         }
 
+        [Test]
+        public void SetIsExecutedWhenItHasACompleteSetIfAllMessageAreInSet()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6> collector = 
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6>(set =>
+                {
+                    executed = set.Message1 != null &&
+                               set.Message2 != null&&
+                               set.Message3 != null&&
+                               set.Message4 != null&&
+                               set.Message5 != null&&
+                               set.Message6 != null&&
+                               set.Message7 != null;
+                });
+            collector.Push(new TestMessage());
+            collector.Push(new OtherMessage());
+            collector.Push(new OtherMessage2());
+            collector.Push(new OtherMessage3());
+            collector.Push(new OtherMessage4());
+            collector.Push(new OtherMessage5());
+            collector.Push(new OtherMessage6());
+
+            executed.Should().BeTrue("set should have been executed.");
+        }
+
         private class OtherMessage : Message
         {
 
             public OtherMessage()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class OtherMessage2 : Message
+        {
+
+            public OtherMessage2()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class OtherMessage3 : Message
+        {
+
+            public OtherMessage3()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class OtherMessage4 : Message
+        {
+
+            public OtherMessage4()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class OtherMessage5 : Message
+        {
+
+            public OtherMessage5()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
+
+        private class OtherMessage6 : Message
+        {
+
+            public OtherMessage6()
                 : base(Array.Empty<Message>())
             {
             }

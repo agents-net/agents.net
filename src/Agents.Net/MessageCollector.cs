@@ -494,7 +494,7 @@ namespace Agents.Net
 
         protected override void RemoveMessage(Message message)
         {
-            if (message is T3 message6)
+            if (message is T6 message6)
             {
                 Messages6.Remove(message6.MessageDomain);
             }
@@ -568,7 +568,7 @@ namespace Agents.Net
 
         protected override void RemoveMessage(Message message)
         {
-            if (message is T3 message7)
+            if (message is T7 message7)
             {
                 Messages7.Remove(message7.MessageDomain);
             }

@@ -7,9 +7,6 @@
 	Designer model (.amodel), a svg visualization of the community as well as
 	the actual implementation.
 
-	Not Implemented Use Cases:
-	Interceptor implements reactive design (delay last message until same process finished)
-
 Scenario: Hello World community prints to console
 This scenario shows a simple use case where two agents start simultaneously 
 with the initialization message. They are than collected by another agent and
