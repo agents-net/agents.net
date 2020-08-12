@@ -1,0 +1,119 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.DefensiveProgrammingCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "143cfa33-6dc6-497a-af48-d9b145f01aad",
+      "Name": "FaultyAgent",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "d23b38b3-e2fd-49b0-bb00-66afa4025565"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Produces Recoverable Exception"
+      ]
+    },
+    {
+      "Id": "d6a2fff1-d612-486b-a9e0-35d63ba0ec0d",
+      "Name": "InformationBroker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "08579974-e14d-46e4-b559-c79754245950"
+      ],
+      "ProducedMessages": [
+        "d23b38b3-e2fd-49b0-bb00-66afa4025565"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer",
+      "InterceptingMessages": [
+        "d23b38b3-e2fd-49b0-bb00-66afa4025565"
+      ],
+      "Id": "b41873f8-8b27-4e31-9657-de65a4db20e8",
+      "Name": "FaultyInterceptor",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Produces Unrecovereable Exception"
+      ]
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer",
+      "InterceptingMessages": [
+        "178e20c7-3453-4558-9163-df57a8974639"
+      ],
+      "Id": "c60133b4-5dab-43f4-9336-ec0d94d6ca0e",
+      "Name": "RecoverableExceptionMarker",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "19f89d05-3eac-4fcf-a0b1-ecc09885169f"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "89c8b1dc-783a-4188-a60f-80622503789f",
+      "Name": "ExceptionTerminator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "178e20c7-3453-4558-9163-df57a8974639",
+        "19f89d05-3eac-4fcf-a0b1-ecc09885169f"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Terminate Program"
+      ]
+    },
+    {
+      "Id": "d74a3994-a502-467a-be03-65f92df707d1",
+      "Name": "ExceptionLogger",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "178e20c7-3453-4558-9163-df57a8974639"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Write To Console"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "08579974-e14d-46e4-b559-c79754245950",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "178e20c7-3453-4558-9163-df57a8974639",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "d23b38b3-e2fd-49b0-bb00-66afa4025565",
+      "Name": "InformationGathered",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.MessageDecoratorModel, Agents.Net.Designer",
+      "DecoratedMessage": "178e20c7-3453-4558-9163-df57a8974639",
+      "Id": "19f89d05-3eac-4fcf-a0b1-ecc09885169f",
+      "Name": "HandledException",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}

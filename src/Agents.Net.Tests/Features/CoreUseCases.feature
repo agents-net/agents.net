@@ -95,3 +95,27 @@ the original message is validated or not. Therefore it cannot react on an
 	When I start the message board
 	Then the message "Validation Failed" was posted after a while
 	And the program was terminated
+
+Scenario: Defensive programming community does not terminate on recoverable exception
+This scenario shows an use case where it is show how the agent framework can be 
+used to program defensively. In this use case the FaultyAgent produces a recovereable
+exception which is only logged without terminating the whole program. Remember
+if there is not exception message handling agent, the agent framework will treat
+all exception messages as recovereable.
+	Given I pass the command line argument "Recover" to the program
+	And I have loaded the community "DefensiveProgrammingCommunity"
+	When I start the message board
+	Then the message "Recoverable Exception" was posted after a while
+	And the program was not terminated
+
+Scenario: Defensive programming community terminates on unrecoverable exception
+This scenario shows an use case where it is show how the agent framework can be 
+used to program defensively. In this use case the FaultyInterceptor produces an
+unrecovereable exception which is logged and the program is terminated. Remember
+if there is not exception message handling agent, the agent framework will treat
+all exception messages as recovereable.
+	Given I pass the command line argument "Terminate" to the program
+	And I have loaded the community "DefensiveProgrammingCommunity"
+	When I start the message board
+	Then the message "Unrecoverable Exception" was posted after a while
+	And the program was terminated

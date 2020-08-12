@@ -22,6 +22,13 @@ namespace Agents.Net.Tests.SpecFlow
         {
             context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(100)
                    .Should().BeTrue("program should have been terminated.");
+        }        
+        
+        [Then(@"the program was not terminated")]
+        public void ThenTheProgramWasNotTerminated()
+        {
+            context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(100)
+                   .Should().BeFalse("program should not have been terminated.");
         }
 
         [Then("the agents (.*) were executed parallel")]
