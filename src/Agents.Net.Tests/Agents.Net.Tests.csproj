@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Folder Include="Tools\Communities\DecoratingInterceptorCommunity\" />
+    <Folder Include="Tools\Communities\CounterCommunity\" />
   </ItemGroup>
 
 </Project>

@@ -98,8 +98,16 @@ namespace Agents.Net
             private readonly Dictionary<Type, List<InterceptorAgent>> interceptorAgents = 
                 new Dictionary<Type, List<InterceptorAgent>>();
 
+            private readonly List<Agent> registeredMessageAgents = new List<Agent>();
+
+            private readonly List<InterceptorAgent> registeredMessageInterceptors = new List<InterceptorAgent>();
+
             public void Register(Type trigger, Agent agent)
             {
+                if (trigger == typeof(Message))
+                {
+                    registeredMessageAgents.Add(agent);
+                }
                 if (!registeredAgents.ContainsKey(trigger))
                 {
                     registeredAgents.Add(trigger, new List<Agent>());
@@ -109,6 +117,10 @@ namespace Agents.Net
 
             public void RegisterInterceptor(Type trigger, InterceptorAgent agent)
             {
+                if (trigger == typeof(Message))
+                {
+                    registeredMessageInterceptors.Add(agent);
+                }
                 if (!interceptorAgents.ContainsKey(trigger))
                 {
                     interceptorAgents.Add(trigger, new List<InterceptorAgent>());
@@ -118,7 +130,9 @@ namespace Agents.Net
 
             public void Publish(Message messageContainer)
             {
-                List<InterceptorAgent> interceptors = null;
+                List<InterceptorAgent> interceptors = registeredMessageInterceptors.Count > 0
+                                                          ? new List<InterceptorAgent>(registeredMessageInterceptors)
+                                                          : null;
                 foreach (Message message in messageContainer.Children.Concat(new []{messageContainer}))
                 {
                     if (!interceptorAgents.TryGetValue(message.MessageType, out List<InterceptorAgent> agents))
@@ -126,10 +140,7 @@ namespace Agents.Net
                         continue;
                     }
 
-                    if (interceptors == null)
-                    {
-                        interceptors = new List<InterceptorAgent>();
-                    }
+                    interceptors = interceptors ?? new List<InterceptorAgent>();
 
                     interceptors.AddRange(agents);
                 }
@@ -196,15 +207,16 @@ namespace Agents.Net
 
             private void PublishSingleMessage(Message message)
             {
-                if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents))
+                if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents) &&
+                    registeredMessageAgents.Count == 0)
                 {
                     (message as IDisposable)?.Dispose();
                     return;
                 }
 
-                message.SetUserCount(agents.Count);
+                message.SetUserCount(agents?.Count ?? 0 + registeredMessageAgents.Count);
 
-                foreach (Agent agent in agents)
+                foreach (Agent agent in registeredMessageAgents.Concat(agents??Enumerable.Empty<Agent>()))
                 {
 #if NETSTANDARD2_1
                     ThreadPool.QueueUserWorkItem((Message m) =>
