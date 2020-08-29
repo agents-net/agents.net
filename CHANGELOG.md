@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Added
 - Integration tests
 - Community health files and appropriate readme
+- It is now possible to register to all messages by using the type Message for the ConsumeAttribute or InterceptsAttribute
 
 ### Changed
 - **Breaking Change:** Switch from magic string based agent definition to type based agent definition

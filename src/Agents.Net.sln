@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agents.Net", "Agents.Net\Ag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agents.Net.Tests", "Agents.Net.Tests\Agents.Net.Tests.csproj", "{87895EF5-BDCB-419E-97B8-6B463ECE156A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agents.Net.Benchmarks", "Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj", "{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agents.Net.Benchmarks", "Agents.Net.Benchmarks\Agents.Net.Benchmarks.csproj", "{89B4F124-8C40-43BD-BA50-C5E5BB28AD38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7CD3C581-5588-4FFB-BB74-858499771B4D}"
+	ProjectSection(SolutionItems) = preProject
+		..\CHANGELOG.md = ..\CHANGELOG.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
