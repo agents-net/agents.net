@@ -1,0 +1,130 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.CounterCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "898d0c27-ff2f-4c32-8427-411c31c7b64a",
+      "Name": "MessageCounter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "fdc748ac-18a5-442e-9e38-0360657cebfe"
+      ],
+      "ProducedMessages": [
+        "07ea41c8-b0c5-4b06-891c-9dcbd5674c71"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer.Model",
+      "InterceptingMessages": [
+        "fdc748ac-18a5-442e-9e38-0360657cebfe"
+      ],
+      "Id": "df0e9fcd-1655-4ab2-a7db-5a2b7c456980",
+      "Name": "InterceptingCounter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "d3d2081e-031e-49ae-b475-0f96ffc6298f"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "30e62043-6aa8-4cf0-b71a-8974515257e0",
+      "Name": "MessageProducer",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "1a3e74db-429d-4fe5-b838-ff1cbf3a972e"
+      ],
+      "ProducedMessages": [
+        "9caaf3b8-7a5e-4490-9cba-40a5cbd34426",
+        "f6d4436f-eb8e-4f2f-8b8f-237e0863b14b",
+        "87eafb5a-4547-4510-b41e-341ff488d3e5",
+        "af6416b9-ee39-4d19-b4aa-d4acda37f01c",
+        "8006a398-8dd4-430e-b4e6-b8627c1353f9"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "5f203413-8352-45ec-a1eb-1c453bd050c8",
+      "Name": "MessageConsoleWriter",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "07ea41c8-b0c5-4b06-891c-9dcbd5674c71",
+        "d3d2081e-031e-49ae-b475-0f96ffc6298f"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Print To Console",
+        "Terminate Program"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "1a3e74db-429d-4fe5-b838-ff1cbf3a972e",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "99ddf25c-1a06-4cb2-b150-e09a1f51472f",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "fdc748ac-18a5-442e-9e38-0360657cebfe",
+      "Name": "Message",
+      "Namespace": "Agents.Net",
+      "BuildIn": false
+    },
+    {
+      "Id": "9caaf3b8-7a5e-4490-9cba-40a5cbd34426",
+      "Name": "Message1",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "f6d4436f-eb8e-4f2f-8b8f-237e0863b14b",
+      "Name": "Message2",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "87eafb5a-4547-4510-b41e-341ff488d3e5",
+      "Name": "Message3",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "af6416b9-ee39-4d19-b4aa-d4acda37f01c",
+      "Name": "Message4",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "8006a398-8dd4-430e-b4e6-b8627c1353f9",
+      "Name": "Message5",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "07ea41c8-b0c5-4b06-891c-9dcbd5674c71",
+      "Name": "ConsumedAllMessages",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "d3d2081e-031e-49ae-b475-0f96ffc6298f",
+      "Name": "InterceptedAllMessages",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}

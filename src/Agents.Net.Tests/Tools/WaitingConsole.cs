@@ -18,9 +18,12 @@ namespace Agents.Net.Tests.Tools
             messageReceived.Set();
         }
 
-        public bool WaitForMessages(out IEnumerable<string> receivedMessages, int timeout = 200)
+        public bool WaitForMessages(out IEnumerable<string> receivedMessages, int timeout = 300)
         {
-            while (messageReceived.WaitOne(timeout)) { }
+            while (messageReceived.WaitOne(timeout))
+            {
+                //do nothing
+            }
 
             receivedMessages = messages.ToArray();
 
