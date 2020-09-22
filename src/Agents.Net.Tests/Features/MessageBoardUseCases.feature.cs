@@ -127,12 +127,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Dispose messages after they were used")]
         [NUnit.Framework.CategoryAttribute("DisposeCheck")]
-        [NUnit.Framework.CategoryAttribute("Slow")]
         public virtual void DisposeMessagesAfterTheyWereUsed()
         {
             string[] tagsOfScenario = new string[] {
-                    "DisposeCheck",
-                    "Slow"};
+                    "DisposeCheck"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dispose messages after they were used", @"This scenario shows the feature, that messages are disposed after they were
 used. The heuristic that is used to determine whether a message is used or not
@@ -142,7 +140,7 @@ message can be disposed is that by default after the Execute method of any
 Agent the message will count it as used. After it was used as many times as
 there are agents it will dispose itself. The community used will have different
 messages. Afterwards it is checked whether all messages are disposed ", tagsOfScenario, argumentsOfScenario);
-#line 21
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -162,16 +160,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 30
+#line 29
  testRunner.Given("I have loaded the community \"DefaultDisposeCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 31
+#line 30
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 31
  testRunner.Then("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 33
+#line 32
  testRunner.And("all messages are disposed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
