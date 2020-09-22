@@ -64,12 +64,21 @@ namespace Agents.Net.Tests.SpecFlow
             builder.RegisterModule((IModule) Activator.CreateInstance(moduleType));
             builder.RegisterType<MessageBoard>().As<IMessageBoard>().InstancePerLifetimeScope();
             builder.RegisterType<WaitingConsole>().As<IConsole>().AsSelf().InstancePerLifetimeScope();
+            if (context.ScenarioInfo.Tags.Contains("DisposeCheck"))
+            {
+                builder.RegisterType<DisposeManager>().AsSelf().As<Agent>().InstancePerLifetimeScope();
+            }
             builder.RegisterInstance((Action) Terminate);
             if (context.TryGetValue(out CommandLineArgs args))
             {
                 builder.RegisterInstance(args);
             }
             IContainer container = builder.Build();
+            
+            if (context.ScenarioInfo.Tags.Contains("DisposeCheck"))
+            {
+                context.Set(container.Resolve<DisposeManager>());
+            }
             return container;
 
             void Terminate()

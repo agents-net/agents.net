@@ -33,7 +33,7 @@ namespace Agents.Net.Tests.Tools
 
                     activeStep?.Collect(activeAgents[log.Agent]);
                 }
-                else
+                else if(activeAgents.ContainsKey(log.Agent))
                 {
                     AgentCollector remainingCollector = activeAgents[log.Agent].Finish(log.Message);
                     if (remainingCollector == null)

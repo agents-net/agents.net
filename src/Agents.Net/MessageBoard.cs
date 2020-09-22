@@ -173,10 +173,42 @@ namespace Agents.Net
 
             private void PublishFinalMessageContainer(Message container)
             {
-                PublishSingleMessage(container);
-                foreach (Message message in container.Children)
+                List<Agent> consumers = registeredMessageAgents.Count > 0
+                                            ? new List<Agent>(registeredMessageAgents)
+                                            : null;
+                foreach (Message message in container.Children.Concat(new []{container}))
                 {
-                    PublishSingleMessage(message);
+                    if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents))
+                    {
+                        continue;
+                    }
+
+                    consumers = consumers ?? new List<Agent>();
+                    consumers.AddRange(agents);
+                }
+
+                foreach (Message message in container.Children.Concat(new[] {container}))
+                {
+                    message.SetUserCount(consumers?.Count ?? 0);
+                }
+
+                foreach (Agent consumer in consumers??Enumerable.Empty<Agent>())
+                {
+                    
+#if NETSTANDARD2_1
+                    ThreadPool.QueueUserWorkItem((Message m) =>
+                    {
+                        consumer.Execute(container);
+                        container.Used(true);
+                    }, container, false);
+#else
+                        ThreadPool.QueueUserWorkItem((o) => 
+                        {
+                            Message message = (Message) o;
+                            consumer.Execute(message);
+                            message.Used(true);
+                        }, container);
+#endif
                 }
             }
 
@@ -187,8 +219,11 @@ namespace Agents.Net
                 lock (execution.Results)
                 {
                     execution.Results.Add(result);
-                    canPublishFinalMessage = execution.Results.Count == execution.Interceptions &&
-                                             execution.Results.All(r => r != InterceptionAction.DoNotPublish);
+                    if (execution.Results.Count != execution.Interceptions)
+                    {
+                        return;
+                    }
+                    canPublishFinalMessage = execution.Results.All(r => r != InterceptionAction.DoNotPublish);
                 }
 
                 if (canPublishFinalMessage)
@@ -197,40 +232,11 @@ namespace Agents.Net
                 }
                 else
                 {
-                    (execution.Message.HeadMessage as IDisposable)?.Dispose();
+                    execution.Message.HeadMessage.Dispose();
                     foreach (Message child in execution.Message.HeadMessage.Children.ToArray())
                     {
-                        (child as IDisposable)?.Dispose();
+                        child.Dispose();
                     }
-                }
-            }
-
-            private void PublishSingleMessage(Message message)
-            {
-                if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents) &&
-                    registeredMessageAgents.Count == 0)
-                {
-                    (message as IDisposable)?.Dispose();
-                    return;
-                }
-
-                message.SetUserCount(agents?.Count ?? 0 + registeredMessageAgents.Count);
-
-                foreach (Agent agent in registeredMessageAgents.Concat(agents??Enumerable.Empty<Agent>()))
-                {
-#if NETSTANDARD2_1
-                    ThreadPool.QueueUserWorkItem((Message m) =>
-                    {
-                        agent.Execute(message);
-                        message.Used();
-                    }, message, false);
-#else
-                        ThreadPool.QueueUserWorkItem((o) => 
-                        {
-                            agent.Execute((Message) o);
-                            message.Used();
-                        }, message);
-#endif
                 }
             }
 

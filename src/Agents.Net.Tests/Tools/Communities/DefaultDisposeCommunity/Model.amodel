@@ -1,0 +1,141 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.DefaultDisposeCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "7dfdfe91-9e7a-42ec-9fff-a107be4cd152",
+      "Name": "MessageGenerator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "38ec9bc7-0433-4b28-927e-1dc5463dfdad"
+      ],
+      "ProducedMessages": [
+        "1e12352c-eb86-4c14-a7a1-3dacae9e19a9",
+        "38ce4772-5e7c-46c3-bb8b-f172b3670552",
+        "479fe122-9b96-4bc2-9b73-310453126c67",
+        "efc1145f-bdac-44bb-9908-0345d7133846",
+        "7f3350b5-1dd6-40b4-838e-aa25b56a8a74"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "eafdd7dd-23fa-4696-b464-a83134ba85ef",
+      "Name": "ConsumingAgent1",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "1e12352c-eb86-4c14-a7a1-3dacae9e19a9",
+        "38ce4772-5e7c-46c3-bb8b-f172b3670552",
+        "efc1145f-bdac-44bb-9908-0345d7133846",
+        "45ad0038-4ce9-4f39-99aa-854bbcb9992c"
+      ],
+      "ProducedMessages": [
+        "8dac8906-eb69-4d44-8939-032c95abb82f"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "6530266c-73f2-48b7-8e17-b19c40acbc5c",
+      "Name": "ConsumingAgent2",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "38ce4772-5e7c-46c3-bb8b-f172b3670552"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "NOP"
+      ]
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer.Model",
+      "InterceptingMessages": [
+        "efc1145f-bdac-44bb-9908-0345d7133846",
+        "7f3350b5-1dd6-40b4-838e-aa25b56a8a74"
+      ],
+      "Id": "2112e69f-0963-4a72-a3dc-c16bd2058ddb",
+      "Name": "InterceptorDecorator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "45ad0038-4ce9-4f39-99aa-854bbcb9992c"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "73697a4c-7982-4f4b-8c7d-4cafa6290175",
+      "Name": "Terminator",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "8dac8906-eb69-4d44-8939-032c95abb82f"
+      ],
+      "ProducedMessages": [],
+      "IncomingEvents": [],
+      "ProducedEvents": [
+        "Terminate Program"
+      ]
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "38ec9bc7-0433-4b28-927e-1dc5463dfdad",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "a170bf76-0054-4c44-b3c3-9cac02fd8dbc",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "1e12352c-eb86-4c14-a7a1-3dacae9e19a9",
+      "Name": "SingleConsumedMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "38ce4772-5e7c-46c3-bb8b-f172b3670552",
+      "Name": "MultiConsumedMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "479fe122-9b96-4bc2-9b73-310453126c67",
+      "Name": "UnconsumedMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "efc1145f-bdac-44bb-9908-0345d7133846",
+      "Name": "InterceptedMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "7f3350b5-1dd6-40b4-838e-aa25b56a8a74",
+      "Name": "DecoratedMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.MessageDecoratorModel, Agents.Net.Designer.Model",
+      "DecoratedMessage": "7f3350b5-1dd6-40b4-838e-aa25b56a8a74",
+      "Id": "45ad0038-4ce9-4f39-99aa-854bbcb9992c",
+      "Name": "DecoratingMessage",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "8dac8906-eb69-4d44-8939-032c95abb82f",
+      "Name": "AllMessagesConsumed",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}
