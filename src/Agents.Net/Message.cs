@@ -259,12 +259,21 @@ namespace Agents.Net
             return !Equals(left, right);
         }
 
-        internal void Used()
+        internal void Used(bool propagate = false)
         {
             if (Interlocked.Decrement(ref remainingUses) == 0)
             {
                 Dispose();
             }
+
+            if (propagate)
+            {
+                foreach (Message child in Children)
+                {
+                    child.Used();
+                }
+            }
+            
         }
 
         public IDisposable DelayDispose()
@@ -286,6 +295,7 @@ namespace Agents.Net
 
         protected virtual void Dispose(bool disposing)
         {
+            remainingUses = 0;
         }
 
         public void Dispose()

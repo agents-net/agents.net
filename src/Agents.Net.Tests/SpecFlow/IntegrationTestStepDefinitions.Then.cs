@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Agents.Net.Tests.Tools;
 using FluentAssertions;
@@ -20,15 +21,22 @@ namespace Agents.Net.Tests.SpecFlow
         [Then("the program was terminated")]
         public void ThenTheProgramWasTerminated()
         {
-            context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(100)
+            context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(300)
                    .Should().BeTrue("program should have been terminated.");
         }        
         
         [Then(@"the program was not terminated")]
         public void ThenTheProgramWasNotTerminated()
         {
-            context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(100)
+            context.Get<ManualResetEventSlim>(TerminateEventKey).Wait(300)
                    .Should().BeFalse("program should not have been terminated.");
+        }    
+        
+        [Then(@"all messages are disposed")]
+        public void ThenAllMessagesAreDisposed()
+        {
+            context.Get<WaitingConsole>().WaitForMessages(out _);
+            context.Get<DisposeManager>().CheckAllDisposed();
         }
 
         [Then("the agents (.*) were executed parallel")]
