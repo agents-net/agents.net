@@ -9,14 +9,14 @@
 
 using System;
 using System.Runtime.ExceptionServices;
-using NLog;
+using Serilog;
+using Serilog.Events;
 
 namespace Agents.Net
 {
     [Produces(typeof(ExceptionMessage))]
     public abstract class InterceptorAgent : Agent
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string agentName;
 
         protected InterceptorAgent(IMessageBoard messageBoard, string name = null) : base(messageBoard)
@@ -31,7 +31,16 @@ namespace Agents.Net
 
         public InterceptionAction Intercept(Message messageData)
         {
-            Logger.Trace(new AgentLog(messageData, "Intercepting", agentName));
+            if (messageData == null)
+            {
+                throw new ArgumentNullException(nameof(messageData));
+            }
+            
+            if (Log.IsEnabled(LogEventLevel.Verbose))
+            {
+                Log.Verbose("{@log:lj}",
+                            new AgentLog(agentName, "Intercepting", Id, messageData.ToMessageLog()));
+            }
 
             try
             {

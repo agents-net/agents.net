@@ -318,5 +318,11 @@ namespace Agents.Net
                 message.Used();
             }
         }
+
+        public MessageLog ToMessageLog()
+        {
+            return new MessageLog(name, Id, predecessorMessages.Select(m => m.Id), MessageDomain.Root.Id,
+                                  DataToString(), Children.Select(m => m.Id));
+        }
     }
 }
