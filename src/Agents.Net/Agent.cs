@@ -57,8 +57,16 @@ namespace Agents.Net
         {
             if (Log.IsEnabled(LogEventLevel.Verbose))
             {
-                Log.Verbose("{@log}",
-                            new AgentLog(agentName, "Publishing", Id, message?.ToMessageLog()));
+                if (message is ExceptionMessage exceptionMessage)
+                {
+                    Log.Verbose(exceptionMessage.ExceptionInfo.SourceException, "{@log}",
+                                new AgentLog(agentName, "Publishing", Id, message?.ToMessageLog()));
+                }
+                else
+                {
+                    Log.Verbose("{@log}",
+                                new AgentLog(agentName, "Publishing", Id, message?.ToMessageLog()));
+                }
             }
             messageBoard.Publish(message);
         }
