@@ -49,6 +49,7 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
             SpinWaiter waiter = new SpinWaiter(messageBoard, () => finishedEvent.Set(), false);
             messageBoard.Register(waiter);
             messageBoard.Start();
+            File.Delete("log.json");
             Log.Logger = new LoggerConfiguration()
                         .MinimumLevel.Verbose()
                         .WriteTo.Async(l => l.File(new CompactJsonFormatter(), "log.json"))

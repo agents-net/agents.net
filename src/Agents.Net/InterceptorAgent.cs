@@ -38,7 +38,7 @@ namespace Agents.Net
             
             if (Log.IsEnabled(LogEventLevel.Verbose))
             {
-                Log.Verbose("{@log:lj}",
+                Log.Verbose("{@log}",
                             new AgentLog(agentName, "Intercepting", Id, messageData.ToMessageLog()));
             }
 

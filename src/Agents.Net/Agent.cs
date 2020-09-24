@@ -38,7 +38,7 @@ namespace Agents.Net
 
             if (Log.IsEnabled(LogEventLevel.Verbose))
             {
-                Log.Verbose("{@log:lj}",
+                Log.Verbose("{@log}",
                             new AgentLog(agentName, "Executing", Id, messageData.ToMessageLog()));
             }
 
@@ -57,7 +57,7 @@ namespace Agents.Net
         {
             if (Log.IsEnabled(LogEventLevel.Verbose))
             {
-                Log.Verbose("{@log:lj}",
+                Log.Verbose("{@log}",
                             new AgentLog(agentName, "Publishing", Id, message?.ToMessageLog()));
             }
             messageBoard.Publish(message);
