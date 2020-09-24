@@ -10,14 +10,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 
 namespace Agents.Net
 {
-    //TODO Tests for try aggregate and try push
     public class MessageAggregator<T> where T:Message
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Action<IReadOnlyCollection<T>> onAggregated;
 
         public MessageAggregator(Action<IReadOnlyCollection<T>> onAggregated)
@@ -71,7 +68,6 @@ namespace Agents.Net
             HashSet<MessageStore<T>> completedMessageBatch = null;
             lock (dictionaryLock)
             {
-                Logger.Trace($"Enter aggregation lock. Source:{message.Id}");
                 if (!aggregatedMessages.ContainsKey(root))
                 {
                     aggregatedMessages.Add(root, new HashSet<MessageStore<T>>());
@@ -82,12 +78,10 @@ namespace Agents.Net
                     completedMessageBatch = aggregatedMessages[root];
                     aggregatedMessages.Remove(root);
                 }
-                Logger.Trace($"Exit aggregation lock. Batch:{completedMessageBatch != null}");
             }
 
             if (completedMessageBatch != null)
             {
-                Logger.Trace($"Execute aggregated message. Source:{message.Id}");
                 onAggregated(completedMessageBatch.Select<MessageStore<T>,T>(m => m).ToArray());
                 foreach (MessageStore<T> messageStore in completedMessageBatch)
                 {

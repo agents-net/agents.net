@@ -19,7 +19,7 @@ namespace Agents.Net.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run(Assembly.GetExecutingAssembly());
+            BenchmarkRunner.Run(Assembly.GetAssembly(typeof(Program)));
         }
     }
 }

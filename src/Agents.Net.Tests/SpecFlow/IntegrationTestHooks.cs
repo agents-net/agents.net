@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Agents.Net.Tests.Tools;
-using Agents.Net.Tests.Tools.Log;
-using Newtonsoft.Json;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
+using Newtonsoft.Json.Linq;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using TechTalk.SpecFlow;
 
 namespace Agents.Net.Tests.SpecFlow
@@ -27,21 +27,38 @@ namespace Agents.Net.Tests.SpecFlow
         [BeforeScenario]
         public void BeforeScenario()
         {
-            LoggingConfiguration emptyConfiguration = LogManager.Configuration;
             ExecutionOrder executionOrder = new ExecutionOrder();
-            context.Set(emptyConfiguration);
             context.Set(executionOrder);
-            LoggingConfiguration executionOrderConfiguration = new LoggingConfiguration();
-            Target executionOrderLogger = new MethodCallTarget("ExecutionOrderLog", (info, objects) =>
+            Log.Logger = new DelegateLogger(AddToExecutionOrder);
+            
+            void AddToExecutionOrder(LogEventLevel level, Exception exception, string messageTemplate, object[] propertyValues)
             {
-                using StringReader textReader = new StringReader(info.FormattedMessage);
-                using JsonReader jsonReader = new JsonTextReader(textReader);
-                JsonSerializer serializer = new JsonSerializer();
-                AgentLog log = serializer.Deserialize<AgentLog>(jsonReader);
-                executionOrder.Add(log);
-            });
-            executionOrderConfiguration.AddRule(LogLevel.Trace, LogLevel.Trace, executionOrderLogger);
-            LogManager.Configuration = executionOrderConfiguration;
+                if (level == LogEventLevel.Verbose && 
+                    propertyValues.OfType<AgentLog>().Count() == 1)
+                {
+                    executionOrder.Add(propertyValues.OfType<AgentLog>().Single());
+                }
+            }
+        }
+
+        private class DelegateLogger : ILogger
+        {
+            private readonly Action<LogEventLevel, Exception, string, object[]> delegateAction;
+
+            public DelegateLogger(Action<LogEventLevel, Exception, string, object[]> delegateAction)
+            {
+                this.delegateAction = delegateAction;
+            }
+
+            public void Write(LogEvent logEvent)
+            {
+                throw new NotSupportedException("Not supported");
+            }
+
+            public void Write(LogEventLevel level, Exception exception, string messageTemplate, params object[] propertyValues)
+            {
+                delegateAction(level, exception, messageTemplate, propertyValues);
+            }
         }
     }
 }

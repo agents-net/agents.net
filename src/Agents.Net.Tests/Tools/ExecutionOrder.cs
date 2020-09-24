@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Agents.Net.Tests.Tools.Log;
 using FluentAssertions;
 
 namespace Agents.Net.Tests.Tools
@@ -93,8 +92,8 @@ namespace Agents.Net.Tests.Tools
             public AgentCollector Finish(MessageLog publishedMessage)
             {
                 List<MessageLog> remaining = incomingMessages
-                    .Where(incomingMessage => !publishedMessage.Predecessors.Contains(incomingMessage.Key))
-                    .Select(incomingMessage => incomingMessage.Value).ToList();
+                                                .Where(incomingMessage => !publishedMessage.Predecessors.Contains(incomingMessage.Key))
+                                                .Select(incomingMessage => incomingMessage.Value).ToList();
 
                 return remaining.Any() ? new AgentCollector(Agent, remaining) : null;
             }
