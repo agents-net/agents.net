@@ -19,8 +19,7 @@ namespace Agents.Net.Benchmarks
     {
         static void Main(string[] args)
         {
-            //BenchmarkRunner.Run<SequentialOverheadBenchmark>();
-            BenchmarkRunner.Run<LoggingOverheadBenchmark>();
+            BenchmarkRunner.Run<SequentialOverheadBenchmark>();
         }
     }
 }
