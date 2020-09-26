@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - **Breaking Change:** Removed `Community` class. Register agents directly with `IMessageBoard`
 - **Breaking Change:** Removed Terminate methods from MessageDomain helper
 - **Breaking Change:** Removed HandledExceptionMessageDecorator as it is useless unless there is a default exeception message agent
+- **Breaking Change:** Removed children from Message constructor. Each message can have only one child and only by using the MessageDecorator class.
 
 ## 2020.6.0
 ### Added
