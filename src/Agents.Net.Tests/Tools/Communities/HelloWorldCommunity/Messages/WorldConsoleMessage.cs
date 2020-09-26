@@ -4,15 +4,15 @@ using Agents.Net;
 namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages
 {
     public class WorldConsoleMessage : Message
-    {        public WorldConsoleMessage(string message, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+    {
+        public WorldConsoleMessage(string message, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             Message = message;
         }
 
-        public WorldConsoleMessage(string message, IEnumerable<Message> predecessorMessages,
-                                   params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public WorldConsoleMessage(string message, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             Message = message;
         }

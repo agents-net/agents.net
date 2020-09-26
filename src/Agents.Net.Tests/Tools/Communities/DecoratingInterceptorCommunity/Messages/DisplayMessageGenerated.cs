@@ -5,16 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.DecoratingInterceptorCommunity.Mess
 {
     public class DisplayMessageGenerated : Message
     {
-        public DisplayMessageGenerated(string displayMessage, Message predecessorMessage,
-                                       params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public DisplayMessageGenerated(string displayMessage, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             DisplayMessage = displayMessage;
         }
 
-        public DisplayMessageGenerated(string displayMessage, IEnumerable<Message> predecessorMessages,
-                                       params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public DisplayMessageGenerated(string displayMessage, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             DisplayMessage = displayMessage;
         }

@@ -5,15 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages
 {
     public class InformationGathered : Message
     {
-        public InformationGathered(string information, Message predecessorMessage, params Message[] childMessages)
-            : base(predecessorMessage, childMessages:childMessages)
+        public InformationGathered(string information, Message predecessorMessage)
+            : base(predecessorMessage)
         {
             Information = information;
         }
 
-        public InformationGathered(string information, IEnumerable<Message> predecessorMessages,
-                                   params Message[] childMessages)
-            : base(predecessorMessages, childMessages:childMessages)
+        public InformationGathered(string information, IEnumerable<Message> predecessorMessages)
+            : base(predecessorMessages)
         {
             Information = information;
         }

@@ -5,14 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Messages
 {
     public class WorkDone : Message
     {
-        public WorkDone(int workResult, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public WorkDone(int workResult, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             WorkResult = workResult;
         }
 
-        public WorkDone(int workResult, IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public WorkDone(int workResult, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             WorkResult = workResult;
         }

@@ -4,13 +4,14 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
     public class WorkloadExecutedMessage : Message
-    {        public WorkloadExecutedMessage(Message predecessorMessage, params Message[] childMessages)
-            : base(predecessorMessage, childMessages:childMessages)
+    {
+        public WorkloadExecutedMessage(Message predecessorMessage)
+            : base(predecessorMessage)
         {
         }
 
-        public WorkloadExecutedMessage(IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-            : base(predecessorMessages, childMessages:childMessages)
+        public WorkloadExecutedMessage(IEnumerable<Message> predecessorMessages)
+            : base(predecessorMessages)
         {
         }
 

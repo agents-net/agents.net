@@ -132,7 +132,7 @@ namespace Agents.Net
                 List<InterceptorAgent> interceptors = registeredMessageInterceptors.Count > 0
                                                           ? new List<InterceptorAgent>(registeredMessageInterceptors)
                                                           : null;
-                foreach (Message message in messageContainer.Children.Concat(new []{messageContainer}))
+                foreach (Message message in messageContainer.DescendantsAndSelf)
                 {
                     if (!interceptorAgents.TryGetValue(message.MessageType, out List<InterceptorAgent> agents))
                     {
@@ -175,7 +175,7 @@ namespace Agents.Net
                 List<Agent> consumers = registeredMessageAgents.Count > 0
                                             ? new List<Agent>(registeredMessageAgents)
                                             : null;
-                foreach (Message message in container.Children.Concat(new []{container}))
+                foreach (Message message in container.DescendantsAndSelf)
                 {
                     if (!registeredAgents.TryGetValue(message.MessageType, out List<Agent> agents))
                     {
@@ -186,7 +186,7 @@ namespace Agents.Net
                     consumers.AddRange(agents);
                 }
 
-                foreach (Message message in container.Children.Concat(new[] {container}))
+                foreach (Message message in container.DescendantsAndSelf)
                 {
                     message.SetUserCount(consumers?.Count ?? 0);
                 }
@@ -231,10 +231,9 @@ namespace Agents.Net
                 }
                 else
                 {
-                    execution.Message.HeadMessage.Dispose();
-                    foreach (Message child in execution.Message.HeadMessage.Children.ToArray())
+                    foreach (Message message in execution.Message.HeadMessage.DescendantsAndSelf.ToArray())
                     {
-                        child.Dispose();
+                        message.Dispose();
                     }
                 }
             }

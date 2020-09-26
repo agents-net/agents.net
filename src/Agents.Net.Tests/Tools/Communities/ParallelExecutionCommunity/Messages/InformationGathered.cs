@@ -5,15 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Messages
 {
     public class InformationGathered : Message
     {
-        public InformationGathered(bool proceedWithCaution, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public InformationGathered(bool proceedWithCaution, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             ProceedWithCaution = proceedWithCaution;
         }
 
-        public InformationGathered(bool proceedWithCaution, IEnumerable<Message> predecessorMessages,
-            params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public InformationGathered(bool proceedWithCaution, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             ProceedWithCaution = proceedWithCaution;
         }

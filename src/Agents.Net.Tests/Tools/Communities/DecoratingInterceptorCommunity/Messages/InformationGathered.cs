@@ -5,17 +5,16 @@ namespace Agents.Net.Tests.Tools.Communities.DecoratingInterceptorCommunity.Mess
 {
     public class InformationGathered : Message
     {
-        public InformationGathered(string information, bool additionalDataAvailable, Message predecessorMessage,
-                                   params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public InformationGathered(string information, bool additionalDataAvailable, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             Information = information;
             AdditionalDataAvailable = additionalDataAvailable;
         }
 
         public InformationGathered(string information, bool additionalDataAvailable,
-                                   IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+                                   IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             Information = information;
             AdditionalDataAvailable = additionalDataAvailable;
