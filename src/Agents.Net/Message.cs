@@ -25,22 +25,18 @@ namespace Agents.Net
         
         public Guid Id { get; } = Guid.NewGuid();
 
-        protected Message(Message predecessorMessage, string name = null, params Message[] childMessages)
-            : this(new[] {predecessorMessage}, name, childMessages)
+        protected Message(Message predecessorMessage, string name = null)
+            : this(new[] {predecessorMessage}, name)
         {
         }
 
-        protected Message(IEnumerable<Message> predecessorMessages, string name = null, params Message[] childMessages)
+        protected Message(IEnumerable<Message> predecessorMessages, string name = null)
         {
             this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
-            Children = childMessages.Concat(childMessages.SelectMany(e => e.Children));
             this.predecessorMessages = predecessorMessages.ToArray();
-            foreach (Message childMessage in childMessages)
-            {
-                childMessage.parent = this;
-            }
             MessageDomain = this.predecessorMessages.GetMessageDomain();
             MessageType = GetType();
+            DescendantsAndSelf = new[] {this};
         }
         
         /// <summary>
@@ -70,12 +66,11 @@ namespace Agents.Net
                 throw new ArgumentNullException(nameof(message));
             }
 
-            message.Children = Children;
+            message.SetChild(Child);
             message.predecessorMessages = predecessorMessages;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
-            parent?.RemoveChild(this);
-            parent?.AddChild(message);
+            parent?.SetChild(message);
         }
 
         public IEnumerable<Message> Predecessors => predecessorMessages;
@@ -107,20 +102,16 @@ namespace Agents.Net
             return head;
         }
 
-        protected void AddChild(Message childMessage)
+        protected void SetChild(Message childMessage)
         {
-            if (childMessage == null)
+            Child = childMessage;
+            if (Child != null)
             {
-                throw new ArgumentNullException(nameof(childMessage));
+                Child.parent = this;
             }
 
-            Children = Children.Concat(childMessage.Children).Concat(new[] {childMessage});
-        }
-
-        private void RemoveChild(Message message)
-        {
-            IEnumerable<Message> directChildren = Children.Where(c => c.parent == this && c != message).ToArray();
-            Children = directChildren.SelectMany(c => c.Children).Concat(directChildren);
+            Descendants = Child?.Descendants.Concat(new[] {Child})
+                          ?? Array.Empty<Message>();
         }
 
         public bool Is<T>() where T : Message
@@ -130,11 +121,7 @@ namespace Agents.Net
 
         public T Get<T>() where T : Message
         {
-            if (!(this is T result))
-            {
-                result = this != HeadMessage ? HeadMessage.Get<T>() : Children.OfType<T>().First();
-            }
-
+            TryGet(out T result);
             return result;
         }
 
@@ -149,7 +136,7 @@ namespace Agents.Net
                 }
                 else
                 {
-                    result = Children.OfType<T>().FirstOrDefault();
+                    result = Descendants.OfType<T>().FirstOrDefault();
                 }
             }
 
@@ -175,21 +162,41 @@ namespace Agents.Net
         internal void SwitchDomain(MessageDomain newDomain)
         {
             MessageDomain = newDomain;
-            foreach (Message child in Children)
+            foreach (Message descendant in Descendants)
             {
-                child.MessageDomain = newDomain;
+                descendant.MessageDomain = newDomain;
             }
         }
 
-        public IEnumerable<Message> Children { get; set; } = Enumerable.Empty<Message>();
+        public Message Child
+        {
+            get => child;
+            set
+            {
+                child = value;
+                Descendants = Child?.Descendants.Concat(new[] {Child})
+                              ?? Array.Empty<Message>();
+            }
+        }
+
+        private IEnumerable<Message> Descendants
+        {
+            get => descendants;
+            set
+            {
+                descendants = value;
+                DescendantsAndSelf = Descendants.Concat(new[] {this});
+            }
+        }
+
+        internal IEnumerable<Message> DescendantsAndSelf { get; private set; }
 
         public override string ToString()
         {
-            StringBuilder jsonFormat = ToStringBuilder();
-            return jsonFormat.ToString();
+            return ToStringBuilder().ToString();
         }
 
-        public StringBuilder ToStringBuilder()
+        private StringBuilder ToStringBuilder()
         {
             StringBuilder jsonFormat = new StringBuilder("{\"Id\": \"");
             jsonFormat.Append(Id);
@@ -201,9 +208,9 @@ namespace Agents.Net
             jsonFormat.Append(MessageDomain.Root.Id);
             jsonFormat.Append("\", \"Data\": \"");
             jsonFormat.Append(DataToString());
-            jsonFormat.Append("\", \"Children\": [");
-            jsonFormat.Append(string.Join(", ", Children));
-            jsonFormat.Append("]}");
+            jsonFormat.Append("\", \"Child\": ");
+            jsonFormat.Append(Child.ToStringBuilder());
+            jsonFormat.Append("}");
             return jsonFormat;
         }
 
@@ -266,14 +273,16 @@ namespace Agents.Net
                 Dispose();
             }
 
-            if (propagate)
+            if (!propagate)
             {
-                foreach (Message child in Children)
-                {
-                    child.Used();
-                }
+                return;
             }
-            
+
+            foreach (Message descendant in Descendants)
+            {
+                descendant.Used();
+            }
+
         }
 
         public IDisposable DelayDispose()
@@ -283,6 +292,8 @@ namespace Agents.Net
         }
 
         private int remainingUses;
+        private Message child;
+        private IEnumerable<Message> descendants = Array.Empty<Message>();
 
         internal void SetUserCount(int userCount)
         {
@@ -322,7 +333,7 @@ namespace Agents.Net
         public MessageLog ToMessageLog()
         {
             return new MessageLog(name, Id, predecessorMessages.Select(m => m.Id), MessageDomain.Root.Id,
-                                  DataToString(), Children.Select(m => m.Id));
+                                  DataToString(), Child?.ToMessageLog());
         }
     }
 }

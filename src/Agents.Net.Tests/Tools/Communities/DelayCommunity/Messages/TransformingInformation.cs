@@ -6,16 +6,16 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages
     public class TransformingInformation : Message
     {
         public TransformingInformation(string information, InformationGathered originalMessage,
-                                       Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+                                       Message predecessorMessage)
+			: base(predecessorMessage)
         {
             Information = information;
             OriginalMessage = originalMessage;
         }
 
         public TransformingInformation(string information, InformationGathered originalMessage,
-                                       IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+                                       IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             Information = information;
             OriginalMessage = originalMessage;

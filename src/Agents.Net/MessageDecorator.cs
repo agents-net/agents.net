@@ -20,7 +20,7 @@ namespace Agents.Net
             ??Enumerable.Empty<Message>())
         {
             SwitchDomain(decoratedMessage?.MessageDomain);
-            AddChild(decoratedMessage?.ReplaceHead(this));
+            SetChild(decoratedMessage?.ReplaceHead(this));
         }
 
         public static bool IsDecorated(Message message)

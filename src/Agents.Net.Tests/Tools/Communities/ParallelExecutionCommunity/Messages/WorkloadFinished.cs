@@ -5,15 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Messages
 {
     public class WorkloadFinished : Message
     {
-        public WorkloadFinished(int totalResult, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public WorkloadFinished(int totalResult, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             TotalResult = totalResult;
         }
 
-        public WorkloadFinished(int totalResult, IEnumerable<Message> predecessorMessages,
-            params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public WorkloadFinished(int totalResult, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             TotalResult = totalResult;
         }

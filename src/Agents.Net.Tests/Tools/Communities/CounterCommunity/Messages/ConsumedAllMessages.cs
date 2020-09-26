@@ -5,14 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.CounterCommunity.Messages
 {
     public class ConsumedAllMessages : Message
     {
-        public ConsumedAllMessages(int count, Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public ConsumedAllMessages(int count, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             Count = count;
         }
 
-        public ConsumedAllMessages(int count, IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public ConsumedAllMessages(int count, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             Count = count;
         }

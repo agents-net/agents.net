@@ -5,13 +5,13 @@ namespace Agents.Net.Tests.Tools.Communities.DefaultDisposeCommunity.Messages
 {
     public class InterceptedMessage : DisposableMessage
     {
-        public InterceptedMessage(Message predecessorMessage, params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public InterceptedMessage(Message predecessorMessage)
+			: base(predecessorMessage)
         {
         }
 
-        public InterceptedMessage(IEnumerable<Message> predecessorMessages, params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public InterceptedMessage(IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
         }
 

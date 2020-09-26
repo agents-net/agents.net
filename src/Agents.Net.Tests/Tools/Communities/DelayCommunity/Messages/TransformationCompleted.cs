@@ -5,16 +5,14 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages
 {
     public class TransformationCompleted : Message
     {
-        public TransformationCompleted(InformationGathered originalMessage, Message predecessorMessage,
-                                       params Message[] childMessages)
-			: base(predecessorMessage, childMessages:childMessages)
+        public TransformationCompleted(InformationGathered originalMessage, Message predecessorMessage)
+			: base(predecessorMessage)
         {
             OriginalMessage = originalMessage;
         }
 
-        public TransformationCompleted(InformationGathered originalMessage, IEnumerable<Message> predecessorMessages,
-                                       params Message[] childMessages)
-			: base(predecessorMessages, childMessages:childMessages)
+        public TransformationCompleted(InformationGathered originalMessage, IEnumerable<Message> predecessorMessages)
+			: base(predecessorMessages)
         {
             OriginalMessage = originalMessage;
         }
