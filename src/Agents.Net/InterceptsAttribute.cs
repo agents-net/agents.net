@@ -18,7 +18,7 @@ namespace Agents.Net
     /// This attribute is only valid for <see cref="InterceptorAgent"/> classes.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class InterceptsAttribute : Attribute
+    public sealed class InterceptsAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InterceptsAttribute"/> class.

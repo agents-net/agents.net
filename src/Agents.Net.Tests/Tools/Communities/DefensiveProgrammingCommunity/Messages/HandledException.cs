@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Agents.Net;
-using Agents.Net;
 
 namespace Agents.Net.Tests.Tools.Communities.DefensiveProgrammingCommunity.Messages
 {

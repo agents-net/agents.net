@@ -3,27 +3,20 @@
 
   <PropertyGroup>
     <FxCopAnalysisEnabled Condition="'$(FxCopAnalysisEnabled)'==''" >true</FxCopAnalysisEnabled>
+    <FxCopAnalyzerVersion Condition="'$(FxCopAnalyzerVersion)'==''" >3.0.0</FxCopAnalyzerVersion>
+	
     <StyleCopAnalysisEnabled Condition="'$(StyleCopAnalysisEnabled)'==''" >false</StyleCopAnalysisEnabled>
+    <StyleCopAnalyzerVersion Condition="'$(StyleCopAnalyzerVersion)'==''" >1.1.118</StyleCopAnalyzerVersion>
+	
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
   
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-    <CodeAnalysisRuleSet>..\_Build_\FxCopRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-    <CodeAnalysisRuleSet>..\_Build_\FxCopRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <Choose>
     <When Condition="'$(FxCopAnalysisEnabled)' == 'true'">
       <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
+          <Version>$(FxCopAnalyzerVersion)</Version>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -35,7 +28,7 @@
     <When Condition="'$(StyleCopAnalysisEnabled)' == 'true'">
       <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers">
-          <Version>1.0.2</Version>
+          <Version>$(StyleCopAnalyzerVersion)</Version>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
