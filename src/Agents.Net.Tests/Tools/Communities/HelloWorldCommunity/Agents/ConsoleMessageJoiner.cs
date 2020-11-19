@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using Agents.Net;
 using Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages;
 
@@ -8,7 +13,8 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
     [Consumes(typeof(HelloConsoleMessage))]
     [Produces(typeof(ConsoleMessageCreated))]
     public class ConsoleMessageJoiner : Agent
-    {        private readonly MessageCollector<HelloConsoleMessage, WorldConsoleMessage> collector;
+    {
+        private readonly MessageCollector<HelloConsoleMessage, WorldConsoleMessage> collector;
 
         public ConsoleMessageJoiner(IMessageBoard messageBoard) : base(messageBoard)
         {

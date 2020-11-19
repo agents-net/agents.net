@@ -1,11 +1,17 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Collections.Generic;
 using Agents.Net;
 
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
     public class StartingWorkloadsMessage : Message
-    {        public StartingWorkloadsMessage(int[] workloads)
+    {
+        public StartingWorkloadsMessage(int[] workloads)
             : base(Array.Empty<Message>())
         {
             Workloads = workloads;

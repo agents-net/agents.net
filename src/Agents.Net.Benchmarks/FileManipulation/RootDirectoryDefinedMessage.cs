@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Agents.Net;
@@ -6,7 +11,8 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class RootDirectoryDefinedMessage : Message
-    {        public RootDirectoryDefinedMessage(DirectoryInfo rootDirectory)
+    {
+        public RootDirectoryDefinedMessage(DirectoryInfo rootDirectory)
             : base(Array.Empty<Message>())
         {
             RootDirectory = rootDirectory;

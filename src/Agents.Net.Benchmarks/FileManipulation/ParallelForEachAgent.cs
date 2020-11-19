@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Threading.Tasks;
 using Agents.Net;
 
@@ -7,7 +12,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
     [Consumes(typeof(AllRelevantFilesFoundMessage))]
     [Produces(typeof(FilesCompletedMessage))]
     public class ParallelForEachAgent : Agent
-    {        public ParallelForEachAgent(IMessageBoard messageBoard) : base(messageBoard)
+    {
+        public ParallelForEachAgent(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

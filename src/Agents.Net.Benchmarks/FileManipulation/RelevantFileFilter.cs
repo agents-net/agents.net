@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
@@ -6,7 +11,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
     [Intercepts(typeof(FileFoundMessage))]
     [Produces(typeof(RelevantFileFoundMessage))]
     public class RelevantFileFilter : InterceptorAgent
-    {        public RelevantFileFilter(IMessageBoard messageBoard) : base(messageBoard)
+    {
+        public RelevantFileFilter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 
