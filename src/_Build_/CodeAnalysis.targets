@@ -3,10 +3,10 @@
 
   <PropertyGroup>
     <FxCopAnalysisEnabled Condition="'$(FxCopAnalysisEnabled)'==''" >true</FxCopAnalysisEnabled>
-    <FxCopAnalyzerVersion Condition="'$(FxCopAnalyzerVersion)'==''" >3.0.0</FxCopAnalyzerVersion>
+    <FxCopAnalyzerVersion Condition="'$(FxCopAnalyzerVersion)'==''" >3.*</FxCopAnalyzerVersion>
 	
     <StyleCopAnalysisEnabled Condition="'$(StyleCopAnalysisEnabled)'==''" >false</StyleCopAnalysisEnabled>
-    <StyleCopAnalyzerVersion Condition="'$(StyleCopAnalyzerVersion)'==''" >1.1.118</StyleCopAnalyzerVersion>
+    <StyleCopAnalyzerVersion Condition="'$(StyleCopAnalyzerVersion)'==''" >*</StyleCopAnalyzerVersion>
 	
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />

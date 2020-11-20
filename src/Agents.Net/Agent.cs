@@ -57,7 +57,7 @@ namespace Agents.Net
                     exceptionMessage.ExceptionInfo != null)
                 {
                     Log.Verbose(exceptionMessage.ExceptionInfo.SourceException, "{@log}",
-                                new AgentLog(agentName, "Publishing", Id, message?.ToMessageLog()));
+                                new AgentLog(agentName, "Publishing", Id, message.ToMessageLog()));
                 }
                 else
                 {
