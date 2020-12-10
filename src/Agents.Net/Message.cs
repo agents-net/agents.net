@@ -11,6 +11,20 @@ using System.Threading;
 #pragma warning disable CA1801
 namespace Agents.Net
 {
+    /// <summary>
+    /// Base class for all messages that are executed by the agents.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Each message knows its predecessors. Predecessors are the messages, that led to this message.
+    /// </para>
+    /// <para>
+    /// Self disposing: The message is self disposing. The message board sets the number of uses of the message equal to the number of consuming agents. Whenever an agent executed the message the <see cref="Agent"/> base class marks the message as used. Once the message is completely used up it calls the <see cref="Dispose"/> method. The message containers <see cref="MessageCollector{T1,T2}"/> and <see cref="MessageAggregator{T}"/> do delay the disposal until the container is executed.
+    /// </para>
+    /// <para>
+    /// Currently there is a memory leak because the predecessors are strongly referenced. Therefore all messages produced by the system are kept in memory. See https://github.com/agents-net/agents.net/issues/75 for more information and timeline.
+    /// </para>
+    /// </remarks>
     public abstract class Message : IEquatable<Message>, IDisposable
     {
         private Message parent;
@@ -19,13 +33,35 @@ namespace Agents.Net
         
         internal Type MessageType { get; }
         
+        /// <summary>
+        /// The id of the agent.
+        /// </summary>
+        /// <remarks>
+        /// The id is only used for logging.
+        /// </remarks>
         public Guid Id { get; } = Guid.NewGuid();
 
+        /// <summary>
+        /// Initializes a new instances of this class with a single predecessor message.
+        /// </summary>
+        /// <param name="predecessorMessage">The predecessor message that led to this message.</param>
+        /// <param name="name">Optional name of the agent. The default is the name of the type.</param>
+        /// <remarks>
+        /// The <paramref name="name"/> is only used for logging purposes.
+        /// </remarks>
         protected Message(Message predecessorMessage, string name = null)
             : this(new[] {predecessorMessage}, name)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instances of this class with multiple predecessor messages.
+        /// </summary>
+        /// <param name="predecessorMessages">The predecessor messages that led to this message.</param>
+        /// <param name="name">Optional name of the agent. The default is the name of the type.</param>
+        /// <remarks>
+        /// The <paramref name="name"/> is only used for logging purposes.
+        /// </remarks>
         protected Message(IEnumerable<Message> predecessorMessages, string name = null)
         {
             this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
@@ -69,6 +105,9 @@ namespace Agents.Net
             parent?.SetChild(message);
         }
 
+        /// <summary>
+        /// Access all predecessor messages that led to this message.
+        /// </summary>
         public IEnumerable<Message> Predecessors => predecessorMessages;
 
         internal Message HeadMessage
@@ -98,6 +137,10 @@ namespace Agents.Net
             return head;
         }
 
+        /// <summary>
+        /// this is an internal method used by the <see cref="MessageDecorator"/>. It should not be used outside of that.
+        /// </summary>
+        /// <param name="childMessage">The new child message.</param>
         protected void SetChild(Message childMessage)
         {
             Child = childMessage;
@@ -110,17 +153,72 @@ namespace Agents.Net
                           ?? Array.Empty<Message>();
         }
 
+        /// <summary>
+        /// Checks whether this message is the specified type.
+        /// </summary>
+        /// <typeparam name="T">The message type that needs to be searched.</typeparam>
+        /// <returns><c>true</c>, if this message is of the specified type.</returns>
+        /// <remarks>
+        /// This method is necessary because there can be a hierarchy of messages. In this case the whole stack needs to be searched for the message.
+        /// </remarks>
         public bool Is<T>() where T : Message
         {
             return TryGet(out T _);
         }
 
+        /// <summary>
+        /// Looks for the specified message type and returns it.
+        /// </summary>
+        /// <typeparam name="T">The message type that needs to be searched.</typeparam>
+        /// <returns>The message of the specified type or null if it was not found.</returns>
+        /// <remarks>
+        /// This method is necessary because there can be a hierarchy of messages. In this case the whole stack needs to be searched for the message.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// protected override void ExecuteCore(Message messageData)
+        /// {
+        ///     //This will not work if the message is decorated
+        ///     SpecificMessage message = (SpecificMessage)messageData;
+        ///
+        ///     //This will work either way
+        ///     SpecificMessage message = messageData.Get&lt;SpecificMessage&gt;();
+        /// }
+        /// </code>
+        /// </example>
         public T Get<T>() where T : Message
         {
             TryGet(out T result);
             return result;
         }
 
+        /// <summary>
+        /// Tries to looks for the specified message type and returns it.
+        /// </summary>
+        /// <param name="result">The message of the specified type.</param>
+        /// <typeparam name="T">The message type that needs to be searched.</typeparam>
+        /// <returns><c>true</c>, if the message was found; otherwise <c>false</c>.</returns>
+        /// <remarks>
+        /// This method is necessary because there can be a hierarchy of messages. In this case the whole stack needs to be searched for the message.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// protected override void ExecuteCore(Message messageData)
+        /// {
+        ///     //This will not execute if the message was decorated
+        ///     if(messageData is SpecificMessage message)
+        ///     {
+        ///         //...
+        ///     }
+        ///
+        ///     //This will work either way
+        ///     if(messageData.TryGet(out SpecificMessage message))
+        ///     {
+        ///         //...
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public bool TryGet<T>(out T result) where T : Message
         {
             result = this as T;
@@ -139,6 +237,15 @@ namespace Agents.Net
             return result != null;
         }
 
+        /// <summary>
+        /// Tries to look for the predecessor with the specified type.
+        /// </summary>
+        /// <param name="result">The message of the specified type.</param>
+        /// <typeparam name="T">The message type that needs to be searched.</typeparam>
+        /// <returns><c>true</c>, if the predecessor was found; otherwise <c>false</c>.</returns>
+        /// <remarks>
+        /// This method help to look for a specific predecessor becaue it uses the <see cref="TryGet{T}"/> method of all <see cref="Predecessors"/>.
+        /// </remarks>
         public bool TryGetPredecessor<T>(out T result) where T : Message
         {
             foreach (Message predecessorMessage in predecessorMessages)
@@ -153,6 +260,12 @@ namespace Agents.Net
             return false;
         }
 
+        /// <summary>
+        /// The message domain in which the message was created.
+        /// </summary>
+        /// <remarks>
+        /// For more information about message domains see <see cref="MessageDomain"/>.
+        /// </remarks>
         public MessageDomain MessageDomain { get; private set; }
 
         internal void SwitchDomain(MessageDomain newDomain)
@@ -164,6 +277,12 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// The direct child message of this message.
+        /// </summary>
+        /// <remarks>
+        /// This property is set when the <see cref="MessageDecorator"/> is used.
+        /// </remarks>
         public Message Child
         {
             get => child;
@@ -187,6 +306,7 @@ namespace Agents.Net
 
         internal IEnumerable<Message> DescendantsAndSelf { get; private set; }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return ToStringBuilder().ToString();
@@ -210,8 +330,16 @@ namespace Agents.Net
             return jsonFormat;
         }
 
+        /// <summary>
+        /// The method which should be overriden to provide a string representation of the carried data.
+        /// </summary>
+        /// <returns>The string representation.</returns>
+        /// <remarks>
+        /// If used, it should provide a short string as it is logged multiple times. To much data would slow down the application.
+        /// </remarks>
         protected abstract string DataToString();
 
+        /// <inheritdoc />
         public bool Equals(Message other)
         {
             if (ReferenceEquals(null, other))
@@ -227,6 +355,7 @@ namespace Agents.Net
             return Id.Equals(other.Id);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -247,16 +376,29 @@ namespace Agents.Net
             return Equals((Message) obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Id.GetHashCode();
         }
 
+        /// <summary>
+        /// Determines whether both messages are equal or not.
+        /// </summary>
+        /// <param name="left">The left message</param>
+        /// <param name="right">The right message</param>
+        /// <returns><c>true</c>, if both messages are equal; otherwise <c>false</c>.</returns>
         public static bool operator ==(Message left, Message right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// Determines whether both messages are not equal or not.
+        /// </summary>
+        /// <param name="left">The left message</param>
+        /// <param name="right">The right message</param>
+        /// <returns><c>true</c>, if both messages are not equal; otherwise <c>false</c>.</returns>
         public static bool operator !=(Message left, Message right)
         {
             return !Equals(left, right);
@@ -281,6 +423,18 @@ namespace Agents.Net
 
         }
 
+        /// <summary>
+        /// This delays the self disposal of the message until the returned object is disposed.
+        /// </summary>
+        /// <returns>The object which will release the message on dispose.</returns>
+        /// <remarks>
+        /// <para>
+        /// This method should only be used, if there is a custom message container that stores this message.
+        /// </para>
+        /// <para>
+        /// This regards the self disposing mechanism of the message. See the description for the type <see cref="Message"/>.
+        /// </para>
+        /// </remarks>
         public IDisposable DelayDispose()
         {
             Interlocked.Increment(ref remainingUses);
@@ -300,11 +454,16 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Dispose any resources that are stored in the message.
+        /// </summary>
+        /// <param name="disposing">If <c>true</c> </param>
         protected virtual void Dispose(bool disposing)
         {
             remainingUses = 0;
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
@@ -326,6 +485,13 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// This is used to log the message. It creates the serializable class <see cref="MessageLog"/>.
+        /// </summary>
+        /// <returns>The <see cref="MessageLog"/> instance.</returns>
+        /// <remarks>
+        /// This method is mostly used internally.
+        /// </remarks>
         public MessageLog ToMessageLog()
         {
             return new MessageLog(name, Id, predecessorMessages.Select(m => m.Id), MessageDomain.Root.Id,
