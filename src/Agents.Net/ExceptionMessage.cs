@@ -16,7 +16,7 @@ namespace Agents.Net
     /// When there is a known error state in an <see cref="Agent"/> it should send the exception message directly because it is faster than throwing an exception and catching it again.
     /// </para>
     /// <para>
-    /// No one will handle these messages by default. That means, that the program will continue to be executed even after an exception occured. In order to change that behavior an <see cref="Agent"/> must be defined which handles these messages and decides when to stop the program. For that exceptions are captured with their respective <see cref="ExceptionDispatchInfo"/>. With that the exception can be recreated together with the stacktrace by calling <see cref="ExceptionDispatchInfo.Throw"/>.
+    /// No one will handle these messages by default. That means, that the program will continue to be executed even after an exception occured. In order to change that behavior an <see cref="Agent"/> must be defined which handles these messages and decides when to stop the program. For that exceptions are captured with their respective <see cref="ExceptionDispatchInfo"/>. With that the exception can be recreated together with the stacktrace by calling <see cref="ExceptionDispatchInfo.Throw()"/>.
     /// </para>
     /// </remarks>
     public class ExceptionMessage : Message
@@ -26,7 +26,7 @@ namespace Agents.Net
         /// </summary>
         /// <remarks>
         /// <para>
-        /// With that the exception can be recreated together with the stacktrace by calling <see cref="ExceptionDispatchInfo.Throw"/>.
+        /// With that the exception can be recreated together with the stacktrace by calling <see cref="ExceptionDispatchInfo.Throw()"/>.
         /// </para>
         /// <para>
         /// It can be <c>null</c>, when the <see cref="CustomMessage"/> is used instead.

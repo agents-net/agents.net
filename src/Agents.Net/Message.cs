@@ -19,7 +19,7 @@ namespace Agents.Net
     /// Each message knows its predecessors. Predecessors are the messages, that led to this message.
     /// </para>
     /// <para>
-    /// Self disposing: The message is self disposing. The message board sets the number of uses of the message equal to the number of consuming agents. Whenever an agent executed the message the <see cref="Agent"/> base class marks the message as used. Once the message is completely used up it calls the <see cref="Dispose"/> method. The message containers <see cref="MessageCollector{T1,T2}"/> and <see cref="MessageAggregator{T}"/> do delay the disposal until the container is executed.
+    /// Self disposing: The message is self disposing. The message board sets the number of uses of the message equal to the number of consuming agents. Whenever an agent executed the message the <see cref="Agent"/> base class marks the message as used. Once the message is completely used up it calls the <see cref="Dispose()"/> method. The message containers <see cref="MessageCollector{T1,T2}"/> and <see cref="MessageAggregator{T}"/> do delay the disposal until the container is executed.
     /// </para>
     /// <para>
     /// Currently there is a memory leak because the predecessors are strongly referenced. Therefore all messages produced by the system are kept in memory. See https://github.com/agents-net/agents.net/issues/75 for more information and timeline.

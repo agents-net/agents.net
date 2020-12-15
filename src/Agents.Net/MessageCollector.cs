@@ -9,20 +9,108 @@ using System.Linq;
 
 namespace Agents.Net
 {
+    /// <summary>
+    /// This is a helper class that collects thread safe all messages until all message types are collected.
+    /// </summary>
+    /// <typeparam name="T1">First message type.</typeparam>
+    /// <typeparam name="T2">Second message type.</typeparam>
+    /// <remarks>
+    /// <para>
+    /// The collector collects messages until all message types are collected. Afterwards it executes an action with the collected <see cref="MessageCollection"/>. In the following different scenarios are described, which explain the different aspects of this class. 
+    /// </para>
+    /// <para>
+    /// Overriding messages
+    /// </para>
+    /// <para>
+    /// Assuming the message of type <typeparamref name="T1"/> was collected and <typeparamref name="T2"/> was not. When another message of type <typeparamref name="T1"/> is collected it replaces the old <typeparamref name="T1"/> message with the new message. No action is executed.
+    /// </para>
+    /// <para>
+    /// Considering message domains
+    /// </para>
+    /// <para>
+    /// Assuming the following <see cref="MessageDomain"/>s and the collected messages:
+    /// <code>
+    ///  ---------------         ------------
+    /// | DefaultDomain | ----> | SubDomain1 |
+    ///  ---------------  |      ------------
+    /// T1 Message1       |      T1 Message2
+    ///                   |      T2 Message4
+    ///                   |
+    ///                   |      ------------
+    ///                   ----> | SubDomain2 |
+    ///                          ------------
+    ///                          T2 Message3
+    ///                          T2 Message5
+    /// </code>
+    /// Here is what happens in this scenario. Message1 is collected. Message2 is collected. This does not override Message1 because it is from a different MessageDomain. It is stored parallel. Message3 is collected. Now SubDomain2 has a complete set of Message1 + Message3. Message 4 is collected. Now there is another completed set in SubDomain1 of Message2 + Message4. Message5 is collected. This overrides Message3 as it is in the same MessageDomain. A new set is executed with Message1 + Message5. In the end the following sets were executed inorder:
+    /// <list type="number">
+    /// <item><description>Message1 + Message3</description></item>
+    /// <item><description>Message2 + Message4</description></item>
+    /// <item><description>Message1 + Message5</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Consumed vs not consumed messages
+    /// </para>
+    /// <para>
+    /// Messages can be consumed during execution with the method <see cref="MessageCollection.MarkAsConsumed"/>. The consumed message is removed from the message collector immediately. Looking at the example above the Message1 is used twice. Assuming during the first execution of Message1 + Message3 the agent executed <c>collection.MarkAsConsumed(Message1)</c>. In this case the third execution Message1 + Message5 would not have happened, as Message1 would have been cleared from the collector instance. 
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// Here a typical example how to setup and use the collector in a class:
+    /// <code>
+    /// [Consumes(typeof(Message1))]
+    /// [Consumes(typeof(Message2))]
+    /// public class MessageCollectorAgent : Agent
+    /// {
+    ///     private readonly MessageCollector&lt;Message1, Message2&gt; collector;
+    /// 
+    ///     public MessageCollectorAgent(IMessageBoard messageBoard) : base(messageBoard)
+    ///     {
+    ///         collector = new MessageCollector&lt;Message1, Message2&gt;(OnMessagesCollected);
+    ///     }
+    /// 
+    ///     private void OnMessagesCollected(MessageCollection&lt;Message1, Message2&gt; set)
+    ///     {
+    ///         //execute set
+    ///     }
+    /// 
+    ///     protected override void ExecuteCore(Message messageData)
+    ///     {
+    ///         collector.Push(messageData);
+    ///     }
+    /// }
+    /// </code>
+    /// </example>
     public class MessageCollector<T1, T2>
         where T1 : Message
         where T2 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T1"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T1>> Messages1 { get; } = new Dictionary<MessageDomain, MessageStore<T1>>();
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T2"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T2>> Messages2 { get; } = new Dictionary<MessageDomain, MessageStore<T2>>();
         private readonly Action<MessageCollection<T1, T2>> onMessagesCollected;
         private readonly object dictionaryLock = new object();
 
+        /// <summary>
+        /// Initialized a new instance of the class <see cref="MessageCollector{T1,T2}"/>.
+        /// </summary>
+        /// <param name="onMessagesCollected">The action which is executed when all messages were collected.</param>
         public MessageCollector(Action<MessageCollection<T1, T2>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <summary>
+        /// Add a message to the collector.
+        /// </summary>
+        /// <param name="message">The message object to add.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the message is <c>null</c>.</exception>
         public void Push(Message message)
         {
             if (message == null)
@@ -32,6 +120,12 @@ namespace Agents.Net
             TryPush(message, true);
         }
 
+        /// <summary>
+        /// Tries to add the message to the collector.
+        /// </summary>
+        /// <param name="message">The message object to add.</param>
+        /// <returns><c>true</c> if the message was added; otherwise <c>false</c></returns>
+        /// <exception cref="ArgumentNullException">Thrown if the message is <c>null</c>.</exception>
         public bool TryPush(Message message)
         {
             if (message == null)
@@ -62,6 +156,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overriden by inheriting classes to remove the message passed to the method.
+        /// </summary>
+        /// <param name="message">The message to remove from the collector.</param>
+        /// <exception cref="ArgumentException">When the type of the message is not a message type of the collecotr.</exception>
         protected virtual void RemoveMessage(Message message)
         {
             if (message is T1 message1)
@@ -78,12 +177,23 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public IEnumerable<MessageCollection<T1, T2>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
             return completedSets.Cast<MessageCollection<T1, T2>>();
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to get all sets of message for a specific domain without specific type.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
+        /// <exception cref="ArgumentNullException">If the domain is null.</exception>
         protected IEnumerable<MessageCollection> GetCompleteSets(MessageDomain domain)
         {
             if (domain == null)
@@ -111,6 +221,12 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to see if there is a completed set for the specified domain.
+        /// </summary>
+        /// <param name="domain">The domain which should be completed.</param>
+        /// <param name="messageCollection">The message collection with the complete set.</param>
+        /// <returns><c>true</c> if there is a completed set; otherwise <c>false</c></returns>
         protected virtual bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -124,6 +240,15 @@ namespace Agents.Net
             return false;
         }
 
+        /// <summary>
+        /// Used to get a message from the message dictionaries.
+        /// </summary>
+        /// <param name="domain">The message domain to get the message for.</param>
+        /// <param name="messagePool">The dictionary for the specific message type.</param>
+        /// <param name="message">The message for the domain.</param>
+        /// <typeparam name="T">The type of the message.</typeparam>
+        /// <returns><c>true</c> if the dictionary contains a message for the specific domain; otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">If the dictionary is null.</exception>
         protected bool TryGetMessageFittingDomain<T>(MessageDomain domain, Dictionary<MessageDomain, MessageStore<T>> messagePool, out MessageStore<T> message)
             where T : Message
         {
@@ -145,11 +270,23 @@ namespace Agents.Net
             return false;
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to execute the typeless message collection cast to the specific collector type..
+        /// </summary>
+        /// <param name="messageCollection">The typeless collection.</param>
         protected virtual void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2>) messageCollection);
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to try to add the message to the collector dictionaries. 
+        /// </summary>
+        /// <param name="message">The message to add</param>
+        /// <param name="throwError">If set to <c>true</c>, throws an error if the message could not be added.</param>
+        /// <returns><c>true</c> if the message was added to any dictionary; otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">If the message if <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">If <paramref name="throwError"/> was set to <c>false</c> and the message could not be added.</exception>
         protected virtual bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -176,6 +313,13 @@ namespace Agents.Net
             return false;
         }
 
+        /// <summary>
+        /// Add the message to the specified message pool.
+        /// </summary>
+        /// <param name="message">The message to add.</param>
+        /// <param name="messagePool">The message pool to add the message to.</param>
+        /// <typeparam name="T">The type of the message.</typeparam>
+        /// <exception cref="ArgumentNullException">If either the message or the message pool is <c>null</c>.</exception>
         protected void UpdateMessagePool<T>(T message, Dictionary<MessageDomain, MessageStore<T>> messagePool)
             where T : Message
         {
@@ -190,7 +334,7 @@ namespace Agents.Net
             messagePool[message.MessageDomain] = message;
         }
 
-        private IEnumerable<MessageDomain> ThisAndFlattenedChildren(MessageDomain messageDomain)
+        private static IEnumerable<MessageDomain> ThisAndFlattenedChildren(MessageDomain messageDomain)
         {
             yield return messageDomain;
             foreach (MessageDomain child in messageDomain.Children.SelectMany(ThisAndFlattenedChildren))
@@ -231,19 +375,25 @@ namespace Agents.Net
         }
     }
 
+    /// <inheritdoc />
     public class MessageCollector<T1, T2, T3> : MessageCollector<T1, T2>
         where T1 : Message
         where T2 : Message
         where T3 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T3"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T3>> Messages3 { get; } = new Dictionary<MessageDomain, MessageStore<T3>>();
         private readonly Action<MessageCollection<T1, T2, T3>> onMessagesCollected;
 
+        /// <inheritdoc />
         public MessageCollector(Action<MessageCollection<T1, T2, T3>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <inheritdoc />
         protected override bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -259,11 +409,13 @@ namespace Agents.Net
             return base.Aggregate(message, throwError);
         }
 
+        /// <inheritdoc />
         protected override void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3>) messageCollection);
         }
 
+        /// <inheritdoc />
         protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -278,6 +430,7 @@ namespace Agents.Net
             return false;
         }
 
+        /// <inheritdoc />
         protected override void RemoveMessage(Message message)
         {
             if (message is T3 message3)
@@ -290,6 +443,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public new IEnumerable<MessageCollection<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
@@ -297,20 +455,26 @@ namespace Agents.Net
         }
     }
 
+    /// <inheritdoc />
     public class MessageCollector<T1, T2, T3, T4> : MessageCollector<T1, T2, T3>
         where T1 : Message
         where T2 : Message
         where T3 : Message
         where T4 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T4"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T4>> Messages4 { get; } = new Dictionary<MessageDomain, MessageStore<T4>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4>> onMessagesCollected;
 
+        /// <inheritdoc />
         public MessageCollector(Action<MessageCollection<T1, T2, T3, T4>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <inheritdoc />
         protected override bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -326,11 +490,13 @@ namespace Agents.Net
             return base.Aggregate(message, throwError);
         }
 
+        /// <inheritdoc />
         protected override void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4>) messageCollection);
         }
 
+        /// <inheritdoc />
         protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -346,6 +512,7 @@ namespace Agents.Net
             return false;
         }
 
+        /// <inheritdoc />
         protected override void RemoveMessage(Message message)
         {
             if (message is T4 message4)
@@ -358,6 +525,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public new IEnumerable<MessageCollection<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
@@ -365,6 +537,7 @@ namespace Agents.Net
         }
     }
 
+    /// <inheritdoc />
     public class MessageCollector<T1, T2, T3, T4, T5> : MessageCollector<T1, T2, T3, T4>
         where T1 : Message
         where T2 : Message
@@ -372,14 +545,19 @@ namespace Agents.Net
         where T4 : Message
         where T5 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T5"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T5>> Messages5 { get; } = new Dictionary<MessageDomain, MessageStore<T5>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5>> onMessagesCollected;
 
+        /// <inheritdoc />
         public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <inheritdoc />
         protected override bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -395,11 +573,13 @@ namespace Agents.Net
             return base.Aggregate(message, throwError);
         }
 
+        /// <inheritdoc />
         protected override void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5>) messageCollection);
         }
 
+        /// <inheritdoc />
         protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -416,6 +596,7 @@ namespace Agents.Net
             return false;
         }
 
+        /// <inheritdoc />
         protected override void RemoveMessage(Message message)
         {
             if (message is T5 message5)
@@ -428,6 +609,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
@@ -435,6 +621,7 @@ namespace Agents.Net
         }
     }
 
+    /// <inheritdoc />
     public class MessageCollector<T1, T2, T3, T4, T5, T6> : MessageCollector<T1, T2, T3, T4, T5>
         where T1 : Message
         where T2 : Message
@@ -443,14 +630,19 @@ namespace Agents.Net
         where T5 : Message
         where T6 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T6"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T6>> Messages6 { get; } = new Dictionary<MessageDomain, MessageStore<T6>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onMessagesCollected;
 
+        /// <inheritdoc />
         public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <inheritdoc />
         protected override bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -466,11 +658,13 @@ namespace Agents.Net
             return base.Aggregate(message, throwError);
         }
 
+        /// <inheritdoc />
         protected override void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5, T6>) messageCollection);
         }
 
+        /// <inheritdoc />
         protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -488,6 +682,7 @@ namespace Agents.Net
             return false;
         }
 
+        /// <inheritdoc />
         protected override void RemoveMessage(Message message)
         {
             if (message is T6 message6)
@@ -500,6 +695,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
@@ -507,6 +707,7 @@ namespace Agents.Net
         }
     }
 
+    /// <inheritdoc />
     public class MessageCollector<T1, T2, T3, T4, T5, T6, T7> : MessageCollector<T1, T2, T3, T4, T5, T6>
         where T1 : Message
         where T2 : Message
@@ -516,14 +717,19 @@ namespace Agents.Net
         where T6 : Message
         where T7 : Message
     {
+        /// <summary>
+        /// Store for messages of type <typeparamref name="T7"/>.
+        /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T7>> Messages7 { get; } = new Dictionary<MessageDomain, MessageStore<T7>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onMessagesCollected;
 
+        /// <inheritdoc />
         public MessageCollector(Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onMessagesCollected = null)
         {
             this.onMessagesCollected = onMessagesCollected;
         }
 
+        /// <inheritdoc />
         protected override bool Aggregate(Message message, bool throwError)
         {
             if (message == null)
@@ -539,11 +745,13 @@ namespace Agents.Net
             return base.Aggregate(message, throwError);
         }
 
+        /// <inheritdoc />
         protected override void Execute(MessageCollection messageCollection)
         {
             onMessagesCollected?.Invoke((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) messageCollection);
         }
 
+        /// <inheritdoc />
         protected override bool IsCompleted(MessageDomain domain, out MessageCollection messageCollection)
         {
             if (TryGetMessageFittingDomain(domain, Messages1, out MessageStore<T1> message1) &&
@@ -562,6 +770,7 @@ namespace Agents.Net
             return false;
         }
 
+        /// <inheritdoc />
         protected override void RemoveMessage(Message message)
         {
             if (message is T7 message7)
@@ -574,6 +783,11 @@ namespace Agents.Net
             }
         }
 
+        /// <summary>
+        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// </summary>
+        /// <param name="domain">The domain for which sets should be found.</param>
+        /// <returns>An enumeration of all completed sets for the domain.</returns>
         public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)
         {
             IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
