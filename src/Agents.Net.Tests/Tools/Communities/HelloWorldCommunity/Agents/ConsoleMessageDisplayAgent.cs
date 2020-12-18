@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using Agents.Net;
 using Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Messages;
 
@@ -6,7 +11,8 @@ namespace Agents.Net.Tests.Tools.Communities.HelloWorldCommunity.Agents
 {
     [Consumes(typeof(ConsoleMessageCreated))]
     public class ConsoleMessageDisplayAgent : Agent
-    {        private readonly IConsole console;
+    {
+        private readonly IConsole console;
         private readonly Action terminateAction;
 
         public ConsoleMessageDisplayAgent(IMessageBoard messageBoard, IConsole console, Action terminateAction) : base(messageBoard)

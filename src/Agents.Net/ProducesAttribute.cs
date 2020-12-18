@@ -1,10 +1,6 @@
 ﻿#region Copyright
-///////////////////////////////////////////////////////////////////////////////
-//
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
-//
-///////////////////////////////////////////////////////////////////////////////
 #endregion
 
 using System;
@@ -18,7 +14,7 @@ namespace Agents.Net
     /// This attribute is only valid for <see cref="Agent"/> classes. It serves only for documentation purposes.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ProducesAttribute : Attribute
+    public sealed class ProducesAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProducesAttribute"/> class.

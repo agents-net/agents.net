@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using Agents.Net;
 
 namespace Agents.Net.Benchmarks.FileManipulation
@@ -6,7 +11,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
     [Consumes(typeof(FileFoundMessage))]
     [Produces(typeof(FileCompletedMessage))]
     public class GenericFileCompleter : Agent
-    {        public GenericFileCompleter(IMessageBoard messageBoard) : base(messageBoard)
+    {
+        public GenericFileCompleter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

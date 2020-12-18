@@ -1,4 +1,9 @@
-﻿using TechTalk.SpecFlow;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using TechTalk.SpecFlow;
 
 namespace Agents.Net.Tests.SpecFlow
 {

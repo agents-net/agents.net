@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - Community health files and appropriate readme
 - It is now possible to register to all messages by using the type Message for the ConsumeAttribute or InterceptsAttribute
 - Messages have now a defined lifecycle. This can be used to dispose objects during execution safely
+- XML Documentation for all public classes in Agents.Net project - should be visible in nuget package
 
 ### Changed
 - **Breaking Change:** Switch from magic string based agent definition to type based agent definition

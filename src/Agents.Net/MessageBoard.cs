@@ -1,10 +1,6 @@
 ﻿#region Copyright
-///////////////////////////////////////////////////////////////////////////////
-//
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
-//
-///////////////////////////////////////////////////////////////////////////////
 #endregion
 
 using System;
@@ -15,11 +11,24 @@ using System.Threading;
 
 namespace Agents.Net
 {
+    /// <summary>
+    /// This implementation implements the <see cref="IMessageBoard"/> interface for in-process agents.
+    /// </summary>
+    /// <remarks>
+    /// This implementation guaranties the following qualities:
+    /// <list type="bullet">
+    /// <item>
+    /// <term>parallel</term>
+    /// <description>All agents are executed parallel.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
     public sealed class MessageBoard : IDisposable, IMessageBoard
     {
         private readonly MessagePublisher publisher = new MessagePublisher();
         private bool disposed;
 
+        /// <inheritdoc />
         public void Publish(Message message)
         {
             if (message == null)
@@ -35,6 +44,7 @@ namespace Agents.Net
             PublishAllMessages(message.HeadMessage);
         }
 
+        /// <inheritdoc />
         public void Start()
         {
             Publish(new InitializeMessage());
@@ -45,6 +55,7 @@ namespace Agents.Net
             publisher.Publish(messageContainer);
         }
 
+        /// <inheritdoc />
         public void Register(params Agent[] agents)
         {
             if (disposed)
@@ -83,6 +94,7 @@ namespace Agents.Net
             }
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             disposed = true;

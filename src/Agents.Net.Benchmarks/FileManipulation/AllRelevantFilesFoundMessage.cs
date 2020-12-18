@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Agents.Net;
@@ -6,7 +11,8 @@ using Agents.Net;
 namespace Agents.Net.Benchmarks.FileManipulation
 {
     public class AllRelevantFilesFoundMessage : MessageDecorator
-    {        private AllRelevantFilesFoundMessage(Message decoratedMessage, IEnumerable<FileInfo> relevantInfos, IEnumerable<Message> additionalPredecessors = null) :
+    {
+        private AllRelevantFilesFoundMessage(Message decoratedMessage, IEnumerable<FileInfo> relevantInfos, IEnumerable<Message> additionalPredecessors = null) :
             base(decoratedMessage, additionalPredecessors)
         {
             RelevantInfos = relevantInfos;

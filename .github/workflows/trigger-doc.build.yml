@@ -1,0 +1,20 @@
+# This workflow triggers a rebuild of the Agents.Net documentation site whenever changes are made to master.
+# This pulls in the newest source code for API doc generation.
+
+name: Trigger Documentation Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Trigger documentation build
+      uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.DOC_TRIGGER_TOKEN }}
+          repository: agents-net/agents-net.github.io
+          event-type: agents.net-push-master

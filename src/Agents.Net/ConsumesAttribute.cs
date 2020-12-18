@@ -1,10 +1,6 @@
 ﻿#region Copyright
-///////////////////////////////////////////////////////////////////////////////
-//
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
-//
-///////////////////////////////////////////////////////////////////////////////
 #endregion
 
 using System;
@@ -18,7 +14,7 @@ namespace Agents.Net
     /// This attribute is only valid for <see cref="Agent"/>s.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ConsumesAttribute : Attribute
+    public sealed class ConsumesAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsumesAttribute"/> class.

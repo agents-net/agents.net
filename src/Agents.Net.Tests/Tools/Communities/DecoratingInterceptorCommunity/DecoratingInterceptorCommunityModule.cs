@@ -1,4 +1,9 @@
-﻿using Autofac;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using Autofac;
 using Agents.Net;
 
 namespace Agents.Net.Tests.Tools.Communities.DecoratingInterceptorCommunity

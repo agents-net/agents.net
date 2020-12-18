@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Agents.Net;
@@ -8,7 +13,8 @@ namespace Agents.Net.Benchmarks.FileManipulation
     [Consumes(typeof(RootDirectoryDefinedMessage))]
     [Produces(typeof(FileFoundMessage))]
     public class FileFinder : Agent
-    {        public FileFinder(IMessageBoard messageBoard) : base(messageBoard)
+    {
+        public FileFinder(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

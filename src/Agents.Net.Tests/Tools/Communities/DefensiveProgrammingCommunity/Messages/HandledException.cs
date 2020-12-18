@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
-using Agents.Net;
-using Agents.Net;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System.Collections.Generic;
 
 namespace Agents.Net.Tests.Tools.Communities.DefensiveProgrammingCommunity.Messages
 {

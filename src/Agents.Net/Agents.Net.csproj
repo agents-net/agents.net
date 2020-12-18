@@ -19,6 +19,7 @@
 	<Authors>Tobias Wilker</Authors>
 	<PackageIcon>Icon.png</PackageIcon>
 	<Description>.NET class library to easily build self-organizing agents based systems.</Description>
+	<DocumentationFile>bin\$(Configuration)\$(MSBuildProjectName).xml</DocumentationFile>
   </PropertyGroup>
   
 	<!--when prereleasing, embed symbols PDB in main nupkg bc GH Pakages doesn't have its own symbol server-->

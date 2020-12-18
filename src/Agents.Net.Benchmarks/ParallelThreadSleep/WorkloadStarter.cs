@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Collections.Generic;
 using Agents.Net;
 
@@ -7,7 +12,8 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
     [Consumes(typeof(StartingWorkloadsMessage))]
     [Produces(typeof(WorkloadDefinedMessage))]
     public class WorkloadStarter : Agent
-    {        public WorkloadStarter(IMessageBoard messageBoard) : base(messageBoard)
+    {
+        public WorkloadStarter(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 

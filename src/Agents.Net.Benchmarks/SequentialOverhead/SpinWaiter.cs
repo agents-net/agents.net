@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Copyright
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
+#endregion
+
+using System;
 using System.Threading;
 using Agents.Net;
 
@@ -7,7 +12,8 @@ namespace Agents.Net.Benchmarks.SequentialOverhead
     [Consumes(typeof(SpinWaitCountedMessage))]
     [Produces(typeof(SpinWaitCountedMessage))]
     public class SpinWaiter : Agent
-    {        private readonly Action finishAction;
+    {
+        private readonly Action finishAction;
         private readonly bool reuseMessage;
 
         public SpinWaiter(IMessageBoard messageBoard, Action finishAction, bool reuseMessage) : base(messageBoard)
