@@ -26,7 +26,7 @@
   <p align="center">
     .NET class library to easily build self-organizing agents based systems!
     <br />
-    <a href="https://github.com/agents-net/agents.net/wiki"><strong>Explore the docs »</strong></a>
+    <a href="https://agents-net.github.io/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
