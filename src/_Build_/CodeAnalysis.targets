@@ -2,8 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <FxCopAnalysisEnabled Condition="'$(FxCopAnalysisEnabled)'==''" >true</FxCopAnalysisEnabled>
-    <FxCopAnalyzerVersion Condition="'$(FxCopAnalyzerVersion)'==''" >3.*</FxCopAnalyzerVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
 	
     <StyleCopAnalysisEnabled Condition="'$(StyleCopAnalysisEnabled)'==''" >false</StyleCopAnalysisEnabled>
     <StyleCopAnalyzerVersion Condition="'$(StyleCopAnalyzerVersion)'==''" >*</StyleCopAnalyzerVersion>
@@ -11,18 +10,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
-  
-  <Choose>
-    <When Condition="'$(FxCopAnalysisEnabled)' == 'true'">
-      <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-          <Version>$(FxCopAnalyzerVersion)</Version>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-      </ItemGroup>  
-    </When>
-  </Choose>
  
   <Choose>
     <When Condition="'$(StyleCopAnalysisEnabled)' == 'true'">
