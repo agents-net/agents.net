@@ -397,7 +397,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 85
- testRunner.Then("the message \"Transformed Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the message \"Transformed Information\" was posted after at most 600 ms", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 86
  testRunner.And("the message \"Special Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
