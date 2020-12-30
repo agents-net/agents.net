@@ -42,5 +42,6 @@
   </ItemGroup>
   
   <Import Project="..\_Build_\CodeAnalysis.targets" Condition="Exists('..\_Build_\CodeAnalysis.targets')" />
+  <Import Project=".\NugetVersion.targets" Condition="Exists('.\NugetVersion.targets') and '$(Configuration)'=='Release'" />
 
 </Project>
