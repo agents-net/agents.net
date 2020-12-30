@@ -91,7 +91,7 @@ To get a local copy up and running follow these simple example steps.
 
 * [.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 ```sh
-sudo apt-get install -y dotnet-sdk-3.1
+sudo apt-get install -y dotnet-sdk-5.0
 ```
 
 ### Installation

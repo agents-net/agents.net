@@ -18,11 +18,21 @@ jobs:
     - name: Build with dotnet
       run: dotnet build src --configuration Release
       
+  test:
+  
+    name: test
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Test with dotnet
+      run: dotnet test src --configuration Release
+      
   publish_prereleases:
   
     name: Publish prerelease nuget packages on master
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     
     steps:
     - name: Checkout repository
@@ -41,8 +51,11 @@ jobs:
       shell: bash
       
   publish:
+  
     name: build, pack & publish
     runs-on: ubuntu-latest
+    needs: test
+    
     steps:
       - uses: actions/checkout@v2
       - name: publish on version change
