@@ -83,7 +83,7 @@ namespace Agents.Net.Tests.Features
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Intercept and consume base message", @"This scenario shows the feature, that it is possible to consume or intercept
 the type Message, meaning the base type of all messages. This will without
 exception consume/intercept all messages that are send. The use cases for this
-are very limited. But this is a usefull feature especially for unit tests.
+are very limited. But this is a useful feature especially for unit tests.
 In this scenario the MessageProducer sends 5 different messages. There is an
 interceptor and a consuming agent for the type Message which send messages
 themself after they received 6 message (the 5 message mentioned above and the 
@@ -115,7 +115,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 16
- testRunner.Then("the message \"Consumed: 6; Intercepted: 6\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the message \"Consumed: 6; Intercepted: 6\" was posted after at most 600 ms", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 17
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
