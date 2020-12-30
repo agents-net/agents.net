@@ -19,7 +19,7 @@ namespace Agents.Net.Tests.SpecFlow
         public void ThenTheMessageWasPostedToTheConsoleAfterAWhile(string message)
         {
             context.Get<WaitingConsole>().WaitForMessages(out IEnumerable<string> receivedMessages)
-                   .Should().BeTrue("a message was expected, but none was found.");
+                   .Should().BeTrue($"the message \"{message}\" was expected, but none was found.");
             receivedMessages.Should().ContainEquivalentOf(message);
         }
 

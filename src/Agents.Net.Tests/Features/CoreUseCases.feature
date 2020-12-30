@@ -45,7 +45,7 @@ This scenario shows that all 4 message are executed parallel to each other.
 Scenario: Decorating interceptor community prints to console
 This scenario shows an use case where a message is intercepted. Based
 on a check of the original message the original message is than decorated.
-Another agent consumes the intercepted message and checks wether is contains
+Another agent consumes the intercepted message and checks whether is contains
 the decorator or not. If the message is decorated the decorated information
 is displayed too. This shows that interceptors always are executed before
 the acutal consuming agents.
@@ -71,10 +71,10 @@ This scenario shows an use case where a message is intercepted. Based
 on a check of the original message the original message is than delayed until
 another chain of agents is completed. This scenario is useful if based on some
 condition a specific action needs to be executed without letting the original
-chain of messages know about it. A more concrete example would be the follwing.
+chain of messages know about it. A more concrete example would be the following.
 Assuming I have a chain of agents which commits changes to a git repository and
 pushes it to the remote repository. Now if the repository contains a submodule,
-I want the update the submodule before the changes are commited. The original
+I want the update the submodule before the changes are committed. The original
 chain of agents (creating a change, commiting, pushing) does not need to know 
 about submodules. The submodule updated is done by delaying the message the
 commiting agent is using.
@@ -101,7 +101,7 @@ This scenario shows an use case where it is show how the agent framework can be
 used to program defensively. In this use case the FaultyAgent produces a recovereable
 exception which is only logged without terminating the whole program. Remember
 if there is not exception message handling agent, the agent framework will treat
-all exception messages as recovereable.
+all exception messages as recoverable.
 	Given I pass the command line argument "Recover" to the program
 	And I have loaded the community "DefensiveProgrammingCommunity"
 	When I start the message board
@@ -111,9 +111,9 @@ all exception messages as recovereable.
 Scenario: Defensive programming community terminates on unrecoverable exception
 This scenario shows an use case where it is show how the agent framework can be 
 used to program defensively. In this use case the FaultyInterceptor produces an
-unrecovereable exception which is logged and the program is terminated. Remember
+unrecoverable exception which is logged and the program is terminated. Remember
 if there is not exception message handling agent, the agent framework will treat
-all exception messages as recovereable.
+all exception messages as recoverable.
 	Given I pass the command line argument "Terminate" to the program
 	And I have loaded the community "DefensiveProgrammingCommunity"
 	When I start the message board
