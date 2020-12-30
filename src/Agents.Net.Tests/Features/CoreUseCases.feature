@@ -15,7 +15,7 @@ finally printed as message to the console.
 	When I start the message board
 	Then the message "Hello World" was posted after a while
 	And the program was terminated
-
+    
 Scenario: Hello World community executes agents parallel
 This scenario shows that the HelloAgent and the WorldAgent are executed
 parallel, although it was not specified this way. It is simply coincidence
@@ -36,6 +36,7 @@ gets a new domain.
 	Then the message "10" was posted after a while
 	And the program was terminated
 
+@Parallel
 Scenario: Parallel execution community executes in parallel
 This scenario shows that all 4 message are executed parallel to each other.
 	Given I have loaded the community "ParallelExecutionCommunity"

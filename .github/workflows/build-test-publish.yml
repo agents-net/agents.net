@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Test with dotnet
-      run: dotnet test src --configuration Release
+      run: dotnet test src --configuration Release --filter Category!=Parallel
       
   publish_prereleases:
   
