@@ -12,12 +12,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 -->
 
 ## [Unreleased]
+
+## 2021.0.0
 ### Added
 - Integration tests
 - Community health files and appropriate readme
 - It is now possible to register to all messages by using the type Message for the ConsumeAttribute or InterceptsAttribute
 - Messages have now a defined lifecycle. This can be used to dispose objects during execution safely
 - XML Documentation for all public classes in Agents.Net project - should be visible in nuget package
+- Getting Started guide and documentation website
 
 ### Changed
 - **Breaking Change:** Switch from magic string based agent definition to type based agent definition

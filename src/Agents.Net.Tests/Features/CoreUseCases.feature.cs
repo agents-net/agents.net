@@ -126,14 +126,16 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Hello World community executes agents parallel")]
+        [NUnit.Framework.CategoryAttribute("Parallel")]
         public virtual void HelloWorldCommunityExecutesAgentsParallel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Parallel"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hello World community executes agents parallel", "This scenario shows that the HelloAgent and the WorldAgent are executed\r\nparallel" +
                     ", although it was not specified this way. It is simply coincidence\r\nthat the req" +
                     "uirements (InitializeMessage) of both agents are satisfied at\r\nthe same time.", tagsOfScenario, argumentsOfScenario);
-#line 19
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -153,13 +155,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 25
  testRunner.Given("I have loaded the community \"HelloWorldCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 25
+#line 26
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
+#line 27
  testRunner.Then("the agents HelloAgent, WorldAgent were executed parallel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -177,7 +179,7 @@ the same kind. Once these messages are all executed the result is aggregated
 and printed to the console. Additionally, this scenario shows, that the message
 collector can collect message across message domains as each of the 4 messages
 gets a new domain.", tagsOfScenario, argumentsOfScenario);
-#line 28
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -197,16 +199,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 34
+#line 35
  testRunner.Given("I have loaded the community \"ParallelExecutionCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 36
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 37
  testRunner.Then("the message \"10\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 37
+#line 38
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -215,12 +217,14 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Parallel execution community executes in parallel")]
+        [NUnit.Framework.CategoryAttribute("Parallel")]
         public virtual void ParallelExecutionCommunityExecutesInParallel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Parallel"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parallel execution community executes in parallel", "This scenario shows that all 4 message are executed parallel to each other.", tagsOfScenario, argumentsOfScenario);
-#line 39
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -240,13 +244,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 41
+#line 43
  testRunner.Given("I have loaded the community \"ParallelExecutionCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 42
+#line 44
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 45
  testRunner.Then("the agent Worker executed 4 messages parallel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -261,11 +265,11 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Decorating interceptor community prints to console", @"This scenario shows an use case where a message is intercepted. Based
 on a check of the original message the original message is than decorated.
-Another agent consumes the intercepted message and checks wether is contains
+Another agent consumes the intercepted message and checks whether is contains
 the decorator or not. If the message is decorated the decorated information
 is displayed too. This shows that interceptors always are executed before
 the acutal consuming agents.", tagsOfScenario, argumentsOfScenario);
-#line 45
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -285,16 +289,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 52
+#line 54
  testRunner.Given("I have loaded the community \"DecoratingInterceptorCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 55
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 56
  testRunner.Then("the message \"Information Detailed\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 55
+#line 57
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -313,7 +317,7 @@ Replacing a message means that the new message pretends to be the old message
 by providing the same parent, children and predecessor. This mechanism is useful,
 because all messages should be immutable. If I want to change a certain kind of
 property of a message based on a specific condition this is the only option.", tagsOfScenario, argumentsOfScenario);
-#line 57
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -333,16 +337,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 64
+#line 66
  testRunner.Given("I have loaded the community \"ReplaceMessageCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 65
+#line 67
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 66
+#line 68
  testRunner.Then("the message \"Replaced Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 67
+#line 69
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -359,14 +363,14 @@ this.ScenarioInitialize(scenarioInfo);
 on a check of the original message the original message is than delayed until
 another chain of agents is completed. This scenario is useful if based on some
 condition a specific action needs to be executed without letting the original
-chain of messages know about it. A more concrete example would be the follwing.
+chain of messages know about it. A more concrete example would be the following.
 Assuming I have a chain of agents which commits changes to a git repository and
 pushes it to the remote repository. Now if the repository contains a submodule,
-I want the update the submodule before the changes are commited. The original
+I want the update the submodule before the changes are committed. The original
 chain of agents (creating a change, commiting, pushing) does not need to know 
 about submodules. The submodule updated is done by delaying the message the
 commiting agent is using.", tagsOfScenario, argumentsOfScenario);
-#line 69
+#line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -386,19 +390,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 81
+#line 83
  testRunner.Given("I have loaded the community \"DelayCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 82
+#line 84
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 83
- testRunner.Then("the message \"Transformed Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 85
+ testRunner.Then("the message \"Transformed Information\" was posted after at most 600 ms", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 84
+#line 86
  testRunner.And("the message \"Special Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 85
+#line 87
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -417,7 +421,7 @@ Instead an exception message is generated. This is the most simple of use cases
 of interceptors. The consuming agent of the original message does not care if
 the original message is validated or not. Therefore it cannot react on an
 ""InformationValidated"" message.", tagsOfScenario, argumentsOfScenario);
-#line 87
+#line 89
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -437,16 +441,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 94
+#line 96
  testRunner.Given("I have loaded the community \"PreconditionCheckCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 95
+#line 97
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 96
+#line 98
  testRunner.Then("the message \"Validation Failed\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 97
+#line 99
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -463,8 +467,8 @@ this.ScenarioInitialize(scenarioInfo);
 used to program defensively. In this use case the FaultyAgent produces a recovereable
 exception which is only logged without terminating the whole program. Remember
 if there is not exception message handling agent, the agent framework will treat
-all exception messages as recovereable.", tagsOfScenario, argumentsOfScenario);
-#line 99
+all exception messages as recoverable.", tagsOfScenario, argumentsOfScenario);
+#line 101
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -484,19 +488,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 105
+#line 107
  testRunner.Given("I pass the command line argument \"Recover\" to the program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 106
+#line 108
  testRunner.And("I have loaded the community \"DefensiveProgrammingCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 107
+#line 109
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 108
+#line 110
  testRunner.Then("the message \"Recoverable Exception\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 109
+#line 111
  testRunner.And("the program was not terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -511,10 +515,10 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Defensive programming community terminates on unrecoverable exception", @"This scenario shows an use case where it is show how the agent framework can be 
 used to program defensively. In this use case the FaultyInterceptor produces an
-unrecovereable exception which is logged and the program is terminated. Remember
+unrecoverable exception which is logged and the program is terminated. Remember
 if there is not exception message handling agent, the agent framework will treat
-all exception messages as recovereable.", tagsOfScenario, argumentsOfScenario);
-#line 111
+all exception messages as recoverable.", tagsOfScenario, argumentsOfScenario);
+#line 113
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -534,19 +538,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 117
+#line 119
  testRunner.Given("I pass the command line argument \"Terminate\" to the program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 118
+#line 120
  testRunner.And("I have loaded the community \"DefensiveProgrammingCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 119
+#line 121
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 120
+#line 122
  testRunner.Then("the message \"Unrecoverable Exception\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 121
+#line 123
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

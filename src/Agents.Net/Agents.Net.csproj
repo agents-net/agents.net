@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<VersionPrefix>2021.0.0</VersionPrefix>
+	<VersionPrefix>2021.6.0</VersionPrefix>
 	<PackageProjectUrl>https://github.com/agents-net/agents.net</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/agents-net/agents.net</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>

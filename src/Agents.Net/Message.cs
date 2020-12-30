@@ -325,7 +325,7 @@ namespace Agents.Net
             jsonFormat.Append("\", \"Data\": \"");
             jsonFormat.Append(DataToString());
             jsonFormat.Append("\", \"Child\": ");
-            jsonFormat.Append(Child.ToStringBuilder());
+            jsonFormat.Append(Child?.ToStringBuilder());
             jsonFormat.Append('}');
             return jsonFormat;
         }

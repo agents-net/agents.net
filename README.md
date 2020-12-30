@@ -33,7 +33,7 @@
     ·
     <a href="https://github.com/agents-net/agents.net/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=">Request Feature</a>
     ·
-    <a href="https://discord.gg/gn3dqG4">Ask a Question</a>
+    <a href="https://github.com/agents-net/agents.net/discussions">Ask a Question</a>
   </p>
 </p>
 
@@ -74,7 +74,7 @@ Here's why:
 
 The basic idea of the framework is this. Each agent does one thing (connects to a database, reads console input, verifies some values, ...). For that it needs specific information (location of the database, the raw console input, ...). Additionally it provides all the information it knows (the active database connection, single console arguments and their values, ...). The agent is not concerned where the information comes from or how if any needs the information provided. Based on that idea alone the system will organize all agents automatically simply based on who needs a specific information which was provided.
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+A list of commonly used resources that are helpful are listed in the acknowledgements.
 
 ### Built With
 * [.NET Core][dotnet-core-website]
@@ -91,7 +91,7 @@ To get a local copy up and running follow these simple example steps.
 
 * [.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 ```sh
-sudo apt-get install -y dotnet-sdk-3.1
+sudo apt-get install -y dotnet-sdk-5.0
 ```
 
 ### Installation
@@ -134,10 +134,7 @@ dotnet run -c Release -p src/Agents.Net.Benchmarks/Agents.Net.Benchmarks.csproj
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-
-WIP -> I will design use cases as integration tests and than based on that include examples here.
-
-
+Please have a look at our extensive [Getting Started Guide][getting-started-guide]. For Further inspiration on how to use the framework have a look at our [BDD-styled Use Case Tests][integration-tests].
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -146,7 +143,7 @@ See the [open issues][issues-url] for a list of proposed features (and known iss
 
 ### Versioning
 
-The versioning is straight forward. I intend to make one release every half year. Releases will be versioned YEAR.[0|6].PATCH. So for the mid-year release of 2020 it is 2020.6.0. Patches will only be released for major issues. There will always be pre-releases for each commit to master  as a github package.
+The versioning is straight forward. We intend to make one release every half year. Releases will be versioned YEAR.[0|6].PATCH. So for the mid-year release of 2020 it is 2020.6.0. Patches will only be released for major issues. There will always be pre-releases for each commit to master  as a github package.
 
 
 <!-- CONTRIBUTING -->
@@ -212,6 +209,8 @@ Project Link: [https://github.com/agents-net/agents.net](https://github.com/agen
 [workflow-shield]:https://img.shields.io/github/workflow/status/agents-net/agents.net/Build%2C%20Test%20and%20Publish?style=flat-square
 [workflow-url]:https://github.com/agents-net/agents.net/actions?query=workflow%3A"Build%2C+Test+and+Publish"
 [product-screenshot]: images/AgentsNetGif.gif
-[product-homepage]:https://github.com/agents-net/agents.net
+[product-homepage]:https://agents-net.github.io/
 [dotnet-core-website]:https://dotnet.microsoft.com/
 [github-package-auth]:https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-dotnet-cli-for-use-with-github-packages#authenticating-to-github-packages
+[getting-started-guide]:https://agents-net.github.io/articles/agents.net/Getting-Started.html
+[integration-tests]:https://github.com/agents-net/agents.net/raw/master/src/Agents.Net.Tests/Features/CoreUseCases.feature
