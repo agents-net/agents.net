@@ -16,6 +16,7 @@ finally printed as message to the console.
 	Then the message "Hello World" was posted after a while
 	And the program was terminated
     
+@Parallel
 Scenario: Hello World community executes agents parallel
 This scenario shows that the HelloAgent and the WorldAgent are executed
 parallel, although it was not specified this way. It is simply coincidence
