@@ -158,6 +158,14 @@ namespace Agents.Net
             }
         }
 
+        private void RemoveChild(MessageDomain child)
+        {
+            lock (children)
+            {
+                children.Remove(child);
+            }
+        }
+
         /// <inheritdoc />
         public bool Equals(MessageDomain other)
         {
@@ -234,6 +242,7 @@ namespace Agents.Net
             {
                 messageDomain.Terminate();
             }
+            Parent?.RemoveChild(this);
             IsTerminated = true;
         }
 

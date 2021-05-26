@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -321,7 +321,7 @@ namespace Agents.Net
             jsonFormat.Append("\", \"Predecessors\": [");
             jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => $"\"{m.Id}\"")));
             jsonFormat.Append("], \"MessageDomain\": \"");
-            jsonFormat.Append(MessageDomain.Root.Id);
+            jsonFormat.Append(MessageDomain?.Root.Id);
             jsonFormat.Append("\", \"Data\": \"");
             jsonFormat.Append(DataToString());
             jsonFormat.Append("\", \"Child\": ");

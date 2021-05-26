@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Agents.Net.Tests
@@ -148,6 +149,16 @@ namespace Agents.Net.Tests
             TestMessage nextMessage = new TestMessage(message1);
 
             Assert.AreEqual(nextMessage.MessageDomain, message2.MessageDomain, "Propagate parent message domain of terminated domains.");
+        }
+
+        [Test]
+        public void TerminatedDomainParentsForgetChildren()
+        {
+            TestMessage message = new TestMessage();
+            MessageDomain.CreateNewDomainsFor(message);
+
+            MessageDomain.TerminateDomainsOf(message);
+            message.MessageDomain.Parent.Children.Should().NotContain(message.MessageDomain);
         }
 
         [Test]
