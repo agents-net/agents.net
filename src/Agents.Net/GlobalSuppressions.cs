@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -21,3 +21,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Design", "CA1021:Avoid out parameters", Justification = "Internally used protected method in public class.", Scope = "member", Target = "~M:Agents.Net.MessageCollector`6.IsCompleted(Agents.Net.MessageDomain,Agents.Net.MessageCollection@)~System.Boolean")]
 [assembly: SuppressMessage("Design", "CA1021:Avoid out parameters", Justification = "Internally used protected method in public class.", Scope = "member", Target = "~M:Agents.Net.MessageCollector`7.IsCompleted(Agents.Net.MessageDomain,Agents.Net.MessageCollection@)~System.Boolean")]
 [assembly: SuppressMessage("Maintainability", "CA1501:Avoid excessive inheritance", Justification = "I assume this is common practise for this case.", Scope = "type", Target = "~T:Agents.Net.MessageCollection`7")]
+[assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Message is not used and has no disposable parts.", Scope = "member", Target = "~M:Agents.Net.MessageAggregator`1.Aggregate(Agents.Net.Message)")]

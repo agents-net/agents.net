@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -58,14 +58,20 @@ namespace Agents.Net
     public class MessageAggregator<T> where T:Message
     {
         private readonly Action<IReadOnlyCollection<T>> onAggregated;
+        private readonly bool autoTerminate;
 
         /// <summary>
         /// Initialized a new instance of the class <see cref="MessageAggregator{T}"/>.
         /// </summary>
         /// <param name="onAggregated">The action which is executed when all messages were aggregated.</param>
-        public MessageAggregator(Action<IReadOnlyCollection<T>> onAggregated)
+        /// <param name="autoTerminate">
+        /// If set to <c>true</c>, the aggregator will terminate all message domains of the aggregated messages before the execution.
+        /// Default is <c>true</c>.
+        /// </param>
+        public MessageAggregator(Action<IReadOnlyCollection<T>> onAggregated, bool autoTerminate = true)
         {
             this.onAggregated = onAggregated;
+            this.autoTerminate = autoTerminate;
         }
 
         private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<MessageStore<T>>> aggregatedMessages =
@@ -143,7 +149,12 @@ namespace Agents.Net
 
             if (completedMessageBatch != null)
             {
-                onAggregated(completedMessageBatch.Select<MessageStore<T>,T>(m => m).ToArray());
+                T[] messages = completedMessageBatch.Select<MessageStore<T>, T>(m => m).ToArray();
+                if (autoTerminate)
+                {
+                    MessageDomain.TerminateDomainsOf(messages);
+                }
+                onAggregated(messages);
                 foreach (MessageStore<T> messageStore in completedMessageBatch)
                 {
                     messageStore.Dispose();
