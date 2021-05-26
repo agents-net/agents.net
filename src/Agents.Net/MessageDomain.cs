@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -55,7 +55,7 @@ namespace Agents.Net
         {
             Root = root;
             Parent = parent;
-            SiblingDomainRootMessages = siblingDomainRootMessages ?? Array.Empty<Message>();
+            SiblingDomainRootMessages = siblingDomainRootMessages ?? new[] { root };
             lock (parent?.children??new object())
             {
                 parent?.children.Add(this);
@@ -117,6 +117,10 @@ namespace Agents.Net
             IEnumerable<MessageDomain> terminatingDomains = domainMessages.Select(m => m.MessageDomain).Distinct().ToArray();
             foreach (MessageDomain terminatedDomain in terminatingDomains)
             {
+                if(terminatedDomain == DefaultMessageDomain)
+                {
+                    continue;
+                }
                 terminatedDomain.Terminate();
             }
             return new MessageDomainTerminatedMessage(domainMessages, terminatingDomains);
