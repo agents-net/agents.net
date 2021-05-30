@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -28,7 +28,11 @@ namespace Agents.Net
     public abstract class Message : IEquatable<Message>, IDisposable
     {
         private Message parent;
-        private Message[] predecessorMessages;
+
+        internal Type[] PredecessorTypes { get; private set; }
+
+        internal Guid[] PredecessorIds { get; private set; }
+
         private readonly string name;
         
         internal Type MessageType { get; }
@@ -65,12 +69,30 @@ namespace Agents.Net
         protected Message(IEnumerable<Message> predecessorMessages, string name = null)
         {
             this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
-            this.predecessorMessages = predecessorMessages.ToArray();
-            MessageDomain = this.predecessorMessages.GetMessageDomain();
             MessageType = GetType();
+            Message[] predecessorHierarchy = predecessorMessages.SelectMany(m => m.HeadMessage.DescendantsAndSelf)
+                                                                .ToArray();
+            PredecessorTypes = predecessorHierarchy.Select(m => m.MessageType)
+                                                   .ToArray();
+            PredecessorIds = predecessorHierarchy.Select(m => m.Id)
+                                                 .ToArray();
+            MessageDomain = predecessorHierarchy.GetMessageDomain();
             DescendantsAndSelf = new[] {this};
         }
-        
+
+        internal Message(IEnumerable<Type> predecessorTypes, IEnumerable<Guid> predecessorIds, IEnumerable<Message> predecessorMessages, string name = null)
+        {
+            this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
+            MessageType = GetType();
+            Message[] predecessorHierarchy = predecessorMessages.SelectMany(m => m.HeadMessage.DescendantsAndSelf)
+                                                                .ToArray();
+            this.PredecessorTypes = predecessorTypes.Concat(predecessorHierarchy.Select(m => m.MessageType))
+                                                    .ToArray();
+            this.PredecessorIds = predecessorIds.Concat(predecessorHierarchy.Select(m => m.Id))
+                                                .ToArray();
+            DescendantsAndSelf = new[] {this};
+        }
+
         /// <summary>
         /// Replace this message with the given message.
         /// </summary>
@@ -99,16 +121,12 @@ namespace Agents.Net
             }
 
             message.SetChild(Child);
-            message.predecessorMessages = predecessorMessages;
+            message.PredecessorTypes = PredecessorTypes;
+            message.PredecessorIds = PredecessorIds;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
             parent?.SetChild(message);
         }
-
-        /// <summary>
-        /// Access all predecessor messages that led to this message.
-        /// </summary>
-        public IEnumerable<Message> Predecessors => predecessorMessages;
 
         internal Message HeadMessage
         {
@@ -164,6 +182,21 @@ namespace Agents.Net
         public bool Is<T>() where T : Message
         {
             return TryGet(out T _);
+        }
+
+        /// <summary>
+        /// Checks whether there was a direct predecessor of the given type.
+        /// </summary>
+        /// <typeparam name="T">Assumed type of the direct predecessor.</typeparam>
+        /// <returns><c>true</c>, if there was a direct predecessor of the specified predecessor type, otherwise <c>false</c>.</returns>
+        /// <remarks>
+        /// This might be deleted in the future if it is obvious that it is useless.
+        /// </remarks>
+        public bool HadPredecessor<T>()
+            where T : Message
+        {
+            Type predecessorType = typeof(T);
+            return PredecessorTypes.Any(predecessorType.IsAssignableFrom);
         }
 
         /// <summary>
@@ -238,29 +271,6 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Tries to look for the predecessor with the specified type.
-        /// </summary>
-        /// <param name="result">The message of the specified type.</param>
-        /// <typeparam name="T">The message type that needs to be searched.</typeparam>
-        /// <returns><c>true</c>, if the predecessor was found; otherwise <c>false</c>.</returns>
-        /// <remarks>
-        /// This method help to look for a specific predecessor becaue it uses the <see cref="TryGet{T}"/> method of all <see cref="Predecessors"/>.
-        /// </remarks>
-        public bool TryGetPredecessor<T>(out T result) where T : Message
-        {
-            foreach (Message predecessorMessage in predecessorMessages)
-            {
-                if (predecessorMessage.TryGet(out result))
-                {
-                    return true;
-                }
-            }
-
-            result = null;
-            return false;
-        }
-
-        /// <summary>
         /// The message domain in which the message was created.
         /// </summary>
         /// <remarks>
@@ -277,13 +287,7 @@ namespace Agents.Net
             }
         }
 
-        /// <summary>
-        /// The direct child message of this message.
-        /// </summary>
-        /// <remarks>
-        /// This property is set when the <see cref="MessageDecorator"/> is used.
-        /// </remarks>
-        public Message Child
+        private Message Child
         {
             get => child;
             set
@@ -319,9 +323,9 @@ namespace Agents.Net
             jsonFormat.Append("\", \"Name\": \"");
             jsonFormat.Append(name);
             jsonFormat.Append("\", \"Predecessors\": [");
-            jsonFormat.Append(string.Join(", ", predecessorMessages.Select(m => $"\"{m.Id}\"")));
+            jsonFormat.Append(string.Join(", ", PredecessorIds.Select(id => $"\"{id}\"")));
             jsonFormat.Append("], \"MessageDomain\": \"");
-            jsonFormat.Append(MessageDomain.Root.Id);
+            jsonFormat.Append(MessageDomain?.Root.Id);
             jsonFormat.Append("\", \"Data\": \"");
             jsonFormat.Append(DataToString());
             jsonFormat.Append("\", \"Child\": ");
@@ -494,7 +498,7 @@ namespace Agents.Net
         /// </remarks>
         public MessageLog ToMessageLog()
         {
-            return new MessageLog(name, Id, predecessorMessages.Select(m => m.Id), MessageDomain.Root.Id,
+            return new MessageLog(name, Id, PredecessorIds, MessageDomain.Root.Id,
                                   DataToString(), Child?.ToMessageLog());
         }
     }

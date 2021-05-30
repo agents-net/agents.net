@@ -83,11 +83,9 @@ namespace Agents.Net.Tests
         [Test]
         public void TerminateMessageDomainAutomatically()
         {
-            bool executed = false;
             MessageAggregator<TestMessage> aggregator =
                 new MessageAggregator<TestMessage>(set =>
                 {
-                    executed = true;
                 });
 
             TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
@@ -106,11 +104,9 @@ namespace Agents.Net.Tests
         [Test]
         public void DoNotTerminateMessageDomainWhenParameterIsFalse()
         {
-            bool executed = false;
             MessageAggregator<TestMessage> aggregator =
                 new MessageAggregator<TestMessage>(set =>
                 {
-                    executed = true;
                 }, false);
 
             TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
@@ -129,11 +125,9 @@ namespace Agents.Net.Tests
         [Test]
         public void DoNotTerminateDefaultDomain()
         {
-            bool executed = false;
             MessageAggregator<TestMessage> aggregator =
                 new MessageAggregator<TestMessage>(set =>
                 {
-                    executed = true;
                 });
 
             aggregator.Aggregate(new TestMessage());

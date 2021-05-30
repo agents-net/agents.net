@@ -4,6 +4,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,6 +51,7 @@ namespace Agents.Net
         public static MessageDomain DefaultMessageDomain { get; } = new MessageDomain(new DefaultMessageDomainMessage(), null);
 
         private readonly List<MessageDomain> children = new List<MessageDomain>();
+        private readonly ConcurrentBag<Action> terminateActions = new ConcurrentBag<Action>();
 
         private MessageDomain(Message root, MessageDomain parent, IReadOnlyCollection<Message> siblingDomainRootMessages = null)
         {
@@ -66,26 +68,23 @@ namespace Agents.Net
         /// Create a new domain for the <paramref name="newDomainRootMessage"/>.
         /// </summary>
         /// <param name="newDomainRootMessage">The first message in the new domain.</param>
-        /// <returns>A <see cref="MessageDomainsCreatedMessage"/> which lives in the parent domain.</returns>
-        public static MessageDomainsCreatedMessage CreateNewDomainsFor(Message newDomainRootMessage)
+        public static void CreateNewDomainsFor(Message newDomainRootMessage)
         {
-            return CreateNewDomainsFor(new[] {newDomainRootMessage});
+            CreateNewDomainsFor(new[] {newDomainRootMessage});
         }
 
         /// <summary>
         /// Create a new domain for each of the <paramref name="newDomainRootMessages"/>.
         /// </summary>
         /// <param name="newDomainRootMessages">The first messages in the new domains.</param>
-        /// <returns>A <see cref="MessageDomainsCreatedMessage"/> which lives in the parent domain.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="newDomainRootMessages"/> is null.</exception>
-        public static MessageDomainsCreatedMessage CreateNewDomainsFor(IReadOnlyCollection<Message> newDomainRootMessages)
+        public static void CreateNewDomainsFor(IReadOnlyCollection<Message> newDomainRootMessages)
         {
             if (newDomainRootMessages == null)
             {
                 throw new ArgumentNullException(nameof(newDomainRootMessages));
             }
             CreateDomains();
-            return new MessageDomainsCreatedMessage(newDomainRootMessages, newDomainRootMessages.SelectMany(m => m.Predecessors).Distinct());
 
             void CreateDomains()
             {
@@ -100,10 +99,9 @@ namespace Agents.Net
         /// Sets the domain of <paramref name="domainMessage"/> to inactive.
         /// </summary>
         /// <param name="domainMessage">The message which provides the terminated domain.</param>
-        /// <returns>A <see cref="MessageDomainTerminatedMessage"/> which lives in the parent domain.</returns>
-        public static MessageDomainTerminatedMessage TerminateDomainsOf(Message domainMessage)
+        public static void TerminateDomainsOf(Message domainMessage)
         {
-            return TerminateDomainsOf(new[] {domainMessage});
+            TerminateDomainsOf(new[] {domainMessage});
         }
 
 
@@ -111,8 +109,7 @@ namespace Agents.Net
         /// Sets the domain of all <paramref name="domainMessages"/> to inactive.
         /// </summary>
         /// <param name="domainMessages">The messages which provides the terminated domains.</param>
-        /// <returns>A <see cref="MessageDomainTerminatedMessage"/> which lives in the parent domain.</returns>
-        public static MessageDomainTerminatedMessage TerminateDomainsOf(IReadOnlyCollection<Message> domainMessages)
+        public static void TerminateDomainsOf(IReadOnlyCollection<Message> domainMessages)
         {
             IEnumerable<MessageDomain> terminatingDomains = domainMessages.Select(m => m.MessageDomain).Distinct().ToArray();
             foreach (MessageDomain terminatedDomain in terminatingDomains)
@@ -123,7 +120,6 @@ namespace Agents.Net
                 }
                 terminatedDomain.Terminate();
             }
-            return new MessageDomainTerminatedMessage(domainMessages, terminatingDomains);
         }
 
         /// <summary>
@@ -155,6 +151,14 @@ namespace Agents.Net
                 {
                     return children.ToArray();
                 }
+            }
+        }
+
+        private void RemoveChild(MessageDomain child)
+        {
+            lock (children)
+            {
+                children.Remove(child);
             }
         }
 
@@ -234,7 +238,27 @@ namespace Agents.Net
             {
                 messageDomain.Terminate();
             }
+            Parent?.RemoveChild(this);
             IsTerminated = true;
+            foreach (Action terminateAction in terminateActions)
+            {
+                terminateAction();
+            }
+        }
+
+        internal void ExecuteOnTerminate(Action terminateAction)
+        {
+            if (this == DefaultMessageDomain)
+            {
+                //Default message domain is never terminated
+                return;
+            }
+
+            if (IsTerminated)
+            {
+                terminateAction();
+            }
+            terminateActions.Add(terminateAction);
         }
 
         private class DefaultMessageDomainMessage : Message

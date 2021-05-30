@@ -121,22 +121,13 @@ namespace Agents.Net
         /// This method is used to send multiple messages to the message board at the same time. All message open up a new message domain.
         /// </summary>
         /// <param name="messages">All messages to be send.</param>
-        /// <param name="sendDomainCreatedMessage">If set to <c>true</c>, the agent will send a <see cref="MessageDomainsCreatedMessage"/> along with the messages passed to the method. Default is <c>false</c>.</param>
         /// <remarks>
         /// The message will be send to the <see cref="IMessageBoard"/> which was passed in the constructor.
         /// To accumulate all messages again it is necessary that all send messages are of the same type.
         /// </remarks>
-        protected void OnMessages(IReadOnlyCollection<Message> messages, bool sendDomainCreatedMessage = false)
+        protected void OnMessages(IReadOnlyCollection<Message> messages)
         {
-            MessageDomainsCreatedMessage createdMessage = MessageDomain.CreateNewDomainsFor(messages);
-            if (sendDomainCreatedMessage)
-            {
-                OnMessage(createdMessage);
-            }
-            else
-            {
-                createdMessage.Dispose();
-            }
+            MessageDomain.CreateNewDomainsFor(messages);
             foreach (Message message in messages)
             {
                 OnMessage(message);

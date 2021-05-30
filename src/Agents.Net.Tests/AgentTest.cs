@@ -46,31 +46,11 @@ namespace Agents.Net.Tests
         {
             TestMessage message1 = new TestMessage();
             TestMessage message2 = new TestMessage();
-            testAgent.OnMessages(false, message1, message2);
+            testAgent.OnMessages(message1, message2);
 
             messageBoard.Received().Publish(message1);
             messageBoard.Received().Publish(message2);
             Assert.AreNotEqual(message1.MessageDomain,message2.MessageDomain, "MessageDomains not created.");
-        }
-
-        [Test]
-        public void OnMessagesPublishesCreatedMessageIfRequested()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            testAgent.OnMessages(true, message1, message2);
-
-            messageBoard.Received().Publish(Arg.Is<Message>(m => m is MessageDomainsCreatedMessage));
-        }
-
-        [Test]
-        public void OnMessagesDoesNotPublishCreatedMessageIfNotRequested()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            testAgent.OnMessages(false, message1, message2);
-
-            messageBoard.DidNotReceive().Publish(Arg.Is<Message>(m => m is MessageDomainsCreatedMessage));
         }
 
         [Test]
@@ -114,9 +94,9 @@ namespace Agents.Net.Tests
                 base.OnMessage(message);
             }
 
-            public void OnMessages(bool publishCreated, params Message[] messages)
+            public void OnMessages(params Message[] messages)
             {
-                base.OnMessages(messages, publishCreated);
+                base.OnMessages(messages);
             }
         }
     }

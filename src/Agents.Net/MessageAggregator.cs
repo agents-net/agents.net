@@ -121,11 +121,6 @@ namespace Agents.Net
             }
 
             IReadOnlyCollection<Message> root = aggregatedMessage.MessageDomain.SiblingDomainRootMessages;
-            if (root == null)
-            {
-                throw new InvalidOperationException($"Cannot aggregate message {message} because domain " +
-                                                    $"does not contain a {nameof(MessageDomainsCreatedMessage)}");
-            }
 
             if (aggregatedMessage.MessageDomain.IsTerminated)
             {

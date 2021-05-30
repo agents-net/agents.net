@@ -1,4 +1,4 @@
-﻿#region Copyright
+#region Copyright
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
 #endregion
@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Agents.Net.Tests
@@ -72,16 +73,6 @@ namespace Agents.Net.Tests
             MessageDomain.CreateNewDomainsFor(new[] {message1, message2});
 
             Assert.AreEqual(2, message2.MessageDomain.SiblingDomainRootMessages.Count, "Domain should know the sibling messages, which includes the message itself.");
-        }
-
-        [Test]
-        public void DomainCreatedMessageKnowsCreatedDomains()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            MessageDomainsCreatedMessage createdMessage = MessageDomain.CreateNewDomainsFor(new[] {message1, message2});
-
-            CollectionAssert.AreEquivalent(new []{message1.MessageDomain, message2.MessageDomain}, createdMessage.CreatedDomains, "Created domains should be known.");
         }
 
         [Test]
@@ -151,15 +142,13 @@ namespace Agents.Net.Tests
         }
 
         [Test]
-        public void TerminatedMessageKnowsTerminatedDomains()
+        public void TerminatedDomainParentsForgetChildren()
         {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            MessageDomain.CreateNewDomainsFor(new[] {message1, message2});
+            TestMessage message = new TestMessage();
+            MessageDomain.CreateNewDomainsFor(message);
 
-            MessageDomainTerminatedMessage terminatedMessage = MessageDomain.TerminateDomainsOf(new[] {message1, message2});
-
-            CollectionAssert.AreEquivalent(new []{message1.MessageDomain, message2.MessageDomain}, terminatedMessage.TerminatedDomains, "Terminated domains should be known.");
+            MessageDomain.TerminateDomainsOf(message);
+            message.MessageDomain.Parent.Children.Should().NotContain(message.MessageDomain);
         }
     }
 }
