@@ -13,10 +13,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ## [Unreleased]
 ### Changed
-- MessageAggregator automatically terminates the message domains of the aggregated messages. Can be disabled with optional constructor paramter.
+- **Breaking Change:** Removed the `Predecessors` and `GetPredecessor` members from `Message`. This was a huge unfixable memory leak. Instead of it `MessageDomain` and `MessageCollector` should be used to address scenarios where the predecessor message must be evaluated.
+- `MessageAggregator` automatically terminates the message domains of the aggregated messages. Can be disabled with optional constructor parameter.
 
 ### Removed
-- **Breaking Change:** Removed useless MessageDomainsCreatedMessage and MessageDomainsTerminatedMessage
+- **Breaking Change:** Removed useless `MessageDomainsCreatedMessage` and `MessageDomainsTerminatedMessage`
 
 ## 2021.0.0
 ### Added
