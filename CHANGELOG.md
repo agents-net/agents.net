@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Changed
 - MessageAggregator automatically terminates the message domains of the aggregated messages. Can be disabled with optional constructor paramter.
 
+### Removed
+- **Breaking Change:** Removed useless MessageDomainsCreatedMessage and MessageDomainsTerminatedMessage
+
 ## 2021.0.0
 ### Added
 - Integration tests

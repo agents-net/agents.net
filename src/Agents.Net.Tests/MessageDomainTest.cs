@@ -76,16 +76,6 @@ namespace Agents.Net.Tests
         }
 
         [Test]
-        public void DomainCreatedMessageKnowsCreatedDomains()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            MessageDomainsCreatedMessage createdMessage = MessageDomain.CreateNewDomainsFor(new[] {message1, message2});
-
-            CollectionAssert.AreEquivalent(new []{message1.MessageDomain, message2.MessageDomain}, createdMessage.CreatedDomains, "Created domains should be known.");
-        }
-
-        [Test]
         public void PropagateMessageDomain()
         {
             TestMessage message1 = new TestMessage();
@@ -159,18 +149,6 @@ namespace Agents.Net.Tests
 
             MessageDomain.TerminateDomainsOf(message);
             message.MessageDomain.Parent.Children.Should().NotContain(message.MessageDomain);
-        }
-
-        [Test]
-        public void TerminatedMessageKnowsTerminatedDomains()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            MessageDomain.CreateNewDomainsFor(new[] {message1, message2});
-
-            MessageDomainTerminatedMessage terminatedMessage = MessageDomain.TerminateDomainsOf(new[] {message1, message2});
-
-            CollectionAssert.AreEquivalent(new []{message1.MessageDomain, message2.MessageDomain}, terminatedMessage.TerminatedDomains, "Terminated domains should be known.");
         }
     }
 }
