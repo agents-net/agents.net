@@ -4,6 +4,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,6 +51,7 @@ namespace Agents.Net
         public static MessageDomain DefaultMessageDomain { get; } = new MessageDomain(new DefaultMessageDomainMessage(), null);
 
         private readonly List<MessageDomain> children = new List<MessageDomain>();
+        private readonly ConcurrentBag<Action> terminateActions = new ConcurrentBag<Action>();
 
         private MessageDomain(Message root, MessageDomain parent, IReadOnlyCollection<Message> siblingDomainRootMessages = null)
         {
@@ -238,6 +240,25 @@ namespace Agents.Net
             }
             Parent?.RemoveChild(this);
             IsTerminated = true;
+            foreach (Action terminateAction in terminateActions)
+            {
+                terminateAction();
+            }
+        }
+
+        internal void ExecuteOnTerminate(Action terminateAction)
+        {
+            if (this == DefaultMessageDomain)
+            {
+                //Default message domain is never terminated
+                return;
+            }
+
+            if (IsTerminated)
+            {
+                terminateAction();
+            }
+            terminateActions.Add(terminateAction);
         }
 
         private class DefaultMessageDomainMessage : Message

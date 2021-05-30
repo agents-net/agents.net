@@ -331,7 +331,17 @@ namespace Agents.Net
             {
                 throw new ArgumentNullException(nameof(messagePool));
             }
-            messagePool[message.MessageDomain] = message;
+
+            if (messagePool.ContainsKey(message.MessageDomain))
+            {
+                messagePool[message.MessageDomain].Dispose();
+                messagePool[message.MessageDomain] = message;
+            }
+            else
+            {
+                messagePool.Add(message.MessageDomain, message);
+                message.MessageDomain.ExecuteOnTerminate(() => messagePool.Remove(message.MessageDomain));
+            }
         }
 
         private static IEnumerable<MessageDomain> ThisAndFlattenedChildren(MessageDomain messageDomain)
