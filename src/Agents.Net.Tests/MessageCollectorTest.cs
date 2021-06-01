@@ -142,6 +142,20 @@ namespace Agents.Net.Tests
             executed.Should().BeTrue("this set should have been executed immediately.");
         }
         
+        [Test, Timeout(1000)]
+        public void ExecutePushedMessageIfSetIsFullWithDecorator()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            collector.Push(new TestMessage());
+            collector.PushAndExecute(OtherDecorator.Decorate(new OtherMessage()), set =>
+            {
+                executed = true;
+            });
+
+            executed.Should().BeTrue("this set should have been executed immediately.");
+        }
+        
         [Test]
         public void ExecutePushedMessageIfSetIsFilledLater()
         {
@@ -376,6 +390,24 @@ namespace Agents.Net.Tests
         }
 
         #endregion
+
+        private class OtherDecorator : MessageDecorator
+        {
+            private OtherDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
+                : base(decoratedMessage, additionalPredecessors)
+            {
+            }
+
+            public static OtherDecorator Decorate(OtherMessage message)
+            {
+                return new OtherDecorator(message);
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
+            }
+        }
 
         private class OtherMessage : Message
         {
