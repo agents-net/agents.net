@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Agents.Net
 {
@@ -94,8 +95,12 @@ namespace Agents.Net
         /// Store for messages of type <typeparamref name="T2"/>.
         /// </summary>
         protected Dictionary<MessageDomain, MessageStore<T2>> Messages2 { get; } = new Dictionary<MessageDomain, MessageStore<T2>>();
+        
         private readonly Action<MessageCollection<T1, T2>> onMessagesCollected;
         private readonly object dictionaryLock = new object();
+
+        private readonly Dictionary<Message, Action<MessageCollection>> oneShotActions =
+            new Dictionary<Message, Action<MessageCollection>>(); 
 
         /// <summary>
         /// Initialized a new instance of the class <see cref="MessageCollector{T1,T2}"/>.
@@ -178,14 +183,47 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public IEnumerable<MessageCollection<T1, T2>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection));
+        }
+
+        /// <summary>
+        /// Execute the routine for <see cref="PushAndExecute"/>.
+        /// </summary>
+        /// <param name="message">The message which is pushed.</param>
+        /// <param name="executeAction">The action which should execute the action which was passed to the <see cref="PushAndExecute"/> method.</param>
+        protected void ExecutePushAndExecute(Message message, Action<MessageCollection> executeAction)
+        {
+            using (ManualResetEventSlim resetEvent = new ManualResetEventSlim(false))
+            {
+                MessageCollection collection = null;
+                lock (oneShotActions)
+                {
+                    oneShotActions.Add(message, set =>
+                    {
+                        collection = set;
+                        lock (oneShotActions)
+                        {
+                            oneShotActions.Remove(message);
+                        }
+                        resetEvent.Set();
+                    });
+                }
+                
+                Push(message);
+                resetEvent.Wait();
+                
+                executeAction?.Invoke(collection);
+            }
         }
 
         /// <summary>
@@ -216,6 +254,16 @@ namespace Agents.Net
         {
             foreach (MessageCollection messageSet in sets)
             {
+                if (oneShotActions.Count > 0)
+                {
+                    foreach (Message message in messageSet)
+                    {
+                        if (oneShotActions.TryGetValue(message, out Action<MessageCollection> action))
+                        {
+                            action(messageSet);
+                        }
+                    }
+                }
                 Execute(messageSet);
                 messageSet.Dispose();
             }
@@ -454,14 +502,17 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public new IEnumerable<MessageCollection<T1, T2, T3>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2, T3>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection));
         }
     }
 
@@ -536,14 +587,17 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public new IEnumerable<MessageCollection<T1, T2, T3, T4>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2, T3, T4>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection));
         }
     }
 
@@ -620,14 +674,17 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection));
         }
     }
 
@@ -706,14 +763,17 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5, T6>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection));
         }
     }
 
@@ -794,14 +854,17 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Overridden by inheriting classes to find sets for a specific message domain.
+        /// Add a message to the collector and wait of the complete set to execute the specified action.
         /// </summary>
-        /// <param name="domain">The domain for which sets should be found.</param>
-        /// <returns>An enumeration of all completed sets for the domain.</returns>
-        public new IEnumerable<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> FindSetsForDomain(MessageDomain domain)
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <remarks>
+        /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
+        /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
+        /// </remarks>
+        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected)
         {
-            IEnumerable<MessageCollection> completedSets = GetCompleteSets(domain);
-            return completedSets.Cast<MessageCollection<T1, T2, T3, T4, T5, T6, T7>>();
+            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection));
         }
     }
 }

@@ -29,8 +29,6 @@ namespace Agents.Net
     {
         private Message parent;
 
-        internal Type[] PredecessorTypes { get; private set; }
-
         internal Guid[] PredecessorIds { get; private set; }
 
         private readonly string name;
@@ -72,22 +70,18 @@ namespace Agents.Net
             MessageType = GetType();
             Message[] predecessorHierarchy = predecessorMessages.SelectMany(m => m.HeadMessage.DescendantsAndSelf)
                                                                 .ToArray();
-            PredecessorTypes = predecessorHierarchy.Select(m => m.MessageType)
-                                                   .ToArray();
             PredecessorIds = predecessorHierarchy.Select(m => m.Id)
                                                  .ToArray();
             MessageDomain = predecessorHierarchy.GetMessageDomain();
             DescendantsAndSelf = new[] {this};
         }
 
-        internal Message(IEnumerable<Type> predecessorTypes, IEnumerable<Guid> predecessorIds, IEnumerable<Message> predecessorMessages, string name = null)
+        internal Message(IEnumerable<Guid> predecessorIds, IEnumerable<Message> predecessorMessages, string name = null)
         {
             this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
             MessageType = GetType();
             Message[] predecessorHierarchy = predecessorMessages.SelectMany(m => m.HeadMessage.DescendantsAndSelf)
                                                                 .ToArray();
-            this.PredecessorTypes = predecessorTypes.Concat(predecessorHierarchy.Select(m => m.MessageType))
-                                                    .ToArray();
             this.PredecessorIds = predecessorIds.Concat(predecessorHierarchy.Select(m => m.Id))
                                                 .ToArray();
             DescendantsAndSelf = new[] {this};
@@ -121,7 +115,6 @@ namespace Agents.Net
             }
 
             message.SetChild(Child);
-            message.PredecessorTypes = PredecessorTypes;
             message.PredecessorIds = PredecessorIds;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
@@ -182,21 +175,6 @@ namespace Agents.Net
         public bool Is<T>() where T : Message
         {
             return TryGet(out T _);
-        }
-
-        /// <summary>
-        /// Checks whether there was a direct predecessor of the given type.
-        /// </summary>
-        /// <typeparam name="T">Assumed type of the direct predecessor.</typeparam>
-        /// <returns><c>true</c>, if there was a direct predecessor of the specified predecessor type, otherwise <c>false</c>.</returns>
-        /// <remarks>
-        /// This might be deleted in the future if it is obvious that it is useless.
-        /// </remarks>
-        public bool HadPredecessor<T>()
-            where T : Message
-        {
-            Type predecessorType = typeof(T);
-            return PredecessorTypes.Any(predecessorType.IsAssignableFrom);
         }
 
         /// <summary>

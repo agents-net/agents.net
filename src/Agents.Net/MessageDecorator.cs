@@ -57,7 +57,7 @@ namespace Agents.Net
         /// The <paramref name="decoratedMessage"/> is not necessarily the direct <see cref="Message.Child"/> of this message, as it is undetermined which message decorator comes first when two decorators are applied at the same time. But it is thread safe to do so. 
         /// </remarks>
         protected MessageDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null) 
-            : base(decoratedMessage?.PredecessorTypes??Enumerable.Empty<Type>(), decoratedMessage?.PredecessorIds??Enumerable.Empty<Guid>(), additionalPredecessors ?? Enumerable.Empty<Message>())
+            : base(decoratedMessage?.PredecessorIds??Enumerable.Empty<Guid>(), additionalPredecessors ?? Enumerable.Empty<Message>())
         {
             SwitchDomain(decoratedMessage?.MessageDomain);
             SetChild(decoratedMessage?.ReplaceHead(this));
