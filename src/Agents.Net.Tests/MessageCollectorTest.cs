@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -48,44 +49,65 @@ namespace Agents.Net.Tests
         [Test]
         public void MessagesAreNotRemovedFromCollector()
         {
+            int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>();
+                new MessageCollector<TestMessage, OtherMessage>(set =>
+                {
+                    executed++;
+                });
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
+            collector.Push(new OtherMessage());
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                .Should().NotBeEmpty("no message was consumed so all messages should still exist.");
+            executed.Should().Be(2, "the test message should not have been forgotten.");
         }
         
         [Test]
         public void ConsumedMessageIsRemovedFromCollector()
         {
+            int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
                 new MessageCollector<TestMessage, OtherMessage>(set =>
                 {
+                    executed++;
                     set.MarkAsConsumed(set.Message2);
                 });
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
+            collector.Push(new TestMessage());
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().Be(1, "other message should have been eliminated.");
         }
         
         [Test]
-        public void ConsumedMessageIsRemovedFromCollectorUsingFindSets()
+        public void PushAndExecuteStoresMessages()
         {
+            int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>();
+                new MessageCollector<TestMessage, OtherMessage>(set => executed++);
             collector.Push(new TestMessage());
-            collector.Push(new OtherMessage());
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+            });
+            collector.Push(new TestMessage());
 
-            MessageCollection<TestMessage, OtherMessage> set = collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                .Single();
-            set.MarkAsConsumed(set.Message2);
+            executed.Should().Be(2, "push and execute should store the other message.");
+        }
+        
+        [Test]
+        public void ConsumedMessageIsRemovedFromCollectorUsingPushAndExecute()
+        {
+            int executed = 0;
+            MessageCollector<TestMessage, OtherMessage> collector = 
+                new MessageCollector<TestMessage, OtherMessage>(set => executed++);
+            collector.Push(new TestMessage());
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                set.MarkAsConsumed(set.Message2);
+            });
+            collector.Push(new TestMessage());
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().Be(1, "other message should have been eliminated.");
         }
         
         [Test]
@@ -105,24 +127,80 @@ namespace Agents.Net.Tests
 
             executed.Should().Be(2, "only when consumed message is added again, the collector is executed again.");
         }
+        
+        [Test]
+        public void ExecutePushedMessageIfSetIsFull()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            collector.Push(new TestMessage());
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                executed = true;
+            });
+
+            executed.Should().BeTrue("this set should have been executed immediately.");
+        }
+        
+        [Test]
+        public void ExecutePushedMessageIfSetIsFilledLater()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            using Timer timer = new Timer(state =>
+                                          {
+                                              executed.Should().BeFalse("The set should not execute before pushing second message.");
+                                              collector.Push(new TestMessage());
+                                          }, null, 200,
+                                          Timeout.Infinite);
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                executed = true;
+            });
+
+            executed.Should().BeTrue("this set should have been executed after the timer goes of.");
+        }
+        
+        [Test]
+        public void ExecutePushedMessageOnlyOnce()
+        {
+            int executed = 0;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            collector.Push(new TestMessage());
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                executed++;
+            });
+            collector.Push(new TestMessage());
+
+            executed.Should().Be(1, "the executed action should not have been executed twice.");
+        }
+        
+        [Test]
+        public void ExecuteOriginalActionToo()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>(set => executed = true);
+            collector.Push(new TestMessage());
+            collector.PushAndExecute(new OtherMessage(), set => { });
+
+            executed.Should().BeTrue("the original action should have been executed.");
+        }
 
         #region Mark as consumable for higher order collectors
         
         
         [Test]
-        public void ThirdConsumedMessageIsRemovedFromCollector()
+        public void ThirdPushedMessageIsExecuted()
         {
+            bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2>(set =>
-                {
-                    set.MarkAsConsumed(set.Message3);
-                });
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2>();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
-            collector.Push(new OtherMessage2());
+            collector.PushAndExecute(new OtherMessage2(), set => executed = true);
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                     .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().BeTrue("the set was completed");
         }
         
         
@@ -148,18 +226,15 @@ namespace Agents.Net.Tests
         [Test]
         public void FourthConsumedMessageIsRemovedFromCollector()
         {
+            bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3>(set =>
-                {
-                    set.MarkAsConsumed(set.Message4);
-                });
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3>();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
-            collector.Push(new OtherMessage3());
+            collector.PushAndExecute(new OtherMessage3(), set => executed = true);
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                     .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().BeTrue("the set was completed");
         }
         
         
@@ -186,19 +261,16 @@ namespace Agents.Net.Tests
         [Test]
         public void FifthConsumedMessageIsRemovedFromCollector()
         {
+            bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4>(set =>
-                {
-                    set.MarkAsConsumed(set.Message5);
-                });
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4>();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
-            collector.Push(new OtherMessage4());
+            collector.PushAndExecute(new OtherMessage4(), set => executed = true);
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                     .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().BeTrue("the set was completed");
         }
         
         
@@ -226,20 +298,17 @@ namespace Agents.Net.Tests
         [Test]
         public void SixthConsumedMessageIsRemovedFromCollector()
         {
+            bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5>(set =>
-                {
-                    set.MarkAsConsumed(set.Message6);
-                });
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5>();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
-            collector.Push(new OtherMessage5());
+            collector.PushAndExecute(new OtherMessage5(), set => executed = true);
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                     .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().BeTrue("the set was completed");
         }
         
         
@@ -268,21 +337,18 @@ namespace Agents.Net.Tests
         [Test]
         public void SeventhConsumedMessageIsRemovedFromCollector()
         {
+            bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6>(set =>
-                {
-                    set.MarkAsConsumed(set.Message7);
-                });
+                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6>();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
             collector.Push(new OtherMessage5());
-            collector.Push(new OtherMessage6());
+            collector.PushAndExecute(new OtherMessage6(), set => executed = true);
 
-            collector.FindSetsForDomain(MessageDomain.DefaultMessageDomain)
-                     .Should().BeEmpty("no complete set should exist after a message was consumed.");
+            executed.Should().BeTrue("the set was completed");
         }
         
         
