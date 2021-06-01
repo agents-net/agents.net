@@ -439,7 +439,7 @@ namespace Agents.Net
         /// <summary>
         /// Dispose any resources that are stored in the message.
         /// </summary>
-        /// <param name="disposing">If <c>true</c> </param>
+        /// <param name="disposing">If <c>true</c> it was called from the <see cref="Dispose()"/> method.</param>
         protected virtual void Dispose(bool disposing)
         {
             remainingUses = 0;

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -70,10 +71,39 @@ namespace Agents.Net.Tests
             messageBoard.Received().Publish(Arg.Any<ExceptionMessage>());
         }
 
+        [Test]
+        public void DisposeAllDisposables()
+        {
+            TestDisposable disposable1 = new TestDisposable();
+            TestDisposable disposable2 = new TestDisposable();
+            using (TestAgent agent = new TestAgent(Substitute.For<IMessageBoard>()))
+            {
+                agent.MarkForDispose(disposable1);
+                agent.MarkForDispose(disposable2);
+            }
+
+            disposable1.IsDisposed.Should().BeTrue("all disposables should be disposed on dispose.");
+            disposable2.IsDisposed.Should().BeTrue("all disposables should be disposed on dispose.");
+        }
+
+        private class TestDisposable : IDisposable
+        {
+            public bool IsDisposed { get; private set; }
+            public void Dispose()
+            {
+                IsDisposed = true;
+            }
+        } 
+
         private class TestAgent : Agent
         {
             public TestAgent(IMessageBoard messageBoard) : base(messageBoard)
             {
+            }
+
+            public void MarkForDispose(IDisposable disposable)
+            {
+                AddDisposable(disposable);
             }
 
             public Message LastExecutedMessage { get; private set; }

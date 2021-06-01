@@ -4,6 +4,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -30,10 +31,11 @@ namespace Agents.Net
     /// }
     /// </code>
     /// </example>
-    public abstract class Agent
+    public abstract class Agent : IDisposable
     {
         private readonly IMessageBoard messageBoard;
         private readonly string agentName;
+        private readonly ConcurrentBag<IDisposable> disposables = new ConcurrentBag<IDisposable>();
 
         /// <summary>
         /// Initialized a new instance of the class <see cref="Agent"/>.
@@ -139,5 +141,36 @@ namespace Agents.Net
         /// </summary>
         /// <param name="messageData">The received message.</param>
         protected abstract void ExecuteCore(Message messageData);
+
+        /// <summary>
+        /// Thread-safely adds an <see cref="IDisposable"/> for disposing on <see cref="Dispose(bool)"/> 
+        /// </summary>
+        /// <param name="disposable">The disposable to add.</param>
+        protected void AddDisposable(IDisposable disposable)
+        {
+            disposables.Add(disposable);
+        }
+
+        /// <summary>
+        /// Dispose any resources that are stored in the message.
+        /// </summary>
+        /// <param name="disposing">If <c>true</c> it was called from the <see cref="Dispose()"/> method.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (IDisposable disposable in disposables)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
