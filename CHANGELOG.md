@@ -13,13 +13,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ## [Unreleased]
 ### Changed
-- MessageAggregator automatically terminates the message domains of the aggregated messages. Can be disabled with optional constructor parameter.
 - **Breaking Change:** Removed the `Predecessors` and `GetPredecessor` members from `Message`. This was a huge unfixable memory leak. Instead of it `MessageDomain` and `MessageCollector` should be used to address scenarios where the predecessor message must be evaluated
+- **Breaking Change:** The `Agent` class implements now `IDisposable`. Disposables can now be added with the new `AddDisposable` method
 - `MessageAggregator` automatically terminates the message domains of the aggregated messages. Can be disabled with optional constructor parameter
 - `MessageCollector` automatically removes messages from a terminated domain. This was a huge memory leak
 
 ### Added
 - `MessageCollector.PushAndExecute` is a replacement for `MessageCollector.FindSetsForDomain`. It adds a message to the collector and waits for a complete set with that message to execute an action
+- `Agent.AddDisposable` marks the passed object for disposal in a thread-safe way
 
 ### Removed
 - **Breaking Change:** Removed useless `MessageDomainsCreatedMessage` and `MessageDomainsTerminatedMessage`
