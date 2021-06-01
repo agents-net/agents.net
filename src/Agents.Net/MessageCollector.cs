@@ -256,7 +256,7 @@ namespace Agents.Net
             {
                 if (oneShotActions.Count > 0)
                 {
-                    foreach (Message message in messageSet)
+                    foreach (Message message in messageSet.SelectMany(m => m.HeadMessage.DescendantsAndSelf))
                     {
                         if (oneShotActions.TryGetValue(message, out Action<MessageCollection> action))
                         {
