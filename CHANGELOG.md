@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 -->
 
 ## [Unreleased]
+
+## 2021.6.0
 ### Changed
 - **Breaking Change:** Removed the `Predecessors` and `GetPredecessor` members from `Message`. This was a huge unfixable memory leak. Instead of it `MessageDomain` and `MessageCollector` should be used to address scenarios where the predecessor message must be evaluated
 - **Breaking Change:** The `Agent` class implements now `IDisposable`. Disposables can now be added with the new `AddDisposable` method
