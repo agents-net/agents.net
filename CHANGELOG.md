@@ -12,8 +12,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 -->
 
 ## [Unreleased]
+### Fixed
+- #93 - When changing the message domain the message domain of the whoile hierarchy is now changed
 
-## 2021.6.0
+## 2021.6.1
 ### Changed
 - **Breaking Change:** Removed the `Predecessors` and `GetPredecessor` members from `Message`. This was a huge unfixable memory leak. Instead of it `MessageDomain` and `MessageCollector` should be used to address scenarios where the predecessor message must be evaluated
 - **Breaking Change:** The `Agent` class implements now `IDisposable`. Disposables can now be added with the new `AddDisposable` method

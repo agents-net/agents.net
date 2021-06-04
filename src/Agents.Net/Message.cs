@@ -258,6 +258,10 @@ namespace Agents.Net
 
         internal void SwitchDomain(MessageDomain newDomain)
         {
+            if (this != HeadMessage)
+            {
+                HeadMessage.SwitchDomain(newDomain);
+            }
             MessageDomain = newDomain;
             foreach (Message descendant in Descendants)
             {

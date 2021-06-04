@@ -43,6 +43,16 @@ namespace Agents.Net.Tests
         }
 
         [Test]
+        public void CreateDomainSwitchesDomainForMessageHierarchy()
+        {
+            TestMessage message1 = new TestMessage();
+            TestMessageDecorator decorator = TestMessageDecorator.Decorate(message1);
+            MessageDomain.CreateNewDomainsFor(message1);
+            
+            Assert.AreEqual(message1.MessageDomain, decorator.MessageDomain, "Whole hierarchy should have the new domain.");
+        }
+
+        [Test]
         public void NewDomainIsChildOfParentDomain()
         {
             TestMessage message1 = new TestMessage();
