@@ -31,4 +31,23 @@ namespace Agents.Net.Tests
             return string.Empty;
         }
     }
+
+    public class TestMessageDecorator : MessageDecorator
+    {
+        private TestMessageDecorator(Message decoratedMessage, IEnumerable<Message> additionalPredecessors = null)
+            : base(decoratedMessage, additionalPredecessors)
+        {
+        }
+
+        public static TestMessageDecorator Decorate(TestMessage message,
+                                                    IEnumerable<Message> additionalPredecessors = null)
+        {
+            return new TestMessageDecorator(message, additionalPredecessors);
+        }
+
+        protected override string DataToString()
+        {
+            return string.Empty;
+        }
+    }
 }
