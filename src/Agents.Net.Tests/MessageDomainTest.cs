@@ -123,6 +123,32 @@ namespace Agents.Net.Tests
         }
 
         [Test]
+        public void PropagateDomainForTerminatedSiblingDomain()
+        {
+            TestMessage message1 = new TestMessage();
+            TestMessage message2 = new TestMessage();
+            MessageDomain.CreateNewDomainsFor(new []{message1, message2});
+            
+            MessageDomain.TerminateDomainsOf(message2);
+            TestMessage message3 = new TestMessage(new []{message1, message2});
+            
+            Assert.AreEqual(message1.MessageDomain, message3.MessageDomain, "Non terminated domain should have been used.");
+        }
+
+        [Test]
+        public void DontPropagateDomainForTerminatedSiblingDomainIfParentIsStillSibling()
+        {
+            TestMessage message1 = new TestMessage();
+            TestMessage message2 = new TestMessage();
+            MessageDomain.CreateNewDomainsFor(new []{message1, message2});
+            MessageDomain.CreateNewDomainsFor(message2);
+            
+            MessageDomain.TerminateDomainsOf(message2);
+            Assert.Throws<InvalidOperationException>(() => new TestMessage(new[] {message1, message2}),
+                                                     "Exception should be thrown to indicate error.");
+        }
+
+        [Test]
         public void TerminateDomainsSetsTheTerminatedFlag()
         {
             TestMessage message1 = new TestMessage();
@@ -149,6 +175,19 @@ namespace Agents.Net.Tests
             TestMessage nextMessage = new TestMessage(message1);
 
             Assert.AreEqual(nextMessage.MessageDomain, message2.MessageDomain, "Propagate parent message domain of terminated domains.");
+        }
+
+        [Test]
+        public void CreatingNewDomainsIgnoreTerminatedDomains()
+        {
+            TestMessage message1 = new TestMessage();
+            MessageDomain.CreateNewDomainsFor(message1);
+            TestMessage message2 = new TestMessage(message1);
+            
+            MessageDomain.TerminateDomainsOf(message1);
+            MessageDomain.CreateNewDomainsFor(message2);
+            
+            Assert.AreEqual(message2.MessageDomain.Parent, MessageDomain.DefaultMessageDomain, "Terminated domains should be skipped when creating new domains.");
         }
 
         [Test]

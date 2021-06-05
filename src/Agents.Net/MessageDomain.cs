@@ -55,6 +55,10 @@ namespace Agents.Net
 
         private MessageDomain(Message root, MessageDomain parent, IReadOnlyCollection<Message> siblingDomainRootMessages = null)
         {
+            while (parent?.IsTerminated == true)
+            {
+                parent = parent.Parent;
+            }
             Root = root;
             Parent = parent;
             SiblingDomainRootMessages = siblingDomainRootMessages ?? new[] { root };
