@@ -142,7 +142,7 @@ namespace Agents.Net.Tests
             executed.Should().BeTrue("this set should have been executed immediately.");
         }
         
-        [Test, Timeout(1000)]
+        [Test]
         public void ExecutePushedMessageIfSetIsFullWithDecorator()
         {
             bool executed = false;
