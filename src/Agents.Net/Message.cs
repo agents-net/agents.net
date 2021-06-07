@@ -163,6 +163,7 @@ namespace Agents.Net
 
             Descendants = Child?.Descendants.Concat(new[] {Child})
                           ?? Array.Empty<Message>();
+            parent?.SetChild(this);
         }
 
         /// <summary>

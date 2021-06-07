@@ -63,5 +63,23 @@ namespace Agents.Net.Tests
 
             replacing.Id.Should().Be(context.Id);
         }
+        
+        [Test]
+        public void ReplaceMessageChangesDescendantsOfWholeHierarchy()
+        {
+            TestMessage context = new TestMessage();
+            TestMessageDecorator decorator = TestMessageDecorator.Decorate(context);
+            TestMessageDecorator head = TestMessageDecorator.Decorate(decorator);
+            TestMessage replacing = new TestMessage();
+            context.ReplaceWith(replacing);
+
+            bool found = false;
+            foreach (Message descendant in head.DescendantsAndSelf)
+            {
+                found |= ReferenceEquals(descendant, replacing);
+            }
+
+            found.Should().BeTrue("the head message should now the new child message.");
+        }
     }
 }
