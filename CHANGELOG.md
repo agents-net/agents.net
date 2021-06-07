@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 -->
 
 ## [Unreleased]
+
+## 2021.6.2
+### Added
+- `PushAndExecute` accepts a `CancellationToken` now. With this it is possible to stop the wait operation
+
 ### Fixed
 - #93 - When changing the message domain the message domain of the whole hierarchy is now changed
 - #95 - Terminated domains are not considered anymore when choosing the parent for a new domain

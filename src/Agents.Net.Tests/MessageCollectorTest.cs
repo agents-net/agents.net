@@ -134,12 +134,13 @@ namespace Agents.Net.Tests
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
             collector.Push(new TestMessage());
-            collector.PushAndExecute(new OtherMessage(), set =>
+            bool result = collector.PushAndExecute(new OtherMessage(), set =>
             {
                 executed = true;
             });
 
             executed.Should().BeTrue("this set should have been executed immediately.");
+            result.Should().BeTrue("result should be true if it was executed.");
         }
         
         [Test]
@@ -173,6 +174,46 @@ namespace Agents.Net.Tests
             });
 
             executed.Should().BeTrue("this set should have been executed after the timer goes of.");
+        }
+        
+        [Test]
+        public void CancelPushAndExecute()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            using CancellationTokenSource source = new CancellationTokenSource();
+            using Timer timer = new Timer(state =>
+                                          {
+                                              source.Cancel();
+                                          }, null, 200,
+                                          Timeout.Infinite);
+            bool result = collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                executed = true;
+            }, source.Token);
+
+            executed.Should().BeFalse("execution was canceled.");
+            result.Should().BeFalse("result should be false when canceled.");
+        }
+        
+        [Test]
+        public void CancelPushAndExecuteAndAfterwardsPushDoesNotExecuteAction()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            using CancellationTokenSource source = new CancellationTokenSource();
+            using Timer timer = new Timer(state =>
+                                          {
+                                              source.Cancel();
+                                          }, null, 200,
+                                          Timeout.Infinite);
+            collector.PushAndExecute(new OtherMessage(), set =>
+            {
+                executed = true;
+            }, source.Token);
+            collector.Push(new TestMessage());
+            
+            executed.Should().BeFalse("execution was canceled.");
         }
         
         [Test]
