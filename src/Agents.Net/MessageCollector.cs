@@ -187,13 +187,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
 
         /// <summary>
@@ -201,7 +203,10 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is pushed.</param>
         /// <param name="executeAction">The action which should execute the action which was passed to the <see cref="PushAndExecute"/> method.</param>
-        protected void ExecutePushAndExecute(Message message, Action<MessageCollection> executeAction)
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        protected bool ExecutePushAndExecute(Message message, Action<MessageCollection> executeAction,
+                                             CancellationToken cancellationToken)
         {
             using (ManualResetEventSlim resetEvent = new ManualResetEventSlim(false))
             {
@@ -220,10 +225,19 @@ namespace Agents.Net
                 }
                 
                 Push(message);
-                resetEvent.Wait();
-                
+                try
+                {
+                    resetEvent.Wait(cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    return false;
+                }
+
                 executeAction?.Invoke(collection);
             }
+
+            return true;
         }
 
         /// <summary>
@@ -506,13 +520,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection), cancellationToken);
         }
     }
 
@@ -591,13 +607,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection), cancellationToken);
         }
     }
 
@@ -678,13 +696,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection), cancellationToken);
         }
     }
 
@@ -767,13 +787,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection), cancellationToken);
         }
     }
 
@@ -858,13 +880,15 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <remarks>
         /// <para>This method is helpful for <see cref="InterceptorAgent"/>s where the agent in the <see cref="InterceptorAgent.InterceptCore"/> method must wait for a set of message before returning the <see cref="InterceptionAction"/>.</para>
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
-        public void PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected)
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection));
+            return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection), cancellationToken);
         }
     }
 }

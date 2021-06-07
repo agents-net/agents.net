@@ -82,7 +82,7 @@ about submodules. The submodule updated is done by delaying the message the
 commiting agent is using.
 	Given I have loaded the community "DelayCommunity"
 	When I start the message board
-	Then the message "Transformed Information" was posted after at most 600 ms
+	Then the message "Transformed Information" was posted after at most 1000 ms
 	And the message "Special Information" was posted after a while
 	And the program was terminated
 
