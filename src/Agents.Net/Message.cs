@@ -41,7 +41,7 @@ namespace Agents.Net
         /// <remarks>
         /// The id is only used for logging.
         /// </remarks>
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; private set; } = Guid.NewGuid();
 
         /// <summary>
         /// Initializes a new instances of this class with a single predecessor message.
@@ -118,6 +118,7 @@ namespace Agents.Net
             message.PredecessorIds = PredecessorIds;
             message.SwitchDomain(MessageDomain);
             message.parent = parent;
+            message.Id = Id;
             parent?.SetChild(message);
         }
 
