@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 -->
 
 ## [Unreleased]
+### Fixed
+- #99 - Replace inherits id and updates the whole hierarchies descendants
 
 ## 2021.6.2
 ### Added
