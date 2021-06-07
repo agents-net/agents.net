@@ -39,7 +39,7 @@ namespace Agents.Net.Tests
         {
         }
 
-        public static TestMessageDecorator Decorate(TestMessage message,
+        public static TestMessageDecorator Decorate(Message message,
                                                     IEnumerable<Message> additionalPredecessors = null)
         {
             return new TestMessageDecorator(message, additionalPredecessors);
