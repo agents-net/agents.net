@@ -82,14 +82,7 @@ namespace Agents.Net
     ///
     ///     protected override void ExecuteCore(Message messageData)
     ///     {
-    ///         if (messageData.TryGet(out ExceptionMessage exceptionMessage))
-    ///         {
-    ///             gate.Check(exceptionMessage);
-    ///         }
-    ///         else
-    ///         {
-    ///             gate.Check(messageData.Get&lt;TEnd&gt;());
-    ///         }
+    ///         gate.Check(messageData);
     ///     }
     ///
     ///     public TResult ServiceCall(TParam parameters)
@@ -130,21 +123,12 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// Checks whether the provided exception message is does break the awaited <see cref="SendAndAwait"/> operation.
+        /// Checks whether the provided exception message is the end message or an exception message for the awaited <see cref="SendAndAwait"/> operation.
         /// </summary>
-        /// <param name="exceptionMessage">The exception message.</param>
+        /// <param name="message">The message to check.</param>
+        /// <returns><c>true</c>, if the message was the end message or an exception message for the <see cref="SendAndAwait"/> operation.</returns>
         /// <remarks>For an example how to use this class see the type documentation.</remarks>
-        public void Check(ExceptionMessage exceptionMessage)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Checks whether the provided message is the end message for the awaited <see cref="SendAndAwait"/> operation. 
-        /// </summary>
-        /// <param name="endMessage">The end message.</param>
-        /// <remarks>For an example how to use this class see the type documentation.</remarks>
-        public void Check(TEnd endMessage)
+        public bool Check(Message message)
         {
             throw new NotImplementedException();
         }
