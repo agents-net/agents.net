@@ -20,11 +20,12 @@ namespace Agents.Net.Tests
             using Timer timer = new Timer(state =>
                                           {
                                               executed.Should().BeFalse("The gate should not continue before pushing end message.");
-                                              gate.Check(new OtherMessage(startMessage));
+                                              bool checkResult = gate.Check(new OtherMessage(startMessage));
+                                              checkResult.Should().BeTrue("Message should be excepted.");
                                               resetEvent.Set();
                                           }, null, 200,
                                           Timeout.Infinite);
-            gate.SendAndAwait(startMessage);
+            gate.SendAndAwait(startMessage, m => {});
             executed = true;
             resetEvent.Wait();
         }
@@ -42,7 +43,7 @@ namespace Agents.Net.Tests
                                               gate.Check(endMessage);
                                           }, null, 200,
                                           Timeout.Infinite);
-            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage);
+            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
             result.Result.Should().Be(MessageGateResultKind.Success);
             result.EndMessage.Should().BeSameAs(endMessage);
@@ -61,7 +62,7 @@ namespace Agents.Net.Tests
                                               gate.Check(exception);
                                           }, null, 200,
                                           Timeout.Infinite);
-            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage);
+            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
             result.Result.Should().Be(MessageGateResultKind.Exception);
             result.Exceptions.Should().ContainSingle(message => ReferenceEquals(message, exception));
@@ -77,11 +78,12 @@ namespace Agents.Net.Tests
             using Timer timer = new Timer(state =>
                                           {
                                               OtherMessage endMessage = new OtherMessage(Array.Empty<Message>());
+                                              MessageDomain.CreateNewDomainsFor(endMessage);
                                               gate.Check(endMessage);
                                               executed = true;
                                           }, null, 200,
                                           Timeout.Infinite);
-            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, 500);
+            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
             result.Result.Should().Be(MessageGateResultKind.Timeout);
@@ -97,11 +99,12 @@ namespace Agents.Net.Tests
             using Timer timer = new Timer(state =>
                                           {
                                               ExceptionMessage exception = new ExceptionMessage("Error", Array.Empty<Message>(), new HelloAgent(Substitute.For<IMessageBoard>()));
+                                              MessageDomain.CreateNewDomainsFor(exception);
                                               gate.Check(exception);
                                               executed = true;
                                           }, null, 200,
                                           Timeout.Infinite);
-            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, 500);
+            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
             result.Result.Should().Be(MessageGateResultKind.Timeout);
@@ -114,10 +117,20 @@ namespace Agents.Net.Tests
             TestMessage startMessage = new TestMessage();
             MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
             
-            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, cancellationToken:source.Token);
+            MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, cancellationToken:source.Token);
 
             source.IsCancellationRequested.Should().BeTrue("something went wrong otherwise.");
             result.Result.Should().Be(MessageGateResultKind.Canceled);
+        }
+        
+        [Test]
+        public void DoNotExceptForeignMessages()
+        {
+            using CancellationTokenSource source = new CancellationTokenSource(500);
+            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+
+            bool checkResult = gate.Check(new ForeignMessage());
+            checkResult.Should().BeFalse("Foreign messages should not be excepted.");
         }
         
         private class OtherMessage : Message
@@ -136,6 +149,20 @@ namespace Agents.Net.Tests
             public OtherMessage(IEnumerable<Message> predecessorMessages, string name = null)
                 : base(predecessorMessages, name)
             {
+            }
+        }
+        
+        public class ForeignMessage : Message
+        {
+
+            public ForeignMessage()
+                : base(Array.Empty<Message>())
+            {
+            }
+
+            protected override string DataToString()
+            {
+                return string.Empty;
             }
         }
     }
