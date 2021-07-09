@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--SvgWriter version 0.0.0.0-->
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="199.93333333333" height="396.6" id="svg2" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(-0,172.79999999999995)">
+    <!--Edges-->
+    <!--nodes-->
+    <rect fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="50" y="-66.4" width="92.17666666667" height="16.4" rx="3" ry="3" />
+    <text x="51" y="-53.4" font-family="Times-Roman" font-size="12" fill="#000000">InitializeMessage</text>
+    <rect fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" x="50" y="-162.8" width="99.93333333333" height="16.4" rx="3" ry="3" />
+    <text x="51" y="-149.8" font-family="Times-Roman" font-size="12" fill="#000000">ExceptionMessage</text>
+    <!--end of nodes-->
+  </g>
+</svg>

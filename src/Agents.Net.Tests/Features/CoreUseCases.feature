@@ -111,7 +111,7 @@ all exception messages as recoverable.
 	And the program was not terminated
 
 Scenario: Defensive programming community terminates on unrecoverable exception
-This scenario shows an use case where it is show how the agent framework can be 
+This scenario shows an use case where it is shown how the agent framework can be 
 used to program defensively. In this use case the FaultyInterceptor produces an
 unrecoverable exception which is logged and the program is terminated. Remember
 if there is not exception message handling agent, the agent framework will treat
@@ -121,3 +121,21 @@ all exception messages as recoverable.
 	When I start the message board
 	Then the message "Unrecoverable Exception" was posted after a while
 	And the program was terminated
+
+Scenario: Legacy service community executes a service call
+This scenario shows an use case where it is shown how the agent framework can be
+used in a legacy use case. In this use case a call to a service is made which
+excepts some parameters and expects a result.
+    Given I have loaded the community "LegacyServiceBridgeCommunity"
+	When I start the message board
+    And Call the legacy service with the data "false"
+	Then the legacy service returned "ServiceCallResult"
+
+Scenario: Legacy service community handles an exception
+This scenario shows an use case where it is shown how the agent framework can be
+used in a legacy use case. In this use case a call to a service is made which
+creates an exception that changes the service outcome.
+    Given I have loaded the community "LegacyServiceBridgeCommunity"
+	When I start the message board
+    And Call the legacy service with the data "true"
+	Then the legacy service returned "Exception"

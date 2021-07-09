@@ -66,5 +66,11 @@ namespace Agents.Net.Tests.SpecFlow
             context.Get<WaitingConsole>().WaitForMessages(out _);
             context.Get<ExecutionOrder>().CheckParallelMessages(agent, messageCount);
         }
+
+        [Then("the legacy service returned \"(.*)\"")]
+        public void TheLegacyServiceReturned(string serviceData)
+        {
+            context.Get<string>("LegacyServiceResult").Should().Be(serviceData);
+        }
     }
 }
