@@ -1,0 +1,78 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.LegacyServiceBridgeCommunity",
+    "GenerateAutofacModule": true
+  },
+  "Agents": [
+    {
+      "Id": "2f260f30-443e-4724-a55e-bbdd8e93c404",
+      "Name": "ServiceBridge",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "f68a1b8a-8314-4ca2-8de4-494f1abb2e97",
+        "da055bfd-f9b4-431e-9057-d19fdbc28e9c"
+      ],
+      "ProducedMessages": [
+        "e2993706-5248-420c-81b4-16be842269f8"
+      ],
+      "IncomingEvents": [
+        "Service call from extern"
+      ],
+      "ProducedEvents": []
+    },
+    {
+      "Id": "9e892dac-71b1-4110-8938-054598bafaaa",
+      "Name": "ServiceExecutor",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [
+        "e2993706-5248-420c-81b4-16be842269f8"
+      ],
+      "ProducedMessages": [
+        "da055bfd-f9b4-431e-9057-d19fdbc28e9c"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    },
+    {
+      "$type": "Agents.Net.Designer.Model.InterceptorAgentModel, Agents.Net.Designer.Model",
+      "InterceptingMessages": [
+        "e2993706-5248-420c-81b4-16be842269f8"
+      ],
+      "Id": "1810512d-de0b-4da2-913c-01ecfd0c84ee",
+      "Name": "ExceptionProducer",
+      "Namespace": ".Agents",
+      "ConsumingMessages": [],
+      "ProducedMessages": [
+        "f68a1b8a-8314-4ca2-8de4-494f1abb2e97"
+      ],
+      "IncomingEvents": [],
+      "ProducedEvents": []
+    }
+  ],
+  "Messages": [
+    {
+      "Id": "9299db60-1da2-4967-acb9-4639a9d2c385",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "f68a1b8a-8314-4ca2-8de4-494f1abb2e97",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "e2993706-5248-420c-81b4-16be842269f8",
+      "Name": "ServiceParameterPassed",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    },
+    {
+      "Id": "da055bfd-f9b4-431e-9057-d19fdbc28e9c",
+      "Name": "ServiceResult",
+      "Namespace": ".Messages",
+      "BuildIn": false
+    }
+  ]
+}
