@@ -1,0 +1,21 @@
+{
+  "GeneratorSettings": {
+    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity",
+    "GenerateAutofacModule": false
+  },
+  "Agents": [],
+  "Messages": [
+    {
+      "Id": "55fdb3a5-71d9-469d-b048-a8367e059ebf",
+      "Name": "InitializeMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    },
+    {
+      "Id": "2e27b979-e0c1-491a-aac5-5e6b10b51fd0",
+      "Name": "ExceptionMessage",
+      "Namespace": "Agents.Net",
+      "BuildIn": true
+    }
+  ]
+}
