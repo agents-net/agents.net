@@ -125,22 +125,15 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Dispose messages after they were used")]
-        [NUnit.Framework.CategoryAttribute("DisposeCheck")]
-        public virtual void DisposeMessagesAfterTheyWereUsed()
+        [NUnit.Framework.DescriptionAttribute("Detect interception conflicts")]
+        public virtual void DetectInterceptionConflicts()
         {
-            string[] tagsOfScenario = new string[] {
-                    "DisposeCheck"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dispose messages after they were used", @"This scenario shows the feature, that messages are disposed after they were
-used. The heuristic that is used to determine whether a message is used or not
-is complex as the agents themself cannot determine that as they do not know 
-how many agents react to the message. The heuristic used to determine when a 
-message can be disposed is that by default after the Execute method of any
-Agent the message will count it as used. After it was used as many times as
-there are agents it will dispose itself. The community used will have different
-messages. Afterwards it is checked whether all messages are disposed ", tagsOfScenario, argumentsOfScenario);
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detect interception conflicts", "This scenario shows the feature, that the message board detects when a message wa" +
+                    "s \r\nintercepted by at least two agents that returned DoNotPublish and Delay. In " +
+                    "this case\r\nthe message board needs to send an exception message.", tagsOfScenario, argumentsOfScenario);
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -160,16 +153,71 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 29
- testRunner.Given("I have loaded the community \"DefaultDisposeCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 23
+    testRunner.Given("I pass the command line argument \"simulate interception conflict\" to the program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 24
+ testRunner.And("I have loaded the community \"DelayCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
  testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 26
+ testRunner.Then("the message \"Interception conflict detected.\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 27
+ testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Dispose messages after they were used")]
+        [NUnit.Framework.CategoryAttribute("DisposeCheck")]
+        public virtual void DisposeMessagesAfterTheyWereUsed()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "DisposeCheck"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dispose messages after they were used", @"This scenario shows the feature, that messages are disposed after they were
+used. The heuristic that is used to determine whether a message is used or not
+is complex as the agents themself cannot determine that as they do not know 
+how many agents react to the message. The heuristic used to determine when a 
+message can be disposed is that by default after the Execute method of any
+Agent the message will count it as used. After it was used as many times as
+there are agents it will dispose itself. The community used will have different
+messages. Afterwards it is checked whether all messages are disposed ", tagsOfScenario, argumentsOfScenario);
+#line 30
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 39
+ testRunner.Given("I have loaded the community \"DefaultDisposeCommunity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 40
+ testRunner.When("I start the message board", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 41
  testRunner.Then("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 32
+#line 42
  testRunner.And("all messages are disposed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

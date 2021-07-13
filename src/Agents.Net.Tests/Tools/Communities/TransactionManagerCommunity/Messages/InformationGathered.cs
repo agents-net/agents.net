@@ -6,20 +6,16 @@
 using System.Collections.Generic;
 using Agents.Net;
 
-namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages
+namespace Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Messages
 {
-    public class TransformingInformation : Message
+    public class InformationGathered : Message
     {
-        public TransformingInformation(string information,
-                                       Message predecessorMessage)
-			: base(predecessorMessage)
+        public InformationGathered(Message predecessorMessage, string information): base(predecessorMessage)
         {
             Information = information;
         }
 
-        public TransformingInformation(string information,
-                                       IEnumerable<Message> predecessorMessages)
-			: base(predecessorMessages)
+        public InformationGathered(IEnumerable<Message> predecessorMessages, string information): base(predecessorMessages)
         {
             Information = information;
         }

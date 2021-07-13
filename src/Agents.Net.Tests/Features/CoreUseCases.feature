@@ -139,3 +139,27 @@ creates an exception that changes the service outcome.
 	When I start the message board
     And Call the legacy service with the data "true"
 	Then the legacy service returned "Exception"
+
+    Scenario: Transaction manager community completes task
+    This scenario shows the use case of a transaction mechanism. The idea is to hav an
+    agent that starts a transaction and waits for the finished message with the help of
+    a message gate. This also shows the use of the SendAndContinue method of the message
+    gate.
+        Given I pass the command line argument "Complete" to the program
+        And I have loaded the community "TransactionManagerCommunity"
+        When I start the message board
+        Then the message "Transaction Successful" was posted after a while
+        And the program was terminated
+
+    Scenario: Transaction manager community rolls back on error
+    This scenario shows the use case of a transaction mechanism. The idea is to hav an
+    agent that starts a transaction and waits for the finished message with the help of
+    a message gate. The message gate comes with the handy functionality to stop the 
+    execution when there is an exception. With that it is easy to initiate a rollback.
+    In a real application the rollback than needs to revert any changes made during the
+    transaction.
+        Given I pass the command line argument "Error" to the program
+        And I have loaded the community "TransactionManagerCommunity"
+        When I start the message board
+        Then the message "Rollback" was posted after a while
+        And the program was terminated

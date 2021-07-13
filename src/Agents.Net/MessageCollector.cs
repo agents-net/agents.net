@@ -193,9 +193,21 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
+        }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        protected internal void PushAndContinue(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
 
         /// <summary>
@@ -205,6 +217,7 @@ namespace Agents.Net
         /// <param name="executeAction">The action which should execute the action which was passed to the <see cref="PushAndExecute"/> method.</param>
         /// <param name="cancellationToken">Cancellation token to stop the wait operation.</param>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. This method will be removed with version 2022.6")]
         protected bool ExecutePushAndExecute(Message message, Action<MessageCollection> executeAction,
                                              CancellationToken cancellationToken)
         {
@@ -238,6 +251,41 @@ namespace Agents.Net
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Execute the routine for <see cref="PushAndExecute"/>.
+        /// </summary>
+        /// <param name="message">The message which is pushed.</param>
+        /// <param name="executeAction">The action which should execute the action which was passed to the <see cref="PushAndExecute"/> method.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        protected void ExecutePushAndContinue(Message message, Action<MessageCollection> executeAction,
+                                              CancellationToken cancellationToken)
+        {
+            CancellationTokenRegistration register = default;
+            register = cancellationToken.Register(() =>
+            {
+                register.Dispose();
+                lock (oneShotActions)
+                {
+                    oneShotActions.Remove(message);
+                }
+            });
+            lock (oneShotActions)
+            {
+                oneShotActions.Add(message, set =>
+                {
+                    register.Dispose();
+                    lock (oneShotActions)
+                    {
+                        oneShotActions.Remove(message);
+                    }
+                    executeAction?.Invoke(set);
+                });
+            }
+                
+            Push(message);
         }
 
         /// <summary>
@@ -526,6 +574,7 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection), cancellationToken);
@@ -613,6 +662,7 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection), cancellationToken);
@@ -702,6 +752,7 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection), cancellationToken);
@@ -793,6 +844,7 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection), cancellationToken);
@@ -886,6 +938,7 @@ namespace Agents.Net
         /// <para>Another example is when the <see cref="InterceptorAgent"/> wants to wait on a single message. In this case the first message is the message that is intercepted. The second message is the message the agent needs. The advantage is, that the collector respects message domains.</para>
         /// </remarks>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection), cancellationToken);

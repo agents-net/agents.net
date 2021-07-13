@@ -5,12 +5,12 @@
 
 using System;
 using Agents.Net;
-using Agents.Net.Tests.Tools.Communities.LegacyServiceBridgeCommunity.Messages;
+using Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Messages;
 
-namespace Agents.Net.Tests.Tools.Communities.LegacyServiceBridgeCommunity.Agents
+namespace Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Agents
 {
     [Produces(typeof(ExceptionMessage))]
-    [Intercepts(typeof(ServiceParameterPassed))]
+    [Intercepts(typeof(TransactionStarted))]
     public class ExceptionProducer : InterceptorAgent
     {
         public ExceptionProducer(IMessageBoard messageBoard) : base(messageBoard)
@@ -19,10 +19,9 @@ namespace Agents.Net.Tests.Tools.Communities.LegacyServiceBridgeCommunity.Agents
 
         protected override InterceptionAction InterceptCore(Message messageData)
         {
-            ServiceParameterPassed parameterPassed = messageData.Get<ServiceParameterPassed>();
-            if (parameterPassed.ThrowException)
+            if (messageData.Get<TransactionStarted>().Data.Equals("error", StringComparison.OrdinalIgnoreCase))
             {
-                OnMessage(new ExceptionMessage("Error", messageData, this));
+                OnMessage(new ExceptionMessage("Error during execution", messageData, this));
                 return InterceptionAction.DoNotPublish;
             }
 

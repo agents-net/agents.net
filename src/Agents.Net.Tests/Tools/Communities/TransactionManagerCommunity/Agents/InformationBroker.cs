@@ -4,11 +4,10 @@
 #endregion
 
 using System;
-using System.Linq;
 using Agents.Net;
-using Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages;
+using Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Messages;
 
-namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
+namespace Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Agents
 {
     [Consumes(typeof(InitializeMessage))]
     [Produces(typeof(InformationGathered))]
@@ -22,14 +21,7 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
 
         protected override void ExecuteCore(Message messageData)
         {
-            if (args.Arguments.FirstOrDefault() == "simulate interception conflict")
-            {
-                OnMessage(new InformationGathered("Special Conflict", messageData));
-            }
-            else
-            {
-                OnMessage(new InformationGathered("Special Information", messageData));
-            }
+            OnMessage(new InformationGathered(messageData, args.Arguments[0]));
         }
     }
 }

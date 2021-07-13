@@ -3,21 +3,18 @@
 //  This file is licensed under MIT
 #endregion
 
-using System;
 using System.Collections.Generic;
 using Agents.Net;
 
-namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages
+namespace Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Messages
 {
-    public class TransformationCompleted : Message
+    public class TransactionSuccessful : Message
     {
-        public TransformationCompleted(Message predecessorMessage)
-			: base(predecessorMessage)
+        public TransactionSuccessful(Message predecessorMessage): base(predecessorMessage)
         {
         }
 
-        public TransformationCompleted(IEnumerable<Message> predecessorMessages)
-			: base(predecessorMessages)
+        public TransactionSuccessful(IEnumerable<Message> predecessorMessages): base(predecessorMessages)
         {
         }
 

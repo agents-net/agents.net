@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
@@ -19,7 +18,7 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set =>
+                new(_ =>
                 {
                     executed = true;
                 });
@@ -34,7 +33,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set =>
+                new(_ =>
                 {
                     executed++;
                 });
@@ -51,7 +50,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set =>
+                new(_ =>
                 {
                     executed++;
                 });
@@ -67,7 +66,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message2);
@@ -80,13 +79,13 @@ namespace Agents.Net.Tests
         }
         
         [Test]
-        public void PushAndExecuteStoresMessages()
+        public void PushAndContinueStoresMessages()
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set => executed++);
+                new(_ => executed++);
             collector.Push(new TestMessage());
-            collector.PushAndExecute(new OtherMessage(), set =>
+            collector.PushAndContinue(new OtherMessage(), _ =>
             {
             });
             collector.Push(new TestMessage());
@@ -95,13 +94,37 @@ namespace Agents.Net.Tests
         }
         
         [Test]
-        public void ConsumedMessageIsRemovedFromCollectorUsingPushAndExecute()
+        public void CancelPushAndContinueAndAfterwardsPushDoesNotExecuteAction()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new();
+            using CancellationTokenSource source = new();
+            using ManualResetEventSlim resetEvent = new();
+            using Timer timer = new(_ =>
+                                    {
+                                        source.Cancel();
+                                        resetEvent.Set();
+                                    }, null, 200,
+                                    Timeout.Infinite);
+            collector.PushAndContinue(new OtherMessage(), _ =>
+            {
+                executed = true;
+            }, source.Token);
+            
+            resetEvent.Wait();
+            collector.Push(new TestMessage());
+            
+            executed.Should().BeFalse("execution was canceled.");
+        }
+        
+        [Test]
+        public void ConsumedMessageIsRemovedFromCollectorUsingPushAndContinue()
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set => executed++);
+                new(_ => executed++);
             collector.Push(new TestMessage());
-            collector.PushAndExecute(new OtherMessage(), set =>
+            collector.PushAndContinue(new OtherMessage(), set =>
             {
                 set.MarkAsConsumed(set.Message2);
             });
@@ -115,7 +138,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage> collector = 
-                new MessageCollector<TestMessage, OtherMessage>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message2);
@@ -132,24 +155,23 @@ namespace Agents.Net.Tests
         public void ExecutePushedMessageIfSetIsFull()
         {
             bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            MessageCollector<TestMessage, OtherMessage> collector = new();
             collector.Push(new TestMessage());
-            bool result = collector.PushAndExecute(new OtherMessage(), set =>
+            collector.PushAndContinue(new OtherMessage(), _ =>
             {
                 executed = true;
             });
 
             executed.Should().BeTrue("this set should have been executed immediately.");
-            result.Should().BeTrue("result should be true if it was executed.");
         }
         
         [Test]
         public void ExecutePushedMessageIfSetIsFullWithDecorator()
         {
             bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            MessageCollector<TestMessage, OtherMessage> collector = new();
             collector.Push(new TestMessage());
-            collector.PushAndExecute(OtherDecorator.Decorate(new OtherMessage()), set =>
+            collector.PushAndContinue(OtherDecorator.Decorate(new OtherMessage()), _ =>
             {
                 executed = true;
             });
@@ -161,68 +183,31 @@ namespace Agents.Net.Tests
         public void ExecutePushedMessageIfSetIsFilledLater()
         {
             bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
-            using Timer timer = new Timer(state =>
-                                          {
-                                              executed.Should().BeFalse("The set should not execute before pushing second message.");
-                                              collector.Push(new TestMessage());
-                                          }, null, 200,
-                                          Timeout.Infinite);
-            collector.PushAndExecute(new OtherMessage(), set =>
+            MessageCollector<TestMessage, OtherMessage> collector = new();
+            using ManualResetEventSlim resetEvent = new();
+            using Timer timer = new(_ =>
+                                    {
+                                        executed.Should().BeFalse("The set should not execute before pushing second message.");
+                                        collector.Push(new TestMessage());
+                                        resetEvent.Set();
+                                    }, null, 200,
+                                    Timeout.Infinite);
+            collector.PushAndContinue(new OtherMessage(), _ =>
             {
                 executed = true;
             });
 
+            resetEvent.Wait();
             executed.Should().BeTrue("this set should have been executed after the timer goes of.");
-        }
-        
-        [Test]
-        public void CancelPushAndExecute()
-        {
-            bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
-            using CancellationTokenSource source = new CancellationTokenSource();
-            using Timer timer = new Timer(state =>
-                                          {
-                                              source.Cancel();
-                                          }, null, 200,
-                                          Timeout.Infinite);
-            bool result = collector.PushAndExecute(new OtherMessage(), set =>
-            {
-                executed = true;
-            }, source.Token);
-
-            executed.Should().BeFalse("execution was canceled.");
-            result.Should().BeFalse("result should be false when canceled.");
-        }
-        
-        [Test]
-        public void CancelPushAndExecuteAndAfterwardsPushDoesNotExecuteAction()
-        {
-            bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
-            using CancellationTokenSource source = new CancellationTokenSource();
-            using Timer timer = new Timer(state =>
-                                          {
-                                              source.Cancel();
-                                          }, null, 200,
-                                          Timeout.Infinite);
-            collector.PushAndExecute(new OtherMessage(), set =>
-            {
-                executed = true;
-            }, source.Token);
-            collector.Push(new TestMessage());
-            
-            executed.Should().BeFalse("execution was canceled.");
         }
         
         [Test]
         public void ExecutePushedMessageOnlyOnce()
         {
             int executed = 0;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>();
+            MessageCollector<TestMessage, OtherMessage> collector = new();
             collector.Push(new TestMessage());
-            collector.PushAndExecute(new OtherMessage(), set =>
+            collector.PushAndContinue(new OtherMessage(), _ =>
             {
                 executed++;
             });
@@ -235,9 +220,9 @@ namespace Agents.Net.Tests
         public void ExecuteOriginalActionToo()
         {
             bool executed = false;
-            MessageCollector<TestMessage, OtherMessage> collector = new MessageCollector<TestMessage, OtherMessage>(set => executed = true);
+            MessageCollector<TestMessage, OtherMessage> collector = new(set => executed = true);
             collector.Push(new TestMessage());
-            collector.PushAndExecute(new OtherMessage(), set => { });
+            collector.PushAndContinue(new OtherMessage(), _ => { });
 
             executed.Should().BeTrue("the original action should have been executed.");
         }
@@ -250,10 +235,10 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2>();
+                new(_ => executed = true);
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
-            collector.PushAndExecute(new OtherMessage2(), set => executed = true);
+            collector.Push(new OtherMessage2());
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -264,7 +249,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message3);
@@ -283,11 +268,11 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3>();
+                new(_ => executed = true);
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
-            collector.PushAndExecute(new OtherMessage3(), set => executed = true);
+            collector.Push(new OtherMessage3());
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -298,7 +283,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message4);
@@ -318,12 +303,12 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4>();
+                new(_ => executed = true);
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
-            collector.PushAndExecute(new OtherMessage4(), set => executed = true);
+            collector.Push(new OtherMessage4());
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -334,7 +319,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message5);
@@ -355,13 +340,13 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5>();
+                new(_ => executed = true);
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
-            collector.PushAndExecute(new OtherMessage5(), set => executed = true);
+            collector.Push(new OtherMessage5());
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -372,7 +357,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message6);
@@ -394,14 +379,14 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6>();
+                new(_ => executed = true);
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
             collector.Push(new OtherMessage5());
-            collector.PushAndExecute(new OtherMessage6(), set => executed = true);
+            collector.Push(new OtherMessage6());
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -412,7 +397,7 @@ namespace Agents.Net.Tests
         {
             int executed = 0;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6> collector = 
-                new MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6>(set =>
+                new(set =>
                 {
                     executed++;
                     set.MarkAsConsumed(set.Message7);
@@ -441,7 +426,7 @@ namespace Agents.Net.Tests
 
             public static OtherDecorator Decorate(OtherMessage message)
             {
-                return new OtherDecorator(message);
+                return new(message);
             }
 
             protected override string DataToString()

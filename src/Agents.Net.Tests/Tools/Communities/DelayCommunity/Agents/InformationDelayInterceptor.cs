@@ -16,20 +16,14 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
     [Intercepts(typeof(InformationGathered))]
     public class InformationDelayInterceptor : InterceptorAgent
     {
+        private readonly MessageGate<TransformingInformation, TransformationCompleted> gate = new();
         public InformationDelayInterceptor(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 
-        private readonly ConcurrentDictionary<InformationGathered, ManualResetEventSlim> waitHandles =
-            new ConcurrentDictionary<InformationGathered, ManualResetEventSlim>();
-
         protected override void ExecuteCore(Message messageData)
         {
-            TransformationCompleted completed = messageData.Get<TransformationCompleted>();
-            if (waitHandles.TryGetValue(completed.OriginalMessage, out ManualResetEventSlim resetEvent))
-            {
-                resetEvent.Set();
-            }
+            gate.Check(messageData);
         }
 
         protected override InterceptionAction InterceptCore(Message messageData)
@@ -37,10 +31,12 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
             InformationGathered gathered = messageData.Get<InformationGathered>();
             if (gathered.Information.Contains("Special", StringComparison.OrdinalIgnoreCase))
             {
-                using ManualResetEventSlim resetEvent = new ManualResetEventSlim(false);
-                waitHandles.TryAdd(gathered, resetEvent);
-                OnMessage(new TransformingInformation(gathered.Information, gathered, messageData));
-                resetEvent.Wait();
+                InterceptionAction result = InterceptionAction.Delay(out InterceptionDelayToken token);
+                gate.SendAndContinue(new TransformingInformation(gathered.Information, gathered), OnMessage, _ =>
+                {
+                    token.Release();
+                });
+                return result;
             }
 
             return InterceptionAction.Continue;
