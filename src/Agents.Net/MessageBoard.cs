@@ -227,6 +227,7 @@ namespace Agents.Net
             {
                 InterceptionAction result = execution.Interceptor.Intercept(execution.Message);
                 bool canPublishFinalMessage;
+                bool disposeFinalMessage;
                 lock (execution.Results)
                 {
                     execution.Results.Add(result);
@@ -234,14 +235,47 @@ namespace Agents.Net
                     {
                         return;
                     }
-                    canPublishFinalMessage = execution.Results.All(r => r != InterceptionAction.DoNotPublish);
+
+                    Dictionary<InterceptionResult, InterceptionAction[]> groupedResults = execution.Results
+                        .GroupBy(r => r.Result)
+                        .ToDictionary(g => g.Key, g => g.ToArray());
+                    if (groupedResults.ContainsKey(InterceptionResult.Delay))
+                    {
+                        if (groupedResults.ContainsKey(InterceptionResult.DoNotPublish))
+                        {
+                            foreach (Message message in execution.Message.HeadMessage.DescendantsAndSelf.ToArray())
+                            {
+                                message.Dispose();
+                            }
+                            Publish(new ExceptionMessage($"Intercepted message {execution.Message} has action DoNotPublish and Delay, which is not allowed.", execution.Message, execution.Interceptor));
+                            return;
+                        }
+
+                        int delays = groupedResults[InterceptionResult.Delay].Length;
+                        foreach (InterceptionAction delayAction in groupedResults[InterceptionResult.Delay])
+                        {
+                            delayAction.DelayToken.Register(() =>
+                            {
+                                int decremented = Interlocked.Decrement(ref delays);
+                                if (decremented == 0)
+                                {
+                                    PublishFinalMessageContainer(execution.Message.HeadMessage);
+                                }
+                            });
+                        }
+                    }
+
+                    
+                    canPublishFinalMessage = !(groupedResults.ContainsKey(InterceptionResult.Delay) || 
+                                               groupedResults.ContainsKey(InterceptionResult.DoNotPublish));
+                    disposeFinalMessage = groupedResults.ContainsKey(InterceptionResult.DoNotPublish);
                 }
 
                 if (canPublishFinalMessage)
                 {
                     PublishFinalMessageContainer(execution.Message.HeadMessage);
                 }
-                else
+                else if(disposeFinalMessage)
                 {
                     foreach (Message message in execution.Message.HeadMessage.DescendantsAndSelf.ToArray())
                     {

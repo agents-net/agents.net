@@ -78,6 +78,10 @@ namespace Agents.Net.Tests.SpecFlow
             {
                 builder.RegisterInstance(args);
             }
+            else
+            {
+                builder.RegisterInstance(new CommandLineArgs());
+            }
             IContainer container = builder.Build();
             
             if (context.ScenarioInfo.Tags.Contains("DisposeCheck"))

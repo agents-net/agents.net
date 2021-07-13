@@ -15,6 +15,16 @@ InitializeMessage). Once they have send their messages the program terminates.
 	When I start the message board
 	Then the message "Consumed: 6; Intercepted: 6" was posted after at most 600 ms
 	And the program was terminated
+
+Scenario: Detect interception conflicts
+This scenario shows the feature, that the message board detects when a message was 
+intercepted by at least two agents that returned DoNotPublish and Delay. In this case
+the message board needs to send an exception message.
+    Given I pass the command line argument "simulate interception conflict" to the program
+	And I have loaded the community "DelayCommunity"
+	When I start the message board
+	Then the message "Interception conflict detected." was posted after a while
+	And the program was terminated
 	
 @DisposeCheck
 Scenario: Dispose messages after they were used

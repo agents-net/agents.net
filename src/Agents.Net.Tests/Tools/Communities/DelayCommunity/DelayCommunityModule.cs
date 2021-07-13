@@ -16,6 +16,8 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity
             builder.RegisterType<Agents.InformationTransformer>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<Agents.InformationDelayInterceptor>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<Agents.InformationConsoleWriter>().As<Agent>().InstancePerLifetimeScope();
+            builder.RegisterType<Agents.InterceptionConflictProducer>().As<Agent>().InstancePerLifetimeScope();
+            builder.RegisterType<Agents.ExceptionTerminator>().As<Agent>().InstancePerLifetimeScope();
         }
     }
 }

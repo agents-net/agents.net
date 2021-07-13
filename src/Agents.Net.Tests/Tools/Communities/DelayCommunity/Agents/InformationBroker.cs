@@ -4,6 +4,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using Agents.Net;
 using Agents.Net.Tests.Tools.Communities.DelayCommunity.Messages;
 
@@ -13,13 +14,22 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
     [Produces(typeof(InformationGathered))]
     public class InformationBroker : Agent
     {
-        public InformationBroker(IMessageBoard messageBoard) : base(messageBoard)
+        private readonly CommandLineArgs args;
+        public InformationBroker(IMessageBoard messageBoard, CommandLineArgs args) : base(messageBoard)
         {
+            this.args = args;
         }
 
         protected override void ExecuteCore(Message messageData)
         {
-            OnMessage(new InformationGathered("Special Information", messageData));
+            if (args.Arguments.FirstOrDefault() == "simulate interception conflict")
+            {
+                OnMessage(new InformationGathered("Special Conflict", messageData));
+            }
+            else
+            {
+                OnMessage(new InformationGathered("Special Information", messageData));
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
             TransformingInformation transformingInformation = messageData.Get<TransformingInformation>();
             console.WriteLine(transformingInformation.Information.Replace("Special", "Transformed",
                                                                           StringComparison.OrdinalIgnoreCase));
-            OnMessage(new TransformationCompleted(transformingInformation.OriginalMessage, messageData));
+            OnMessage(new TransformationCompleted(messageData));
         }
     }
 }
