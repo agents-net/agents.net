@@ -94,6 +94,30 @@ namespace Agents.Net.Tests
         }
         
         [Test]
+        public void CancelPushAndContinueAndAfterwardsPushDoesNotExecuteAction()
+        {
+            bool executed = false;
+            MessageCollector<TestMessage, OtherMessage> collector = new();
+            using CancellationTokenSource source = new();
+            using ManualResetEventSlim resetEvent = new();
+            using Timer timer = new(_ =>
+                                    {
+                                        source.Cancel();
+                                        resetEvent.Set();
+                                    }, null, 200,
+                                    Timeout.Infinite);
+            collector.PushAndContinue(new OtherMessage(), _ =>
+            {
+                executed = true;
+            }, source.Token);
+            
+            resetEvent.Wait();
+            collector.Push(new TestMessage());
+            
+            executed.Should().BeFalse("execution was canceled.");
+        }
+        
+        [Test]
         public void ConsumedMessageIsRemovedFromCollectorUsingPushAndContinue()
         {
             int executed = 0;

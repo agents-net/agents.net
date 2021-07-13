@@ -14,35 +14,55 @@ namespace Agents.Net.Tests
         public void ContinueExecutionIfEndMessageWasSend()
         {
             bool executed = false;
-            TestMessage startMessage = new TestMessage();
-            using ManualResetEventSlim resetEvent = new ManualResetEventSlim(false);
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
-            using Timer timer = new Timer(state =>
-                                          {
-                                              executed.Should().BeFalse("The gate should not continue before pushing end message.");
-                                              bool checkResult = gate.Check(new OtherMessage(startMessage));
-                                              checkResult.Should().BeTrue("Message should be excepted.");
-                                              resetEvent.Set();
-                                          }, null, 200,
-                                          Timeout.Infinite);
+            TestMessage startMessage = new();
+            using ManualResetEventSlim resetEvent = new(false);
+            MessageGate<TestMessage, OtherMessage> gate = new();
+            using Timer timer = new(_ =>
+                                    {
+                                        executed.Should().BeFalse("The gate should not continue before pushing end message.");
+                                        bool checkResult = gate.Check(new OtherMessage(startMessage));
+                                        checkResult.Should().BeTrue("Message should be excepted.");
+                                        resetEvent.Set();
+                                    }, null, 200,
+                                    Timeout.Infinite);
             gate.SendAndAwait(startMessage, m => {});
             executed = true;
             resetEvent.Wait();
         }
         
         [Test]
+        [Description("This is the only method that tests SendAndContinue as internally SendAndExecute is using send and continue.")]
+        public void ContinueActionIsExecutedIfEndMessageWasSend()
+        {
+            bool executed = false;
+            TestMessage startMessage = new();
+            using ManualResetEventSlim resetEvent = new(false);
+            MessageGate<TestMessage, OtherMessage> gate = new();
+            using Timer timer = new(state =>
+                                    {
+                                        bool checkResult = gate.Check(new OtherMessage(startMessage));
+                                        checkResult.Should().BeTrue("Message should be excepted.");
+                                        resetEvent.Set();
+                                    }, null, 200,
+                                    Timeout.Infinite);
+            gate.SendAndContinue(startMessage, _ => { }, _ => executed = true);
+            resetEvent.Wait();
+            executed.Should().BeTrue("After timer gate should immediately execute.");
+        }
+        
+        [Test]
         public void ReturnEndMessageIfSuccess()
         {
-            TestMessage startMessage = new TestMessage();
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            TestMessage startMessage = new();
+            MessageGate<TestMessage, OtherMessage> gate = new();
             OtherMessage endMessage = null;
             
-            using Timer timer = new Timer(state =>
-                                          {
-                                              endMessage = new OtherMessage(startMessage);
-                                              gate.Check(endMessage);
-                                          }, null, 200,
-                                          Timeout.Infinite);
+            using Timer timer = new(state =>
+                                    {
+                                        endMessage = new OtherMessage(startMessage);
+                                        gate.Check(endMessage);
+                                    }, null, 200,
+                                    Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
             result.Result.Should().Be(MessageGateResultKind.Success);
@@ -52,16 +72,16 @@ namespace Agents.Net.Tests
         [Test]
         public void ReturnExceptionMessageIfUnsuccessful()
         {
-            TestMessage startMessage = new TestMessage();
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            TestMessage startMessage = new();
+            MessageGate<TestMessage, OtherMessage> gate = new();
             ExceptionMessage exception = null;
             
-            using Timer timer = new Timer(state =>
-                                          {
-                                              exception = new ExceptionMessage("Error", startMessage, new HelloAgent(Substitute.For<IMessageBoard>()));
-                                              gate.Check(exception);
-                                          }, null, 200,
-                                          Timeout.Infinite);
+            using Timer timer = new(state =>
+                                    {
+                                        exception = new ExceptionMessage("Error", startMessage, new HelloAgent(Substitute.For<IMessageBoard>()));
+                                        gate.Check(exception);
+                                    }, null, 200,
+                                    Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
             result.Result.Should().Be(MessageGateResultKind.Exception);
@@ -71,18 +91,18 @@ namespace Agents.Net.Tests
         [Test]
         public void TimeoutIfEndMessageIsOutsideOfMessageDomain()
         {
-            TestMessage startMessage = new TestMessage();
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            TestMessage startMessage = new();
+            MessageGate<TestMessage, OtherMessage> gate = new();
             bool executed = false;
             
-            using Timer timer = new Timer(state =>
-                                          {
-                                              OtherMessage endMessage = new OtherMessage(Array.Empty<Message>());
-                                              MessageDomain.CreateNewDomainsFor(endMessage);
-                                              gate.Check(endMessage);
-                                              executed = true;
-                                          }, null, 200,
-                                          Timeout.Infinite);
+            using Timer timer = new(state =>
+                                    {
+                                        OtherMessage endMessage = new(Array.Empty<Message>());
+                                        MessageDomain.CreateNewDomainsFor(endMessage);
+                                        gate.Check(endMessage);
+                                        executed = true;
+                                    }, null, 200,
+                                    Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
@@ -92,18 +112,18 @@ namespace Agents.Net.Tests
         [Test]
         public void TimeoutIfExceptionMessageIsOutsideOfMessageDomain()
         {
-            TestMessage startMessage = new TestMessage();
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            TestMessage startMessage = new();
+            MessageGate<TestMessage, OtherMessage> gate = new();
             bool executed = false;
             
-            using Timer timer = new Timer(state =>
-                                          {
-                                              ExceptionMessage exception = new ExceptionMessage("Error", Array.Empty<Message>(), new HelloAgent(Substitute.For<IMessageBoard>()));
-                                              MessageDomain.CreateNewDomainsFor(exception);
-                                              gate.Check(exception);
-                                              executed = true;
-                                          }, null, 200,
-                                          Timeout.Infinite);
+            using Timer timer = new(state =>
+                                    {
+                                        ExceptionMessage exception = new("Error", Array.Empty<Message>(), new HelloAgent(Substitute.For<IMessageBoard>()));
+                                        MessageDomain.CreateNewDomainsFor(exception);
+                                        gate.Check(exception);
+                                        executed = true;
+                                    }, null, 200,
+                                    Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
@@ -113,9 +133,9 @@ namespace Agents.Net.Tests
         [Test]
         public void CancelGateWithCancelToken()
         {
-            using CancellationTokenSource source = new CancellationTokenSource(500);
-            TestMessage startMessage = new TestMessage();
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            using CancellationTokenSource source = new(500);
+            TestMessage startMessage = new();
+            MessageGate<TestMessage, OtherMessage> gate = new();
             
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, cancellationToken:source.Token);
 
@@ -126,8 +146,8 @@ namespace Agents.Net.Tests
         [Test]
         public void DoNotExceptForeignMessages()
         {
-            using CancellationTokenSource source = new CancellationTokenSource(500);
-            MessageGate<TestMessage, OtherMessage> gate = new MessageGate<TestMessage, OtherMessage>();
+            using CancellationTokenSource source = new(500);
+            MessageGate<TestMessage, OtherMessage> gate = new();
 
             bool checkResult = gate.Check(new ForeignMessage());
             checkResult.Should().BeFalse("Foreign messages should not be excepted.");

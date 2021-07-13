@@ -204,9 +204,10 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
-        protected internal void PushAndContinue(Message message, Action<MessageCollection<T1, T2>> onCollected)
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        protected internal void PushAndContinue(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
-            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2>) collection));
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
 
         /// <summary>
@@ -257,13 +258,25 @@ namespace Agents.Net
         /// </summary>
         /// <param name="message">The message which is pushed.</param>
         /// <param name="executeAction">The action which should execute the action which was passed to the <see cref="PushAndExecute"/> method.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns><c>true</c> if the action was executed; otherwise <c>false</c>.</returns>
-        protected void ExecutePushAndContinue(Message message, Action<MessageCollection> executeAction)
+        protected void ExecutePushAndContinue(Message message, Action<MessageCollection> executeAction,
+                                              CancellationToken cancellationToken)
         {
+            CancellationTokenRegistration register = default;
+            register = cancellationToken.Register(() =>
+            {
+                register.Dispose();
+                lock (oneShotActions)
+                {
+                    oneShotActions.Remove(message);
+                }
+            });
             lock (oneShotActions)
             {
                 oneShotActions.Add(message, set =>
                 {
+                    register.Dispose();
                     lock (oneShotActions)
                     {
                         oneShotActions.Remove(message);
