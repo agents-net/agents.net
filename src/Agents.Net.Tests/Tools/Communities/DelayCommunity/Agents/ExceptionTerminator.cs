@@ -1,6 +1,6 @@
 #region Copyright
-// Copyright (c) Tobias Wilker and contributors
-// This file is licensed under MIT
+//  Copyright (c) Tobias Wilker and contributors
+//  This file is licensed under MIT
 #endregion
 
 using System;
