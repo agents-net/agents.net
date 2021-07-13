@@ -18,6 +18,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Added
 - #102 - A new helper class `MessageGate` was introduced which helps covering mainly legacy uses cases
 
+### Changed
+- `PushAndExecute` is now obsolete. It was replaced by the new `MessageGate` type. It will be removed with 2022.6.0
+
 ## 2021.6.2
 ### Added
 - `PushAndExecute` accepts a `CancellationToken` now. With this it is possible to stop the wait operation

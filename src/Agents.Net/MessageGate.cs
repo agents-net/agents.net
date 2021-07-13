@@ -197,12 +197,26 @@ namespace Agents.Net
                 onMessage(startMessage);
                 
                 TEnd endMessage = null;
-                pairCollector.PushAndExecute(startMessage, set =>
+                using (ManualResetEventSlim resetEvent = new ManualResetEventSlim())
                 {
-                    set.MarkAsConsumed(set.Message1);
-                    set.MarkAsConsumed(set.Message2);
-                    endMessage = set.Message2;
-                }, cancellationToken);
+                    ManualResetEventSlim local = resetEvent;
+                    pairCollector.PushAndContinue(startMessage, set =>
+                    {
+                        set.MarkAsConsumed(set.Message1);
+                        set.MarkAsConsumed(set.Message2);
+                        endMessage = set.Message2;
+                        local.Set();
+                    });
+                    try
+                    {
+                        resetEvent.Wait(cancellationToken);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        //Nothing to do.
+                    }
+                }
+                
                 MessageDomain.TerminateDomainsOf(startMessage);
                 MessageGateResultKind resultKind = MessageGateResultKind.Success;
                 if (userCancelToken.IsCancellationRequested)
