@@ -400,7 +400,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("the message \"Transformed Information\" was posted after at most 1000 ms", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 86
- testRunner.And("the message \"Special Information\" was posted after a while", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the message \"Special Information\" was posted after at most 1000 ms", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 87
  testRunner.And("the program was terminated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
