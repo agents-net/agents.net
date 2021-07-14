@@ -151,10 +151,19 @@ namespace Agents.Net.Tests
         [Test]
         public void DoNotExceptForeignMessages()
         {
-            using CancellationTokenSource source = new(500);
             MessageGate<TestMessage, OtherMessage> gate = new();
+            gate.SendAndContinue(new TestMessage(), _=> {}, _=>{});
 
             bool checkResult = gate.Check(new ForeignMessage());
+            checkResult.Should().BeFalse("Foreign messages should not be excepted.");
+        }
+        
+        [Test]
+        public void DoNotExceptMessagesWithoutAwaitingExecution()
+        {
+            MessageGate<TestMessage, OtherMessage> gate = new();
+
+            bool checkResult = gate.Check(new OtherMessage(ArraySegment<Message>.Empty));
             checkResult.Should().BeFalse("Foreign messages should not be excepted.");
         }
         
