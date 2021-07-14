@@ -83,7 +83,7 @@ commiting agent is using.
 	Given I have loaded the community "DelayCommunity"
 	When I start the message board
 	Then the message "Transformed Information" was posted after at most 1000 ms
-	And the message "Special Information" was posted after a while
+	And the message "Special Information" was posted after at most 1000 ms
 	And the program was terminated
 
 Scenario: Precondition check community prints error message to console

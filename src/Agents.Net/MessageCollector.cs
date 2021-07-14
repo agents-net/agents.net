@@ -450,7 +450,10 @@ namespace Agents.Net
             else
             {
                 messagePool.Add(message.MessageDomain, message);
-                message.MessageDomain.ExecuteOnTerminate(() => messagePool.Remove(message.MessageDomain));
+                message.MessageDomain.ExecuteOnTerminate(() =>
+                {
+                    message.Used();
+                });
             }
         }
 
