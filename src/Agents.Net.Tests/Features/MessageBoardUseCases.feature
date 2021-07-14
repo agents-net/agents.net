@@ -25,6 +25,17 @@ the message board needs to send an exception message.
 	When I start the message board
 	Then the message "Interception conflict detected." was posted after a while
 	And the program was terminated
+
+Scenario: Stop publishing after delay
+This scenario shows the feature, an interceptor agent delays a message and later decides to 
+not publish the message. In this case the intention can be passed to the delay token release
+method. Once at least one token has the intention to not publish the final message, then the
+delayed message will not be published. 
+    Given I pass the command line argument "DoNotPublish intention" to the program
+	And I have loaded the community "DelayCommunity"
+	When I start the message board
+	Then the message "Delayed message was not published." was posted after a while
+	And the program was not terminated
 	
 @DisposeCheck
 Scenario: Dispose messages after they were used

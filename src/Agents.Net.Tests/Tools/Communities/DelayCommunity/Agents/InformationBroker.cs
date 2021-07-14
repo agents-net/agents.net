@@ -24,7 +24,11 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
         {
             if (args.Arguments.FirstOrDefault() == "simulate interception conflict")
             {
-                OnMessage(new InformationGathered("Special Conflict", messageData));
+                OnMessage(new InformationGathered("Conflict", messageData));
+            }
+            else if (args.Arguments.FirstOrDefault() == "DoNotPublish intention")
+            {
+                OnMessage(new InformationGathered("DoNotPublish", messageData));
             }
             else
             {

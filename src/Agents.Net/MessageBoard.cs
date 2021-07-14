@@ -239,35 +239,14 @@ namespace Agents.Net
                     Dictionary<InterceptionResult, InterceptionAction[]> groupedResults = execution.Results
                         .GroupBy(r => r.Result)
                         .ToDictionary(g => g.Key, g => g.ToArray());
-                    if (groupedResults.ContainsKey(InterceptionResult.Delay))
+                    bool delay = groupedResults.ContainsKey(InterceptionResult.Delay);
+                    bool noPublish = groupedResults.ContainsKey(InterceptionResult.DoNotPublish);
+                    if (delay && !HandleDelayAction(groupedResults[InterceptionResult.Delay],noPublish))
                     {
-                        if (groupedResults.ContainsKey(InterceptionResult.DoNotPublish))
-                        {
-                            foreach (Message message in execution.Message.HeadMessage.DescendantsAndSelf.ToArray())
-                            {
-                                message.Dispose();
-                            }
-                            Publish(new ExceptionMessage($"Intercepted message {execution.Message} has action DoNotPublish and Delay, which is not allowed.", execution.Message, execution.Interceptor));
-                            return;
-                        }
-
-                        int delays = groupedResults[InterceptionResult.Delay].Length;
-                        foreach (InterceptionAction delayAction in groupedResults[InterceptionResult.Delay])
-                        {
-                            delayAction.DelayToken.Register(() =>
-                            {
-                                int decremented = Interlocked.Decrement(ref delays);
-                                if (decremented == 0)
-                                {
-                                    PublishFinalMessageContainer(execution.Message.HeadMessage);
-                                }
-                            });
-                        }
+                        return;
                     }
-
                     
-                    canPublishFinalMessage = !(groupedResults.ContainsKey(InterceptionResult.Delay) || 
-                                               groupedResults.ContainsKey(InterceptionResult.DoNotPublish));
+                    canPublishFinalMessage = !delay && !noPublish;
                     disposeFinalMessage = groupedResults.ContainsKey(InterceptionResult.DoNotPublish);
                 }
 
@@ -276,6 +255,56 @@ namespace Agents.Net
                     PublishFinalMessageContainer(execution.Message.HeadMessage);
                 }
                 else if(disposeFinalMessage)
+                {
+                    DisposeMessage();
+                }
+
+                bool HandleDelayAction(IReadOnlyCollection<InterceptionAction> delayActions, bool noPublish)
+                {
+                    if (noPublish)
+                    {
+                        DisposeMessage();
+
+                        Publish(new ExceptionMessage(
+                                    $"Intercepted message {execution.Message} has action DoNotPublish and Delay, which is not allowed.",
+                                    execution.Message, execution.Interceptor));
+                        return false;
+                    }
+
+                    int delays = delayActions.Count;
+                    bool publish = true;
+                    foreach (InterceptionAction delayAction in delayActions)
+                    {
+                        delayAction.DelayToken.Register(HandleTokenRelease);
+                    }
+
+                    return true;
+
+                    void HandleTokenRelease(DelayTokenReleaseIntention intention)
+                    {
+                        if (intention == DelayTokenReleaseIntention.DoNotPublish)
+                        {
+                            publish = false;
+                        }
+
+                        int decremented = Interlocked.Decrement(ref delays);
+                        if (decremented != 0)
+                        {
+                            return;
+                        }
+
+                        if (publish)
+                        {
+                            PublishFinalMessageContainer(execution.Message.HeadMessage);
+                        }
+                        else
+                        {
+                            DisposeMessage();
+                        }
+                    }
+                }
+
+                void DisposeMessage()
                 {
                     foreach (Message message in execution.Message.HeadMessage.DescendantsAndSelf.ToArray())
                     {
