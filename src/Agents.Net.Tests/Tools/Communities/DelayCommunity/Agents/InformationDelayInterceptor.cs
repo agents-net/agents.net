@@ -17,8 +17,10 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
     public class InformationDelayInterceptor : InterceptorAgent
     {
         private readonly MessageGate<TransformingInformation, TransformationCompleted> gate = new();
-        public InformationDelayInterceptor(IMessageBoard messageBoard) : base(messageBoard)
+        private readonly IConsole console;
+        public InformationDelayInterceptor(IMessageBoard messageBoard, IConsole console) : base(messageBoard)
         {
+            this.console = console;
         }
 
         protected override void ExecuteCore(Message messageData)
@@ -29,17 +31,20 @@ namespace Agents.Net.Tests.Tools.Communities.DelayCommunity.Agents
         protected override InterceptionAction InterceptCore(Message messageData)
         {
             InformationGathered gathered = messageData.Get<InformationGathered>();
-            if (gathered.Information.Contains("Special", StringComparison.OrdinalIgnoreCase))
+            InterceptionAction result = InterceptionAction.Delay(out InterceptionDelayToken token);
+            gate.SendAndContinue(new TransformingInformation(gathered.Information, gathered), OnMessage, _ =>
             {
-                InterceptionAction result = InterceptionAction.Delay(out InterceptionDelayToken token);
-                gate.SendAndContinue(new TransformingInformation(gathered.Information, gathered), OnMessage, _ =>
+                if (gathered.Information.Contains("DoNotPublish", StringComparison.OrdinalIgnoreCase))
+                {
+                    token.Release(DelayTokenReleaseIntention.DoNotPublish);
+                    console.WriteLine("Delayed message was not published.");
+                }
+                else
                 {
                     token.Release();
-                });
-                return result;
-            }
-
-            return InterceptionAction.Continue;
+                }
+            });
+            return result;
         }
     }
 }
