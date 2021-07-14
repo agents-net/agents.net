@@ -319,6 +319,8 @@ namespace Agents.Net
             }
         }
 
+        private bool IsActive => exceptions.Count > 0;
+
         /// <summary>
         /// Checks whether the provided exception message is the end message or an exception message for the awaited <see cref="SendAndAwait"/> operation.
         /// </summary>
@@ -327,6 +329,11 @@ namespace Agents.Net
         /// <remarks>For an example how to use this class see the type documentation.</remarks>
         public bool Check(Message message)
         {
+            if (!IsActive)
+            {
+                //do not store messages if no messages are awaited
+                return false;
+            }
             bool result = exceptionCollector.TryPush(message);
             result |= pairCollector.TryPush(message);
             return result;
