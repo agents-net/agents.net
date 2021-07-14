@@ -205,7 +205,7 @@ namespace Agents.Net
         /// <param name="message">The message which is added to the collector.</param>
         /// <param name="onCollected">The action which is executed when the complete set is found.</param>
         /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
-        protected internal void PushAndContinue(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
             ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
@@ -579,6 +579,17 @@ namespace Agents.Net
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection), cancellationToken);
         }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2, T3>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2, T3>) collection), cancellationToken);
+        }
     }
 
     /// <inheritdoc />
@@ -666,6 +677,17 @@ namespace Agents.Net
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection), cancellationToken);
+        }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2, T3, T4>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2, T3, T4>) collection), cancellationToken);
         }
     }
 
@@ -756,6 +778,17 @@ namespace Agents.Net
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection), cancellationToken);
+        }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2, T3, T4, T5>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5>) collection), cancellationToken);
         }
     }
 
@@ -848,6 +881,17 @@ namespace Agents.Net
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection), cancellationToken);
+        }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6>) collection), cancellationToken);
         }
     }
 
@@ -942,6 +986,17 @@ namespace Agents.Net
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected, CancellationToken cancellationToken = default)
         {
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection), cancellationToken);
+        }
+        
+        /// <summary>
+        /// Add a message to the collector and continue with the specified action once when the set is found.
+        /// </summary>
+        /// <param name="message">The message which is added to the collector.</param>
+        /// <param name="onCollected">The action which is executed when the complete set is found.</param>
+        /// <param name="cancellationToken">Cancellation token to stop the continue operation.</param>
+        public void PushAndContinue(Message message, Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onCollected, CancellationToken cancellationToken = default)
+        {
+            ExecutePushAndContinue(message, collection => onCollected((MessageCollection<T1, T2, T3, T4, T5, T6, T7>) collection), cancellationToken);
         }
     }
 }

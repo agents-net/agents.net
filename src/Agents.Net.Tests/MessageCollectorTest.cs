@@ -235,10 +235,10 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2> collector = 
-                new(_ => executed = true);
+                new();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
-            collector.Push(new OtherMessage2());
+            collector.PushAndContinue(new OtherMessage2(), set => executed = true);
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -268,11 +268,11 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3> collector = 
-                new(_ => executed = true);
+                new();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
-            collector.Push(new OtherMessage3());
+            collector.PushAndContinue(new OtherMessage3(), set => executed = true);
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -303,12 +303,12 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4> collector = 
-                new(_ => executed = true);
+                new();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
-            collector.Push(new OtherMessage4());
+            collector.PushAndContinue(new OtherMessage4(), set => executed = true);
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -340,13 +340,13 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5> collector = 
-                new(_ => executed = true);
+                new();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
-            collector.Push(new OtherMessage5());
+            collector.PushAndContinue(new OtherMessage5(), set => executed = true);
 
             executed.Should().BeTrue("the set was completed");
         }
@@ -379,14 +379,14 @@ namespace Agents.Net.Tests
         {
             bool executed = false;
             MessageCollector<TestMessage, OtherMessage, OtherMessage2, OtherMessage3, OtherMessage4, OtherMessage5, OtherMessage6> collector = 
-                new(_ => executed = true);
+                new();
             collector.Push(new TestMessage());
             collector.Push(new OtherMessage());
             collector.Push(new OtherMessage2());
             collector.Push(new OtherMessage3());
             collector.Push(new OtherMessage4());
             collector.Push(new OtherMessage5());
-            collector.Push(new OtherMessage6());
+            collector.PushAndContinue(new OtherMessage6(), set => executed = true);
 
             executed.Should().BeTrue("the set was completed");
         }

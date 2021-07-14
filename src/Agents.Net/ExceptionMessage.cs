@@ -102,7 +102,8 @@ namespace Agents.Net
         /// </remarks>
         protected override string DataToString()
         {
-            return string.Empty;
+            return
+                $"{nameof(Agent)}: {Agent}; Message: {(ExceptionInfo != null ? ExceptionInfo.SourceException.Message : CustomMessage)}";
         }
     }
 }
