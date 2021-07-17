@@ -14,6 +14,47 @@ namespace Agents.Net.Tests
     //Clear with each release
     public class DeprecatedTests
     {
+
+        [Test]
+        public void DoNotTerminateMessageDomainWhenParameterIsFalse()
+        {
+            MessageAggregator<TestMessage> aggregator =
+                new(set =>
+                {
+                }, false);
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            MessageDomain.CreateNewDomainsFor(messages);
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            foreach (TestMessage message in messages)
+            {
+                message.MessageDomain.IsTerminated.Should().BeFalse("message domain should not have been terminated.");
+            }
+        }
+
+        [Test]
+        public void ExecuteMultipleMessagesInDefaultDomainSeperately()
+        {
+            int count = 0;
+            MessageAggregator<TestMessage> aggregator =
+                new(set =>
+                {
+                    count++;
+                });
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            count.Should().Be(3, "all messages should execute seperately.");
+        }
+        
         [Test]
         public void ExecutePushedMessageIfSetIsFull()
         {

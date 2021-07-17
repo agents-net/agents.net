@@ -20,7 +20,7 @@ namespace Agents.Net
         /// <param name="result">The result kind.</param>
         /// <param name="endMessage">The end message.</param>
         /// <param name="exceptions">Exception messages.</param>
-        public MessageGateResult(MessageGateResultKind result, TEnd endMessage, IEnumerable<ExceptionMessage> exceptions)
+        public MessageGateResult(WaitResultKind result, TEnd endMessage, IEnumerable<ExceptionMessage> exceptions)
         {
             Result = result;
             EndMessage = endMessage;
@@ -30,7 +30,7 @@ namespace Agents.Net
         /// <summary>
         /// The result kind. Meaning if the operation was successful or not. 
         /// </summary>
-        public MessageGateResultKind Result { get; }
+        public WaitResultKind Result { get; }
         
         /// <summary>
         /// The end message. Can be <c>null</c> if the operation was not successful.
@@ -45,29 +45,5 @@ namespace Agents.Net
         /// the result is instantiated, that the gate received more exceptions.
         /// </remarks>
         public IEnumerable<ExceptionMessage> Exceptions { get; }
-    }
-
-    /// <summary>
-    /// The result kind of the <see cref="MessageGate{TStart,TEnd}.SendAndAwait"/> method.
-    /// </summary>
-    /// <remarks>See <see cref="MessageGate{TStart,TEnd}"/> to understand the usage of this enum.</remarks>
-    public enum MessageGateResultKind
-    {
-        /// <summary>
-        /// The operation was successful. Meaning the end message was found.
-        /// </summary>
-        Success,
-        /// <summary>
-        /// At least one <see cref="ExceptionMessage"/> was received during the execution.
-        /// </summary>
-        Exception,
-        /// <summary>
-        /// The operation was canceled by the <see cref="System.Threading.CancellationToken"/> provided to the <see cref="MessageGate{TStart,TEnd}.SendAndAwait"/> method.
-        /// </summary>
-        Canceled,
-        /// <summary>
-        /// The operation ran into the configured timeout.
-        /// </summary>
-        Timeout
     }
 }

@@ -269,24 +269,24 @@ namespace Agents.Net
                 MessageDomain.TerminateDomainsOf(startMessage);
                 
                 Dispose();
-                MessageGateResult<TEnd> result = new MessageGateResult<TEnd>(MessageGateResultKind.Success, endMessage, Enumerable.Empty<ExceptionMessage>());
+                MessageGateResult<TEnd> result = new MessageGateResult<TEnd>(WaitResultKind.Success, endMessage, Enumerable.Empty<ExceptionMessage>());
                 continueAction(result);
             }, cancellationToken);
             register = cancellationToken.Register(() =>
             {
                 MessageDomain.TerminateDomainsOf(startMessage);
-                MessageGateResultKind resultKind = MessageGateResultKind.Success;
+                WaitResultKind resultKind = WaitResultKind.Success;
                 if (userCancelToken.IsCancellationRequested)
                 {
-                    resultKind = MessageGateResultKind.Canceled;
+                    resultKind = WaitResultKind.Canceled;
                 }
                 else if (exceptionCancelToken.IsCancellationRequested)
                 {
-                    resultKind = MessageGateResultKind.Exception;
+                    resultKind = WaitResultKind.Exception;
                 }
                 else if (timeoutCancelToken.IsCancellationRequested)
                 {
-                    resultKind = MessageGateResultKind.Timeout;
+                    resultKind = WaitResultKind.Timeout;
                 }
 
                 IEnumerable<ExceptionMessage> currentExceptions;

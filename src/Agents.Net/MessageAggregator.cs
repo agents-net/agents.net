@@ -6,16 +6,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Agents.Net
 {
     /// <summary>
-    /// This class is a helper which aggregates messages which were executed parallel with the <see cref="Agent.OnMessages"/> method.
+    /// This class is a helper which aggregates messages of the same type that are executed in parallel.
     /// </summary>
     /// <typeparam name="T">The type of the message which should be aggregated.</typeparam>
     /// <remarks>
     /// <para>
-    /// When a batch of messages is published using the <see cref="Agent.OnMessages"/> they can be united again when all last messages of the execution chain are of the same type.
+    /// When a batch of messages is published using the this class they can be united again when all last messages of the execution chain are of the same type or an exception message.
     /// </para>
     /// <code>
     ///  --------------         ---------------------          -----------------
@@ -23,33 +24,38 @@ namespace Agents.Net
     ///  --------------         ---------------------  |       -----------------
     ///                                                |
     ///                                                |       ------------------
-    ///                                                 ----> | ExceptionMessage |
+    ///                                                *----> | ExceptionMessage |
+    ///                                                |       ------------------
+    ///                                                |
+    ///                                                |       ------------------
+    ///                                                 ----> | OtherEndMessage  |
     ///                                                        ------------------
     /// </code>
     /// <para>
-    /// Looking at the example above it would not be possible to unite the <c>SplitMessages</c> again using this class as at least one <c>IntermediateMessage</c> let to an <c>ExceptionMessage</c>.
+    /// Looking at the example above it would not be possible to unite the <c>SplitMessages</c> again using this class as at least one <c>IntermediateMessage</c> let to an <c>OtherEndMessage</c>.
     /// </para>
     /// <example>
     /// Here a typical example how to setup and use the aggregator in a class:
     /// <code>
     /// [Consumes(typeof(FinishedMessage))]
+    /// [Consumes(typeof(ExceptionMessage))]
+    /// [Produces(typeof(StartMessage))]
     /// public class MessageAggregatorAgent : Agent
     /// {
-    ///     private readonly MessageAggregator&lt;FinishedMessage&gt; aggregator;
+    ///     private readonly MessageAggregator&lt;FinishedMessage&gt; aggregator = new MessageAggregator&lt;FinishedMessage&gt;();
     /// 
     ///     public MessageAggregatorAgent(IMessageBoard messageBoard) : base(messageBoard)
     ///     {
-    ///         aggregator = new MessageAggregator&lt;FinishedMessage&gt;(OnAggregated);
-    ///     }
-    /// 
-    ///     private void OnAggregated(IReadOnlyCollection&lt;FinishedMessage&gt; aggregate)
-    ///     {
-    ///         //Execute your code here
     ///     }
     /// 
     ///     protected override void ExecuteCore(Message messageData)
     ///     {
-    ///         aggregator.Aggregate(messageData);
+    ///         if(aggregator.TryAggregate(messageData))
+    ///         {
+    ///             return;
+    ///         }
+    ///         //create startMessages
+    ///         aggregator.SendAndAggregate(startMessages, OnMessage);
     ///     }
     /// }
     /// </code>
@@ -59,6 +65,11 @@ namespace Agents.Net
     {
         private readonly Action<IReadOnlyCollection<T>> onAggregated;
         private readonly bool autoTerminate;
+
+        /// <summary>
+        /// A constant value to tell the <see cref="MessageAggregator{T}"/> that it has to wait forever.
+        /// </summary>
+        public const int NoTimout = -1;
 
         /// <summary>
         /// Initialized a new instance of the class <see cref="MessageAggregator{T}"/>.
@@ -74,9 +85,91 @@ namespace Agents.Net
             this.autoTerminate = autoTerminate;
         }
 
+        /// <summary>
+        /// Initialized a new instance of the class <see cref="MessageAggregator{T}"/>.
+        /// </summary>
+        public MessageAggregator()
+        {
+            
+        }
+
         private readonly Dictionary<IReadOnlyCollection<Message>, HashSet<MessageStore<T>>> aggregatedMessages =
             new Dictionary<IReadOnlyCollection<Message>, HashSet<MessageStore<T>>>();
         private readonly object dictionaryLock = new object();
+
+        /// <summary>
+        /// The method to send the start messages and wait for all end messages.
+        /// </summary>
+        /// <param name="startMessages">The start messages to send.</param>
+        /// <param name="onMessage">The action to send the message.</param>
+        /// <param name="onAggregated">The action to execute once a <see cref="MessageAggregatorResult{T}"/> was created.</param>
+        /// <param name="timeout">
+        /// Optionally a timeout after which the method will return, without sending the result.
+        /// By default the timeout is <see cref="NoTimout"/>
+        /// </param>
+        /// <param name="cancellationToken">
+        /// Optionally a cancellation token to cancel the continue operation. By default no CancellationToken will be used.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// This function is useful when the aggregated messages need to be modified - for example
+        /// filtered - before aggregating them. In all other cases it is better to use <see cref="SendAndAggregate"/>
+        /// to automatically create and send an aggregated message. 
+        /// </para>
+        /// <example>
+        /// This is an example, how to use this method correctly:
+        /// <code>
+        /// [Consumes(typeof(FinishedMessage))]
+        /// [Consumes(typeof(ExceptionMessage))]
+        /// [Produces(typeof(StartMessage))]
+        /// [Produces(typeof(AggregatedMessage))]
+        /// public class MessageAggregatorAgent : Agent
+        /// {
+        ///     private readonly MessageAggregator&lt;FinishedMessage&gt; aggregator = new MessageAggregator&lt;FinishedMessage&gt;();
+        /// 
+        ///     public MessageAggregatorAgent(IMessageBoard messageBoard) : base(messageBoard)
+        ///     {
+        ///     }
+        /// 
+        ///     protected override void ExecuteCore(Message messageData)
+        ///     {
+        ///         if(aggregator.TryAggregate(messageData))
+        ///         {
+        ///             return;
+        ///         }
+        ///         //create startMessages
+        ///         aggregator.SendAndContinue(startMessages, OnMessage, result =>
+        ///         {
+        ///             //manipulate the results and produce aggregated message
+        ///             OnMessage(aggregatedMessage);
+        ///         });
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        /// </remarks>
+        public void SendAndContinue(IEnumerable<Message> startMessages, Action<Message> onMessage,
+                                    Action<MessageAggregatorResult<T>> onAggregated, int timeout = NoTimout,
+                                    CancellationToken cancellationToken = default)
+        {
+            //use massage gates
+            //no need anymore for SiblingDomains
+            //TODO Delete annoying name argument from message and agents
+        }
+
+        /// <summary>
+        /// The method to send the start messages and aggregate all end messages in a <see cref="MessagesAggregated{T}"/>.
+        /// </summary>
+        /// <param name="startMessages">The start messages to send.</param>
+        /// <param name="onMessage">The action to send the message.</param>
+        /// <remarks>
+        /// <para>For an example how to use this method see the documentation of the type.</para>
+        /// <para>The aggregation message is only send if the <see cref="MessageAggregatorResult{TEnd}.Result"/> is <see cref="WaitResultKind.Success"/>. Otherwise an <see cref="AggregatedExceptionMessage"/> or <see cref="ExceptionMessage"/> is send.</para>
+        /// </remarks>
+        public void SendAndAggregate(IEnumerable<Message> startMessages, Action<Message> onMessage)
+        {
+            
+        }
 
         /// <summary>
         /// Tries to add the message to this instance.

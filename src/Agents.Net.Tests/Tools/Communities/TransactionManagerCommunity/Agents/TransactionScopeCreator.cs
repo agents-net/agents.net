@@ -29,7 +29,7 @@ namespace Agents.Net.Tests.Tools.Communities.TransactionManagerCommunity.Agents
                 gate.SendAndContinue(new TransactionStarted(messageData, informationGathered.Information), OnMessage,
                                      result =>
                                      {
-                                         if (result.Result == MessageGateResultKind.Success)
+                                         if (result.Result == WaitResultKind.Success)
                                          {
                                              OnMessage(new TransactionSuccessful(result.EndMessage));
                                          }
