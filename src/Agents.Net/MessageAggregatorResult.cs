@@ -9,7 +9,7 @@ using System.Linq;
 namespace Agents.Net
 {
     /// <summary>
-    /// The result of the <see cref="MessageAggregator{T}.SendAndContinue"/> method.
+    /// The result of the <see cref="MessageAggregator{TStart,TEnd}.SendAndContinue"/> method.
     /// </summary>
     /// <typeparam name="TEnd"></typeparam>
     public class MessageAggregatorResult<TEnd> where TEnd : Message
@@ -20,14 +20,12 @@ namespace Agents.Net
         /// <param name="result">The aggregation result.</param>
         /// <param name="endMessages">The final messages.</param>
         /// <param name="exceptions">Exceptions during execution.</param>
-        public MessageAggregatorResult(WaitResultKind result, IEnumerable<TEnd> endMessages, IEnumerable<ExceptionMessage> exceptions)
+        public MessageAggregatorResult(WaitResultKind result, IReadOnlyCollection<TEnd> endMessages, IReadOnlyCollection<ExceptionMessage> exceptions)
         {
             Result = result;
             EndMessages = endMessages;
             Exceptions = exceptions;
         }
-
-        internal IEnumerable<Message> AllEndMessages => EndMessages.Concat<Message>(Exceptions);
         
         /// <summary>
         /// The result of the aggregation.
@@ -37,12 +35,12 @@ namespace Agents.Net
         /// <summary>
         /// The final messages.
         /// </summary>
-        public IEnumerable<TEnd> EndMessages { get; }
+        public IReadOnlyCollection<TEnd> EndMessages { get; }
         
         /// <summary>
         /// The exception messages that were recorded.
         /// </summary>
-        public IEnumerable<ExceptionMessage> Exceptions { get; }
+        public IReadOnlyCollection<ExceptionMessage> Exceptions { get; }
 
         /// <inheritdoc />
         public override string ToString()

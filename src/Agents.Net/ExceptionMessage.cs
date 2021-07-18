@@ -101,7 +101,7 @@ namespace Agents.Net
         /// <remarks>
         /// When this constructor is used, the <see cref="DataToString"/> method should be overriden and not call base.
         /// </remarks>
-        protected ExceptionMessage(IEnumerable<Message> predecessors, string customMessage = null)
+        internal ExceptionMessage(IEnumerable<Message> predecessors, string customMessage = null)
             : base(predecessors)
         {
             CustomMessage = customMessage;

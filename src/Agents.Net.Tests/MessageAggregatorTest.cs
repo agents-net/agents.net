@@ -19,17 +19,17 @@ namespace Agents.Net.Tests
         public void AggregateSingleMessage()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage startMessage = new();
             aggregator.SendAndContinue(new []{startMessage},
                 message => message.Should().BeSameAs(startMessage),
                 result =>
                 {
-                    result.Should().Be(WaitResultKind.Success);
+                    result.Result.Should().Be(WaitResultKind.Success);
                     executed = true;
                 });
-            aggregator.Aggregate(new TestMessage());
+            aggregator.Aggregate(new TestMessage(startMessage));
 
             executed.Should().BeTrue("A message in the default domain should be executed immediately.");
         }
@@ -38,11 +38,10 @@ namespace Agents.Net.Tests
         public void AggregateMultipleMessagesInDifferentDomains()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
+            TestMessage[] messages = null;
             aggregator.SendAndContinue(startMessages, 
                                        message => startMessages.Should().Contain((OtherMessage) message),
                                        result =>
@@ -51,6 +50,7 @@ namespace Agents.Net.Tests
                                            result.EndMessages.Should().BeEquivalentTo(messages);
                                            executed = true;
                                        });
+            messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             foreach (TestMessage message in messages)
             {
                 aggregator.Aggregate(message);
@@ -63,17 +63,16 @@ namespace Agents.Net.Tests
         public void DontExecuteMultipleMessagesIfOneIsMissing()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             aggregator.SendAndContinue(startMessages, 
                                        message => startMessages.Should().Contain((OtherMessage) message),
                                        result =>
                                        {
                                            executed = true;
                                        });
+            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             aggregator.Aggregate(messages[0]);
             aggregator.Aggregate(messages[1]);
 
@@ -83,14 +82,13 @@ namespace Agents.Net.Tests
         [Test]
         public void TerminateMessageDomainAutomatically()
         {
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             aggregator.SendAndContinue(startMessages, 
                                        message => startMessages.Should().Contain((OtherMessage) message),
                                        _ => { });
+            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             foreach (TestMessage message in messages)
             {
                 aggregator.Aggregate(message);
@@ -105,16 +103,16 @@ namespace Agents.Net.Tests
         [Test]
         public void DoNotTerminateDefaultDomain()
         {
-            MessageAggregator<TestMessage> aggregator =new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator =new();
 
             OtherMessage startMessage = new();
             aggregator.SendAndContinue(new []{startMessage},
                                        message => message.Should().BeSameAs(startMessage),
                                        result =>
                                        {
-                                           result.Should().Be(WaitResultKind.Success);
+                                           result.Result.Should().Be(WaitResultKind.Success);
                                        });
-            aggregator.Aggregate(new TestMessage());
+            aggregator.Aggregate(new TestMessage(startMessage));
 
             MessageDomain.DefaultMessageDomain.IsTerminated.Should().BeFalse("the default message domain should never be terminated.");
         }
@@ -123,12 +121,10 @@ namespace Agents.Net.Tests
         public void AggregateExceptionMessages()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
-            ExceptionMessage exception = new("Whatever", startMessages[2], null);
+            ExceptionMessage exception = null;
             aggregator.SendAndContinue(startMessages, 
                                        message => startMessages.Should().Contain((OtherMessage) message),
                                        result =>
@@ -138,6 +134,8 @@ namespace Agents.Net.Tests
                                            result.Exceptions.Should().Contain(exception);
                                            executed = true;
                                        });
+            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
+            exception = new("Whatever", startMessages[2], null);
             aggregator.Aggregate(messages[0]);
             aggregator.Aggregate(messages[1]);
             aggregator.Aggregate(exception);
@@ -149,14 +147,14 @@ namespace Agents.Net.Tests
         public void TimeoutAggregation()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage startMessage = new();
             aggregator.SendAndContinue(new []{startMessage},
                                        _ => {},
                                        result =>
                                        {
-                                           result.Should().Be(WaitResultKind.Timeout);
+                                           result.Result.Should().Be(WaitResultKind.Timeout);
                                            executed = true;
                                        }, 200);
             Thread.Sleep(500);
@@ -168,7 +166,7 @@ namespace Agents.Net.Tests
         public void CancelAggregation()
         {
             bool executed = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             using CancellationTokenSource tokenSource = new();
             using ManualResetEventSlim resetEvent = new();
@@ -182,7 +180,7 @@ namespace Agents.Net.Tests
                                        _ => {},
                                        result =>
                                        {
-                                           result.Should().Be(WaitResultKind.Canceled);
+                                           result.Result.Should().Be(WaitResultKind.Canceled);
                                            executed = true;
                                        }, cancellationToken: tokenSource.Token);
             resetEvent.Wait();
@@ -194,21 +192,21 @@ namespace Agents.Net.Tests
         public void AutoAggregationMessage()
         {
             bool send = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
+            TestMessage[] messages = null;
             aggregator.SendAndAggregate(startMessages,
                                         message =>
                                         {
                                             if (message is MessagesAggregated<TestMessage> aggregated)
                                             {
                                                 send = true;
-                                                aggregated.AggregatorResult.EndMessages.Should()
+                                                aggregated.EndMessages.Should()
                                                           .BeEquivalentTo(messages);
                                             }
                                         });
+            messages = startMessages.Select(m => new TestMessage(m)).ToArray();
             foreach (TestMessage message in messages)
             {
                 aggregator.Aggregate(message);
@@ -221,12 +219,10 @@ namespace Agents.Net.Tests
         public void AutoExceptionMessage()
         {
             bool send = false;
-            MessageAggregator<TestMessage> aggregator = new();
+            MessageAggregator<OtherMessage, TestMessage> aggregator = new();
 
             OtherMessage[] startMessages = {new(), new(), new()};
-            MessageDomain.CreateNewDomainsFor(startMessages);
-            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
-            ExceptionMessage exception = new("Whatever", startMessages[2], null);
+            ExceptionMessage exception = null;
             aggregator.SendAndAggregate(startMessages,
                                         message =>
                                         {
@@ -237,6 +233,8 @@ namespace Agents.Net.Tests
                                                 exceptionMessage.Exceptions.Should().Contain(exception);
                                             }
                                         });
+            TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();
+            exception = new("Whatever", startMessages[2], null);
             aggregator.Aggregate(messages[0]);
             aggregator.Aggregate(messages[1]);
             aggregator.Aggregate(exception);
