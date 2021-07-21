@@ -47,12 +47,8 @@ namespace Agents.Net
         /// Initializes a new instances of this class with a single predecessor message.
         /// </summary>
         /// <param name="predecessorMessage">The predecessor message that led to this message.</param>
-        /// <param name="name">Optional name of the agent. The default is the name of the type.</param>
-        /// <remarks>
-        /// The <paramref name="name"/> is only used for logging purposes.
-        /// </remarks>
-        protected Message(Message predecessorMessage, string name = null)
-            : this(new[] {predecessorMessage}, name)
+        protected Message(Message predecessorMessage)
+            : this(new[] {predecessorMessage})
         {
         }
 
@@ -60,13 +56,9 @@ namespace Agents.Net
         /// Initializes a new instances of this class with multiple predecessor messages.
         /// </summary>
         /// <param name="predecessorMessages">The predecessor messages that led to this message.</param>
-        /// <param name="name">Optional name of the agent. The default is the name of the type.</param>
-        /// <remarks>
-        /// The <paramref name="name"/> is only used for logging purposes.
-        /// </remarks>
-        protected Message(IEnumerable<Message> predecessorMessages, string name = null)
+        protected Message(IEnumerable<Message> predecessorMessages)
         {
-            this.name = string.IsNullOrEmpty(name) ? GetType().Name : name;
+            name = GetType().Name;
             MessageType = GetType();
             Message[] predecessorHierarchy = predecessorMessages.SelectMany(m => m.HeadMessage.DescendantsAndSelf)
                                                                 .ToArray();

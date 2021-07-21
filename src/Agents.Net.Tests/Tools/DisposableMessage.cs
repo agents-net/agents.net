@@ -9,11 +9,11 @@ namespace Agents.Net.Tests.Tools
 {
     public abstract class DisposableMessage : Message
     {
-        protected DisposableMessage(Message predecessorMessage, string name = null) : base(predecessorMessage, name)
+        protected DisposableMessage(Message predecessorMessage, string name = null) : base(predecessorMessage)
         {
         }
 
-        protected DisposableMessage(IEnumerable<Message> predecessorMessages, string name = null) : base(predecessorMessages, name)
+        protected DisposableMessage(IEnumerable<Message> predecessorMessages, string name = null) : base(predecessorMessages)
         {
         }
         

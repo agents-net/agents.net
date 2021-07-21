@@ -41,14 +41,10 @@ namespace Agents.Net
         /// Initialized a new instance of the class <see cref="Agent"/>.
         /// </summary>
         /// <param name="messageBoard">The message board to send messages.</param>
-        /// <param name="name">Optional name of the agent. The default is the name of the type.</param>
-        /// <remarks>
-        /// The <paramref name="name"/> is only used for logging purposes.
-        /// </remarks>
-        protected Agent(IMessageBoard messageBoard, string name = null)
+        protected Agent(IMessageBoard messageBoard)
         {
             this.messageBoard = messageBoard;
-            agentName = string.IsNullOrEmpty(name) ? GetType().Name : name;
+            agentName = GetType().Name;
         }
 
         /// <summary>
