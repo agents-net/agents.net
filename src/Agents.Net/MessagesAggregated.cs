@@ -17,18 +17,18 @@ namespace Agents.Net
         /// <summary>
         /// The result of the aggregation.
         /// </summary>
-        public IEnumerable<T> EndMessages { get; }
+        public MessageAggregatorResult<T> Result { get; }
 
         internal MessagesAggregated(MessageAggregatorResult<T> aggregatorResult)
             : base(aggregatorResult.EndMessages)
         {
-            EndMessages = aggregatorResult.EndMessages;
+            Result = aggregatorResult;
         }
 
         /// <inheritdoc />
         protected override string DataToString()
         {
-            return $"{nameof(EndMessages)}: {Environment.NewLine}{string.Join(Environment.NewLine, EndMessages)}";
+            return $"{nameof(Result)}: {Result}";
         }
     }
 }

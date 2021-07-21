@@ -4,12 +4,13 @@
 #endregion
 
 using System;
+using System.Linq;
 using Agents.Net;
 using Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Messages;
 
 namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Agents
 {
-    [Consumes(typeof(WorkloadFinished))]
+    [Consumes(typeof(MessagesAggregated<WorkDone>))]
     public class ResultReporter : Agent
     {
         private readonly IConsole console;
@@ -23,8 +24,8 @@ namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Agents
 
         protected override void ExecuteCore(Message messageData)
         {
-            WorkloadFinished workloadFinished = messageData.Get<WorkloadFinished>();
-            console.WriteLine(workloadFinished.TotalResult.ToString());
+            MessagesAggregated<WorkDone> workloadFinished = messageData.Get<MessagesAggregated<WorkDone>>();
+            console.WriteLine(workloadFinished.Result.EndMessages.Sum(m => m.WorkResult).ToString());
             terminateAction();
         }
     }

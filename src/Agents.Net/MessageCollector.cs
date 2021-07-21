@@ -196,6 +196,7 @@ namespace Agents.Net
         [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
+            //TODO 
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
         
@@ -316,6 +317,7 @@ namespace Agents.Net
         {
             foreach (MessageCollection messageSet in sets)
             {
+                //TODO lock
                 if (oneShotActions.Count > 0)
                 {
                     foreach (Message message in messageSet.SelectMany(m => m.HeadMessage.DescendantsAndSelf))
@@ -452,7 +454,12 @@ namespace Agents.Net
                 messagePool.Add(message.MessageDomain, message);
                 message.MessageDomain.ExecuteOnTerminate(() =>
                 {
-                    message.Used();
+                    if (messagePool.TryGetValue(message.MessageDomain, out MessageStore<T> store))
+                    {
+                        store.Dispose();
+                    }
+
+                    messagePool.Remove(message.MessageDomain);
                 });
             }
         }

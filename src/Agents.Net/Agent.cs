@@ -120,13 +120,14 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// This method is used to send multiple messages to the message board at the same time. All message open up a new message domain.
+        /// This method is no deprecated. Please switch to the new <see cref="MessageAggregator{TStart,TEnd}.SendAndAggregate"/> method.
         /// </summary>
         /// <param name="messages">All messages to be send.</param>
         /// <remarks>
         /// The message will be send to the <see cref="IMessageBoard"/> which was passed in the constructor.
         /// To accumulate all messages again it is necessary that all send messages are of the same type.
         /// </remarks>
+        [Obsolete("This method is no longer maintained. Please switch to the new MessageAggregator<TStart,TEnd>.SendAndAggregate method. This method will be removed with version 2022.6")]
         protected void OnMessages(IReadOnlyCollection<Message> messages)
         {
             MessageDomain.CreateNewDomainsFor(messages);

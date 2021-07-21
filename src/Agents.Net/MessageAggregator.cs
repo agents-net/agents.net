@@ -12,7 +12,7 @@ using System.Threading;
 namespace Agents.Net
 {
     /// <summary>
-    /// This class is a helper which aggregates messages which were executed parallel with the <see cref="Agent.OnMessages"/> method.
+    /// This class is deprecated. Please use <see cref="MessageAggregator{TStart,TEnd}"/> instead.
     /// </summary>
     /// <typeparam name="T">The type of the message which should be aggregated.</typeparam>
     /// <remarks>
@@ -57,6 +57,7 @@ namespace Agents.Net
     /// </code>
     /// </example>
     /// </remarks>
+    [Obsolete("This class is no longer maintained. Please switch to the new MessageAggregator<TStart,TEnd> type. This method will be removed with version 2022.6")]
     public class MessageAggregator<T> where T:Message
     {
         private readonly Action<IReadOnlyCollection<T>> onAggregated;
@@ -282,8 +283,8 @@ namespace Agents.Net
             (TStart, MessageGate<TStart, TEnd>)[] gatesBatch = startMessages.Select(m => (m, new MessageGate<TStart, TEnd>()))
                                                                             .ToArray();
             int aggregated = 0;
-            ConcurrentBag<TEnd> endMessages = new ConcurrentBag<TEnd>();
-            ConcurrentBag<ExceptionMessage> exceptions = new ConcurrentBag<ExceptionMessage>();
+            ConcurrentBag<MessageStore<TEnd>> endMessages = new ConcurrentBag<MessageStore<TEnd>>();
+            ConcurrentBag<MessageStore<ExceptionMessage>> exceptions = new ConcurrentBag<MessageStore<ExceptionMessage>>();
             WaitResultKind resultKind = WaitResultKind.Success;
             lock (listLock)
             {
@@ -320,7 +321,15 @@ namespace Agents.Net
                 if (Interlocked.Increment(ref aggregated) == gatesBatch.Length)
                 {
                     onAggregated(
-                        new MessageAggregatorResult<TEnd>(resultKind, endMessages.ToArray(), exceptions.ToArray()));
+                        new MessageAggregatorResult<TEnd>(resultKind, endMessages.Select(s => (TEnd)s).ToArray(), exceptions.Select(s => (ExceptionMessage)s).ToArray()));
+                    foreach (MessageStore<TEnd> store in endMessages)
+                    {
+                        store.Dispose();
+                    }
+                    foreach (MessageStore<ExceptionMessage> store in exceptions)
+                    {
+                        store.Dispose();
+                    }
                 }
             }
         }
@@ -332,28 +341,12 @@ namespace Agents.Net
         /// <param name="onMessage">The action to send the message.</param>
         /// <remarks>
         /// <para>For an example how to use this method see the documentation of the type.</para>
-        /// <para>The aggregation message is only send if the <see cref="MessageAggregatorResult{TEnd}.Result"/> is <see cref="WaitResultKind.Success"/>. Otherwise an <see cref="AggregatedExceptionMessage"/> or <see cref="ExceptionMessage"/> is send.</para>
         /// </remarks>
         public void SendAndAggregate(IReadOnlyCollection<TStart> startMessages, Action<Message> onMessage)
         {
             SendAndContinue(startMessages, onMessage, result =>
             {
-                switch (result.Result)
-                {
-                    case WaitResultKind.Success:
-                        onMessage(new MessagesAggregated<TEnd>(result));
-                        break;
-                    case WaitResultKind.Exception:
-                        onMessage(new AggregatedExceptionMessage(result.Exceptions));
-                        break;
-                    case WaitResultKind.Timeout:
-                        onMessage(new ExceptionMessage(startMessages,
-                                                       $"Timeout during aggregation of {typeof(TEnd).FullName}"));
-                        break;
-                    case WaitResultKind.Canceled:
-                        //TODO throw canceled exception
-                        break;
-                }
+                onMessage(new MessagesAggregated<TEnd>(result));
             });
         }
 

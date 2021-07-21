@@ -202,7 +202,8 @@ namespace Agents.Net.Tests
                                             if (message is MessagesAggregated<TestMessage> aggregated)
                                             {
                                                 send = true;
-                                                aggregated.EndMessages.Should()
+                                                aggregated.Result.Result.Should().Be(WaitResultKind.Success);
+                                                aggregated.Result.EndMessages.Should()
                                                           .BeEquivalentTo(messages);
                                             }
                                         });
@@ -226,11 +227,12 @@ namespace Agents.Net.Tests
             aggregator.SendAndAggregate(startMessages,
                                         message =>
                                         {
-                                            if (message is AggregatedExceptionMessage exceptionMessage)
+                                            if (message is MessagesAggregated<TestMessage> aggregated)
                                             {
                                                 send = true;
-                                                exceptionMessage.Exceptions.Should().ContainSingle();
-                                                exceptionMessage.Exceptions.Should().Contain(exception);
+                                                aggregated.Result.Result.Should().Be(WaitResultKind.Exception);
+                                                aggregated.Result.Exceptions.Should().ContainSingle();
+                                                aggregated.Result.Exceptions.Should().Contain(exception);
                                             }
                                         });
             TestMessage[] messages = startMessages.Select(m => new TestMessage(m)).ToArray();

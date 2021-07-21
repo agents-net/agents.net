@@ -11,21 +11,29 @@ using Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Messages;
 namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Agents
 {
     [Consumes(typeof(InitializeMessage))]
+    [Consumes(typeof(WorkDone))]
+    [Consumes(typeof(ExceptionMessage))]
     [Produces(typeof(WorkScheduled))]
+    [Produces(typeof(MessagesAggregated<WorkDone>))]
     public class WorkScheduler : Agent
     {
+        private readonly MessageAggregator<WorkScheduled, WorkDone> aggregator = new();
         public WorkScheduler(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 
         protected override void ExecuteCore(Message messageData)
         {
-            List<Message> messages = new List<Message>();
+            if (aggregator.TryAggregate(messageData))
+            {
+                return;
+            }
+            List<WorkScheduled> messages = new();
             for (int i = 0; i < 4; i++)
             {
                 messages.Add(new WorkScheduled(i, messageData));
             }
-            OnMessages(messages);
+            aggregator.SendAndAggregate(messages, OnMessage);
         }
     }
 }

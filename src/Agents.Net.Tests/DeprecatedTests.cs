@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Agents.Net.Tests
@@ -14,6 +15,28 @@ namespace Agents.Net.Tests
     //Clear with each release
     public class DeprecatedTests
     {
+        private TestAgent testAgent;
+        private IMessageBoard messageBoard;
+
+        [SetUp]
+        public void Setup()
+        {
+            messageBoard = Substitute.For<IMessageBoard>();
+            testAgent = new TestAgent(messageBoard);
+        }
+        
+        [Test]
+        public void OnMessagesPublishesAllMessagesAndCreatesDomains()
+        {
+            TestMessage message1 = new TestMessage();
+            TestMessage message2 = new TestMessage();
+            testAgent.OnMessages(message1, message2);
+
+            messageBoard.Received().Publish(message1);
+            messageBoard.Received().Publish(message2);
+            Assert.AreNotEqual(message1.MessageDomain,message2.MessageDomain, "MessageDomains not created.");
+        }
+        
         [Test]
         public void AggregateSingleMessage()
         {
@@ -454,6 +477,23 @@ namespace Agents.Net.Tests
             protected override string DataToString()
             {
                 return string.Empty;
+            }
+        }
+
+        private class TestAgent : Agent
+        {
+            public TestAgent(IMessageBoard messageBoard) : base(messageBoard)
+            {
+            }
+
+            public void OnMessages(params Message[] messages)
+            {
+                base.OnMessages(messages);
+            }
+
+            protected override void ExecuteCore(Message messageData)
+            {
+                throw new NotImplementedException();
             }
         }
     }
