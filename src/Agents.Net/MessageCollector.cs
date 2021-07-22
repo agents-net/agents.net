@@ -316,6 +316,7 @@ namespace Agents.Net
         {
             foreach (MessageCollection messageSet in sets)
             {
+                //TODO lock
                 if (oneShotActions.Count > 0)
                 {
                     foreach (Message message in messageSet.SelectMany(m => m.HeadMessage.DescendantsAndSelf))
@@ -452,7 +453,12 @@ namespace Agents.Net
                 messagePool.Add(message.MessageDomain, message);
                 message.MessageDomain.ExecuteOnTerminate(() =>
                 {
-                    message.Used();
+                    if (messagePool.TryGetValue(message.MessageDomain, out MessageStore<T> store))
+                    {
+                        store.Dispose();
+                    }
+
+                    messagePool.Remove(message.MessageDomain);
                 });
             }
         }

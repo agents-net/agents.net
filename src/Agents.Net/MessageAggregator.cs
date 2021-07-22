@@ -10,7 +10,7 @@ using System.Linq;
 namespace Agents.Net
 {
     /// <summary>
-    /// This class is a helper which aggregates messages which were executed parallel with the <see cref="Agent.OnMessages"/> method.
+    /// This class is deprecated. Please use <see cref="MessageGate{TStart,TEnd}"/> instead.
     /// </summary>
     /// <typeparam name="T">The type of the message which should be aggregated.</typeparam>
     /// <remarks>
@@ -55,6 +55,7 @@ namespace Agents.Net
     /// </code>
     /// </example>
     /// </remarks>
+    [Obsolete("This class is no longer maintained. Please switch to the new MessageAggregator<TStart,TEnd> type. This method will be removed with version 2022.6")]
     public class MessageAggregator<T> where T:Message
     {
         private readonly Action<IReadOnlyCollection<T>> onAggregated;

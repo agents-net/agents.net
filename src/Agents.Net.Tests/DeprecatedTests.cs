@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Agents.Net.Tests
@@ -14,6 +15,155 @@ namespace Agents.Net.Tests
     //Clear with each release
     public class DeprecatedTests
     {
+        private TestAgent testAgent;
+        private IMessageBoard messageBoard;
+
+        [SetUp]
+        public void Setup()
+        {
+            messageBoard = Substitute.For<IMessageBoard>();
+            testAgent = new TestAgent(messageBoard);
+        }
+        
+        [Test]
+        public void OnMessagesPublishesAllMessagesAndCreatesDomains()
+        {
+            TestMessage message1 = new TestMessage();
+            TestMessage message2 = new TestMessage();
+            testAgent.OnMessages(message1, message2);
+
+            messageBoard.Received().Publish(message1);
+            messageBoard.Received().Publish(message2);
+            Assert.AreNotEqual(message1.MessageDomain,message2.MessageDomain, "MessageDomains not created.");
+        }
+        
+        [Test]
+        public void AggregateSingleMessage()
+        {
+            bool executed = false;
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+               {
+                   executed = true;
+               });
+
+            aggregator.Aggregate(new TestMessage());
+
+            executed.Should().BeTrue("A message in the default domain should be executed immediately.");
+        }
+
+        [Test]
+        public void AggregateMultipleMessagesInDifferentDomains()
+        {
+            bool executed = false;
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                    executed = true;
+                });
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            MessageDomain.CreateNewDomainsFor(messages);
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            executed.Should().BeTrue("all messages were added to the aggregator.");
+        }
+
+        [Test]
+        public void ExecuteMultipleMessagesInDefaultDomainSeperately()
+        {
+            int count = 0;
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                    count++;
+                });
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            count.Should().Be(3, "all messages should execute seperately.");
+        }
+
+        [Test]
+        public void DontExecuteMultipleMessagesIfOneIsMissing()
+        {
+            bool executed = false;
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                    executed = true;
+                });
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            MessageDomain.CreateNewDomainsFor(messages);
+            aggregator.Aggregate(messages[0]);
+            aggregator.Aggregate(messages[1]);
+
+            executed.Should().BeFalse("not all messages were added to the aggregator.");
+        }
+
+        [Test]
+        public void TerminateMessageDomainAutomatically()
+        {
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                });
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            MessageDomain.CreateNewDomainsFor(messages);
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            foreach (TestMessage message in messages)
+            {
+                message.MessageDomain.IsTerminated.Should().BeTrue("message domain should have been terminated.");
+            }
+        }
+
+        [Test]
+        public void DoNotTerminateMessageDomainWhenParameterIsFalse()
+        {
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                }, false);
+
+            TestMessage[] messages = new[] { new TestMessage(), new TestMessage(), new TestMessage() };
+            MessageDomain.CreateNewDomainsFor(messages);
+            foreach (TestMessage message in messages)
+            {
+                aggregator.Aggregate(message);
+            }
+
+            foreach (TestMessage message in messages)
+            {
+                message.MessageDomain.IsTerminated.Should().BeFalse("message domain should not have been terminated.");
+            }
+        }
+
+        [Test]
+        public void DoNotTerminateDefaultDomain()
+        {
+            MessageAggregator<TestMessage> aggregator =
+                new MessageAggregator<TestMessage>(set =>
+                {
+                });
+
+            aggregator.Aggregate(new TestMessage());
+
+            MessageDomain.DefaultMessageDomain.IsTerminated.Should().BeFalse("the default message domain should never be terminated.");
+        }
+        
         [Test]
         public void ExecutePushedMessageIfSetIsFull()
         {
@@ -327,6 +477,23 @@ namespace Agents.Net.Tests
             protected override string DataToString()
             {
                 return string.Empty;
+            }
+        }
+
+        private class TestAgent : Agent
+        {
+            public TestAgent(IMessageBoard messageBoard) : base(messageBoard)
+            {
+            }
+
+            public void OnMessages(params Message[] messages)
+            {
+                base.OnMessages(messages);
+            }
+
+            protected override void ExecuteCore(Message messageData)
+            {
+                throw new NotImplementedException();
             }
         }
     }

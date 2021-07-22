@@ -23,7 +23,6 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
         {
             builder.RegisterInstance(finishAction);
             builder.RegisterType<MessageBoard>().As<IMessageBoard>().InstancePerLifetimeScope();
-            builder.RegisterType<WorkloadAggregator>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<WorkloadExecuter>().As<Agent>().InstancePerLifetimeScope();
             builder.RegisterType<WorkloadStarter>().As<Agent>().InstancePerLifetimeScope();
         }

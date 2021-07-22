@@ -1,50 +1,36 @@
-{
+﻿{
   "GeneratorSettings": {
-    "PackageNamespace": "Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity",
-    "GenerateAutofacModule": true
+    "PackageNamespace": "",
+    "GenerateAutofacModule": false
   },
-  "Agents": [
-    {
-      "Id": "2739e646-2b90-43ce-b2d0-d5fa0da90cf4",
-      "Name": "InformationBroker",
-      "Namespace": ".Agents",
-      "ConsumingMessages": [
-        "ae869fc7-0489-4bd9-b398-6af28bdf3e14"
-      ],
-      "ProducedMessages": [],
-      "IncomingEvents": [],
-      "ProducedEvents": []
-    },
-    {
-      "Id": "7fa36e25-1971-46c9-931e-ed8e6f99ee97",
-      "Name": "WorkScheduler",
-      "Namespace": ".Agents",
-      "ConsumingMessages": [
-        "ae869fc7-0489-4bd9-b398-6af28bdf3e14"
-      ],
-      "ProducedMessages": [],
-      "IncomingEvents": [],
-      "ProducedEvents": []
-    }
-  ],
+  "Agents": [],
   "Messages": [
     {
-      "Id": "ae869fc7-0489-4bd9-b398-6af28bdf3e14",
+      "Id": "3c7604e3-a817-4de9-b6de-11d1f0068e5f",
       "Name": "InitializeMessage",
       "Namespace": "Agents.Net",
-      "BuildIn": true
+      "BuildIn": true,
+      "IsGeneric": false,
+      "GenericParameterCount": 0,
+      "IsGenericInstance": false
     },
     {
-      "Id": "ef8573fd-772f-4d65-a74e-7b1b778462a2",
+      "Id": "b36afc76-2648-4f8c-b70a-b7a6a18a239e",
       "Name": "ExceptionMessage",
       "Namespace": "Agents.Net",
-      "BuildIn": true
+      "BuildIn": true,
+      "IsGeneric": false,
+      "GenericParameterCount": 0,
+      "IsGenericInstance": false
     },
     {
-      "Id": "28a45d71-4311-461a-9446-c44a57c08c4e",
-      "Name": "InformationGathered",
-      "Namespace": ".Messages",
-      "BuildIn": false
+      "Id": "08ac588f-b822-452d-9692-64c6c6fafc05",
+      "Name": "MessagesAggregated",
+      "Namespace": "Agents.Net",
+      "BuildIn": true,
+      "IsGeneric": true,
+      "GenericParameterCount": 1,
+      "IsGenericInstance": false
     }
   ]
 }

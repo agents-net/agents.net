@@ -176,12 +176,12 @@ namespace Agents.Net.Tests
             }
 
             public OtherMessage(Message predecessorMessage, string name = null)
-                : base(predecessorMessage, name)
+                : base(predecessorMessage)
             {
             }
 
             public OtherMessage(IEnumerable<Message> predecessorMessages, string name = null)
-                : base(predecessorMessages, name)
+                : base(predecessorMessages)
             {
             }
         }

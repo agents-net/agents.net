@@ -18,7 +18,7 @@ namespace Agents.Net
     /// <typeparam name="TEnd">Type of the end message.</typeparam>
     /// <remarks>
     /// <para>This helper should be used with caution as it breaks the basic concept of the agent framework,
-    /// that each agent does exactly one thing. There are only three use cases were this helper should be used.
+    /// that each agent does exactly one thing. There are only four use cases were this helper should be used.
     /// <list type="number">
     /// <item>
     ///     <term><b>An agent serving as a legacy bridge:</b><br/></term>
@@ -36,7 +36,14 @@ namespace Agents.Net
     ///     <term><b>When a single agent's task is to handle message pairs:</b><br/></term>
     ///     <description>
     ///         This is necessary for example when handling transactions. In this case the gate can be used to determine whether to rollback the transaction or not. Another example would be when an <see cref="InterceptorAgent"/> that delays the execution of a message so that an injected message chain can be executed.
-    ///         Use <see cref="SendAndContinue"/> for that use case.
+    ///         Use <see cref="SendAndContinue(TStart,System.Action{Agents.Net.Message},System.Action{Agents.Net.MessageGateResult{TEnd}},int,System.Threading.CancellationToken)"/> for that use case.
+    ///     </description>
+    /// </item>
+    /// <item>
+    ///     <term><b>When an agent sends multiple messages of the same type and aggregates them:</b><br/></term>
+    ///     <description>
+    ///         This is explicit parallelization. The work can be split in batches to execute them parallel. The batches can be as small as a single unit of work. This is almost as effective as creating batches based on the amount of available CPU Cores.
+    ///         Use <see cref="SendAndAggregate"/> for that use case.
     ///     </description>
     /// </item>
     /// <item>
@@ -65,7 +72,7 @@ namespace Agents.Net
     /// </code>
     ///         Similar are operations such as executing an external process or database operations are more examples
     ///         were the second use case would helpful.
-    ///         Use <see cref="SendAndContinue"/> for that use case.
+    ///         Use <see cref="SendAndContinue(TStart,System.Action{Agents.Net.Message},System.Action{Agents.Net.MessageGateResult{TEnd}},int,System.Threading.CancellationToken)"/> for that use case.
     ///     </description>
     /// </item>
     /// </list>
@@ -166,7 +173,7 @@ namespace Agents.Net
         /// <para>For an example how to use this class see the type documentation.</para>
         /// <para>
         /// WARNING: Extensive use of this method will lead to time gaps in the execution. See .net issue on github: https://github.com/dotnet/runtime/issues/55562
-        /// Use this method only for the legacy service call. Of all other scenarios use <see cref="SendAndContinue"/>.
+        /// Use this method only for the legacy service call. Of all other scenarios use <see cref="SendAndContinue(TStart,System.Action{Agents.Net.Message},System.Action{Agents.Net.MessageGateResult{TEnd}},int,System.Threading.CancellationToken)"/>.
         /// </para>
         /// </remarks>
         public MessageGateResult<TEnd> SendAndAwait(TStart startMessage, Action<Message> onMessage, int timeout = NoTimout,
@@ -317,6 +324,216 @@ namespace Agents.Net
                     exceptionCancelTokens.Remove(startMessage);
                 }
             }
+        }
+
+        /// <summary>
+        /// The method to send the start messages and wait for all end messages.
+        /// </summary>
+        /// <param name="startMessages">The start messages to send.</param>
+        /// <param name="onMessage">The action to send the message.</param>
+        /// <param name="onAggregated">The action to execute once a <see cref="MessageAggregationResult{TEnd}"/> was created.</param>
+        /// <param name="timeout">
+        /// Optionally a timeout after which the method will return, without sending the result.
+        /// By default the timeout is <see cref="NoTimout"/>
+        /// </param>
+        /// <param name="cancellationToken">
+        /// Optionally a cancellation token to cancel the continue operation. By default no CancellationToken will be used.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// When a batch of messages is published using the this class they can be united again when all last messages of the execution chain are of the same type or an exception message.
+        /// </para>
+        /// <code>
+        ///  --------------         ---------------------          -----------------
+        /// | SplitMessage | ----> | IntermediateMessage | -----> | FinishedMessage |
+        ///  --------------         ---------------------  |       -----------------
+        ///                                                |
+        ///                                                |       ------------------
+        ///                                                *----> | ExceptionMessage |
+        ///                                                |       ------------------
+        ///                                                |
+        ///                                                |       ------------------
+        ///                                                 ----> | OtherEndMessage  |
+        ///                                                        ------------------
+        /// </code>
+        /// <para>
+        /// Looking at the example above it would not be possible to unite the <c>SplitMessages</c> again using this class as at least one <c>IntermediateMessage</c> let to an <c>OtherEndMessage</c>.
+        /// </para>
+        /// <para>
+        /// This function is useful when the aggregated end messages need to be modified - for example
+        /// filtered - before aggregating them. In all other cases it is better to use <see cref="SendAndAggregate"/>
+        /// to automatically create and send an aggregated message. 
+        /// </para>
+        /// <example>
+        /// This is an example, how to use this method correctly:
+        /// <code>
+        /// [Consumes(typeof(FinishedMessage))]
+        /// [Consumes(typeof(ExceptionMessage))]
+        /// [Produces(typeof(StartMessage))]
+        /// [Produces(typeof(AggregatedMessage))]
+        /// public class MessageAggregatorAgent : Agent
+        /// {
+        ///     private readonly MessageGate&lt;FinishedMessage&gt; gate = new MessageGate&lt;FinishedMessage&gt;();
+        /// 
+        ///     public MessageAggregatorAgent(IMessageBoard messageBoard) : base(messageBoard)
+        ///     {
+        ///     }
+        /// 
+        ///     protected override void ExecuteCore(Message messageData)
+        ///     {
+        ///         if(gate.Check(messageData))
+        ///         {
+        ///             return;
+        ///         }
+        ///         //create startMessages
+        ///         gate.SendAndContinue(startMessages, OnMessage, result =>
+        ///         {
+        ///             //manipulate the results and produce aggregated message
+        ///             OnMessage(aggregatedMessage);
+        ///         });
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        /// </remarks>
+        public void SendAndContinue(IReadOnlyCollection<TStart> startMessages, Action<Message> onMessage,
+                                    Action<MessageAggregationResult<TEnd>> onAggregated, int timeout = NoTimout,
+                                    CancellationToken cancellationToken = default)
+        {
+            if (startMessages == null)
+            {
+                throw new ArgumentNullException(nameof(startMessages));
+            }
+
+            if (onMessage == null)
+            {
+                throw new ArgumentNullException(nameof(onMessage));
+            }
+
+            if (onAggregated == null)
+            {
+                throw new ArgumentNullException(nameof(onAggregated));
+            }
+
+            int aggregated = 0;
+            ConcurrentBag<MessageStore<TEnd>> endMessages = new ConcurrentBag<MessageStore<TEnd>>();
+            ConcurrentBag<MessageStore<ExceptionMessage>> aggregatedExceptions = new ConcurrentBag<MessageStore<ExceptionMessage>>();
+            MessageGateResultKind resultKind = MessageGateResultKind.Success;
+            
+            foreach (TStart message in startMessages)
+            {
+                SendAndContinue(message, onMessage, AggregateResult, timeout, cancellationToken);
+            }
+            
+            void AggregateResult(MessageGateResult<TEnd> messageGateResult)
+            {
+                if (messageGateResult.EndMessage != null)
+                {
+                    endMessages.Add(messageGateResult.EndMessage);
+                }
+
+                foreach (ExceptionMessage exception in messageGateResult.Exceptions)
+                {
+                    aggregatedExceptions.Add(exception);
+                }
+
+                if (messageGateResult.Result != MessageGateResultKind.Success)
+                {
+                    //It is ok to override other values with the latest
+                    resultKind = messageGateResult.Result;
+                }
+
+                if (Interlocked.Increment(ref aggregated) == startMessages.Count)
+                {
+                    CompleteAggregation();
+                }
+
+                void CompleteAggregation()
+                {
+                    onAggregated(
+                        new MessageAggregationResult<TEnd>(resultKind, endMessages.Select(s => (TEnd) s).ToArray(),
+                                                           aggregatedExceptions.Select(s => (ExceptionMessage) s).ToArray()));
+                    foreach (MessageStore<TEnd> store in endMessages)
+                    {
+                        store.Dispose();
+                    }
+
+                    foreach (MessageStore<ExceptionMessage> store in aggregatedExceptions)
+                    {
+                        store.Dispose();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The method to send the start messages and aggregate all end messages in a <see cref="MessagesAggregated{T}"/> message.
+        /// </summary>
+        /// <param name="startMessages">The start messages to send.</param>
+        /// <param name="onMessage">The action to send the message.</param>
+        /// <remarks>
+        /// <para>
+        /// When a batch of messages is published using the this class they can be united again when all last messages of the execution chain are of the same type or an exception message.
+        /// </para>
+        /// <code>
+        ///  --------------         ---------------------          -----------------
+        /// | SplitMessage | ----> | IntermediateMessage | -----> | FinishedMessage |
+        ///  --------------         ---------------------  |       -----------------
+        ///                                                |
+        ///                                                |       ------------------
+        ///                                                *----> | ExceptionMessage |
+        ///                                                |       ------------------
+        ///                                                |
+        ///                                                |       ------------------
+        ///                                                 ----> | OtherEndMessage  |
+        ///                                                        ------------------
+        /// </code>
+        /// <para>
+        /// Looking at the example above it would not be possible to unite the <c>SplitMessages</c> again using this class as at least one <c>IntermediateMessage</c> let to an <c>OtherEndMessage</c>.
+        /// </para>
+        /// <example>
+        /// Here a typical example how to setup and use this method:
+        /// <code>
+        /// [Consumes(typeof(FinishedMessage))]
+        /// [Consumes(typeof(ExceptionMessage))]
+        /// [Produces(typeof(StartMessage))]
+        /// public class MessageAggregatorAgent : Agent
+        /// {
+        ///     private readonly MessageGate&lt;FinishedMessage&gt; gate = new MessageGate&lt;FinishedMessage&gt;();
+        /// 
+        ///     public MessageAggregatorAgent(IMessageBoard messageBoard) : base(messageBoard)
+        ///     {
+        ///     }
+        /// 
+        ///     protected override void ExecuteCore(Message messageData)
+        ///     {
+        ///         if(gate.Check(messageData))
+        ///         {
+        ///             return;
+        ///         }
+        ///         //create startMessages
+        ///         gate.SendAndAggregate(startMessages, OnMessage);
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        /// </remarks>
+        public void SendAndAggregate(IReadOnlyCollection<TStart> startMessages, Action<Message> onMessage)
+        {
+            if (startMessages == null)
+            {
+                throw new ArgumentNullException(nameof(startMessages));
+            }
+
+            if (onMessage == null)
+            {
+                throw new ArgumentNullException(nameof(onMessage));
+            }
+
+            SendAndContinue(startMessages, onMessage, result =>
+            {
+                onMessage(new MessagesAggregated<TEnd>(result));
+            });
         }
 
         private bool IsActive => exceptions.Count > 0;

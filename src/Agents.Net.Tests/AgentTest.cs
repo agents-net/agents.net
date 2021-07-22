@@ -43,18 +43,6 @@ namespace Agents.Net.Tests
         }
 
         [Test]
-        public void OnMessagesPublishesAllMessagesAndCreatesDomains()
-        {
-            TestMessage message1 = new TestMessage();
-            TestMessage message2 = new TestMessage();
-            testAgent.OnMessages(message1, message2);
-
-            messageBoard.Received().Publish(message1);
-            messageBoard.Received().Publish(message2);
-            Assert.AreNotEqual(message1.MessageDomain,message2.MessageDomain, "MessageDomains not created.");
-        }
-
-        [Test]
         public void ExceptionThrowsExceptionMessage()
         {
             ArgumentException someException = new ArgumentException("foo");
@@ -122,11 +110,6 @@ namespace Agents.Net.Tests
             public new void OnMessage(Message message)
             {
                 base.OnMessage(message);
-            }
-
-            public void OnMessages(params Message[] messages)
-            {
-                base.OnMessages(messages);
             }
         }
     }

@@ -94,6 +94,20 @@ namespace Agents.Net
         }
 
         /// <summary>
+        /// This is the constructor of a custom exception message that has its own logic.
+        /// </summary>
+        /// <param name="predecessors">Predecessor messages.</param>
+        /// <param name="customMessage">An optional custom message which is stored in the <see cref="CustomMessage"/> property.</param>
+        /// <remarks>
+        /// When this constructor is used, the <see cref="DataToString"/> method should be overriden and not call base.
+        /// </remarks>
+        internal ExceptionMessage(IEnumerable<Message> predecessors, string customMessage = null)
+            : base(predecessors)
+        {
+            CustomMessage = customMessage;
+        }
+
+        /// <summary>
         /// Overridden data method.
         /// </summary>
         /// <returns><see cref="string.Empty"/></returns>

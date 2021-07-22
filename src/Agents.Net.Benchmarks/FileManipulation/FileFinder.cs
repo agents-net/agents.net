@@ -14,19 +14,26 @@ namespace Agents.Net.Benchmarks.FileManipulation
     [Produces(typeof(FileFoundMessage))]
     public class FileFinder : Agent
     {
-        public FileFinder(IMessageBoard messageBoard) : base(messageBoard)
+        private readonly MessageGate<FileFoundMessage, FileCompletedMessage> gate = new();
+        private readonly Action terminateAction;
+        
+        public FileFinder(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
         {
+            this.terminateAction = terminateAction;
         }
 
         protected override void ExecuteCore(Message messageData)
         {
             RootDirectoryDefinedMessage definedMessage = messageData.Get<RootDirectoryDefinedMessage>();
-            List<Message> messages = new List<Message>();
+            List<FileFoundMessage> messages = new();
             foreach (FileInfo file in definedMessage.RootDirectory.EnumerateFiles())
             {
                 messages.Add(new FileFoundMessage(file, messageData));
             }
-            OnMessages(messages);
+            gate.SendAndContinue(messages,OnMessage, result =>
+            {
+                terminateAction();
+            });
         }
     }
 }

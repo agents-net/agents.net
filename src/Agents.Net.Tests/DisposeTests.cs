@@ -97,14 +97,32 @@ namespace Agents.Net.Tests
         }
         
         [Test]
+        public void MessageIsDisposedAfterExecutingMessageGate()
+        {
+            MessageGate<TestMessage, DisposableMessage> gate = new();
+            TestMessage startMessage = new();
+            gate.SendAndContinue(startMessage, _=>{}, result =>
+            {
+                result.EndMessage.IsDisposed.Should().BeFalse("I am using it");
+            });
+            DisposableMessage message = new(startMessage);
+            message.SetUserCount(1);
+            gate.Check(message);
+            message.Used();
+
+            message.IsDisposed.Should().BeTrue("the gate was executed.");
+        }
+        
+        [Test]
         public void MessageNotDisposedIfHeldByAggregator()
         {
-            MessageAggregator<DisposableMessage> aggregator = new(_ =>{});
-            DisposableMessage message = new();
-            DisposableMessage message2 = new();
-            MessageDomain.CreateNewDomainsFor(new []{message, message2});
+            MessageGate<TestMessage, DisposableMessage> aggregator = new();
+            TestMessage startMessage = new();
+            TestMessage startMessage2 = new();
+            aggregator.SendAndAggregate(new []{startMessage, startMessage2}, _ => { });
+            DisposableMessage message = new(startMessage);
             message.SetUserCount(1);
-            aggregator.Aggregate(message);
+            aggregator.Check(message);
             message.Used();
 
             message.IsDisposed.Should().BeFalse("the aggregator blocked the dispose.");
@@ -113,25 +131,31 @@ namespace Agents.Net.Tests
         [Test]
         public void MessageIsDisposedIfAggregatorIsExecuted()
         {
-            DisposableMessage message = new();
+            MessageGate<TestMessage, DisposableMessage> aggregator = new();
+            TestMessage startMessage = new();
+            TestMessage startMessage2 = new();
+            aggregator.SendAndContinue(new []{startMessage, startMessage2}, _=>{},
+                                       result =>
+                                       {
+                                           foreach (DisposableMessage endMessage in result.EndMessages)
+                                           {
+                                               endMessage.IsDisposed.Should().BeFalse("I am using it.");
+                                           }
+                                       });
+            DisposableMessage message = new(startMessage);
             message.SetUserCount(1);
-            DisposableMessage message2 = new();
-            MessageDomain.CreateNewDomainsFor(new []{message, message2});
-            MessageAggregator<DisposableMessage> aggregator = new(set =>
-            {
-                message.IsDisposed.Should().BeFalse("I am using it.");
-            });
-            aggregator.Aggregate(message);
+            DisposableMessage message2 = new(startMessage2);
+            aggregator.Check(message);
             message.Used();
-            aggregator.Aggregate(message2);
+            aggregator.Check(message2);
 
             message.IsDisposed.Should().BeTrue("the aggregator is finished.");
         }
 
         private class DisposableMessage : Message
         {
-            public DisposableMessage()
-                : base(Enumerable.Empty<Message>())
+            public DisposableMessage(params Message[] messages)
+                : base(messages)
             {
             }
             
