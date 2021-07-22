@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Agents.Net.Tests
 {
-    public class MessageAggregatorTest
+    public class MessageGateAggregationTest
     {
         [Test]
         public void AggregateSingleMessage()
