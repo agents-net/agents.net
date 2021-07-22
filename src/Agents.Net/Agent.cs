@@ -116,7 +116,7 @@ namespace Agents.Net
         }
 
         /// <summary>
-        /// This method is no deprecated. Please switch to the new <see cref="MessageAggregator{TStart,TEnd}.SendAndAggregate"/> method.
+        /// This method is no deprecated. Please switch to the new <see cref="MessageGate{TStart,TEnd}.SendAndAggregate"/> method.
         /// </summary>
         /// <param name="messages">All messages to be send.</param>
         /// <remarks>

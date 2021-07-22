@@ -1,8 +1,6 @@
 #region Copyright
-
 //  Copyright (c) Tobias Wilker and contributors
 //  This file is licensed under MIT
-
 #endregion
 
 namespace Agents.Net
@@ -11,7 +9,7 @@ namespace Agents.Net
     /// The result kind of the <see cref="MessageGate{TStart,TEnd}.SendAndAwait"/> method.
     /// </summary>
     /// <remarks>See <see cref="MessageGate{TStart,TEnd}"/> to understand the usage of this enum.</remarks>
-    public enum WaitResultKind
+    public enum MessageGateResultKind
     {
         /// <summary>
         /// The operation was successful. Meaning the end message was found.

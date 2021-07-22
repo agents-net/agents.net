@@ -9,18 +9,18 @@ using System.Linq;
 namespace Agents.Net
 {
     /// <summary>
-    /// The result of the <see cref="MessageAggregator{TStart,TEnd}.SendAndContinue"/> method.
+    /// The result of the <see cref="MessageGate{TStart,TEnd}.SendAndContinue(IReadOnlyCollection{TStart},System.Action{Agents.Net.Message},System.Action{Agents.Net.MessageAggregationResult{TEnd}},int,System.Threading.CancellationToken)"/> method.
     /// </summary>
     /// <typeparam name="TEnd"></typeparam>
-    public class MessageAggregatorResult<TEnd> where TEnd : Message
+    public class MessageAggregationResult<TEnd> where TEnd : Message
     {
         /// <summary>
-        /// Instantiate a new instance of <see cref="MessageAggregatorResult{TEnd}"/>.
+        /// Instantiate a new instance of <see cref="MessageAggregationResult{TEnd}"/>.
         /// </summary>
         /// <param name="result">The aggregation result.</param>
         /// <param name="endMessages">The final messages.</param>
         /// <param name="exceptions">Exceptions during execution.</param>
-        public MessageAggregatorResult(WaitResultKind result, IReadOnlyCollection<TEnd> endMessages, IReadOnlyCollection<ExceptionMessage> exceptions)
+        public MessageAggregationResult(MessageGateResultKind result, IReadOnlyCollection<TEnd> endMessages, IReadOnlyCollection<ExceptionMessage> exceptions)
         {
             Result = result;
             EndMessages = endMessages;
@@ -30,7 +30,7 @@ namespace Agents.Net
         /// <summary>
         /// The result of the aggregation.
         /// </summary>
-        public WaitResultKind Result { get; }
+        public MessageGateResultKind Result { get; }
         
         /// <summary>
         /// The final messages.

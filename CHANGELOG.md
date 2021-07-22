@@ -16,11 +16,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - #99 - Replace inherits id and updates the whole hierarchies descendants
 
 ### Added
-- #102 - A new helper class `MessageGate` was introduced which helps covering mainly legacy uses cases
+- #102 - A new helper class `MessageGate` was introduced which helps covering legacy uses cases as well as simplifies several other use cases
 - `InterceptionAction.Delay` - this can delay the execution of a message until a token is released. `InterceptionAction` is no longer an enum, but this does not break existing code.
 
 ### Changed
 - `PushAndExecute` is now obsolete. It was replaced by the new `MessageGate` type. It will be removed with 2022.6.0
+- `MessageAggregator` is now obsolete. It was replaced by the new `MessageGate` type. It will be removed with 2022.6.0
+- `Agent.OnMessages` is now obsolete. It was replaced by the new `MessageGate` type. It will be removed with 2022.6.0
+
+### Removed
+- **Breaking Change:** Removed the `name` parameter in `Agent` and `Message` classes
 
 ## 2021.6.2
 ### Added

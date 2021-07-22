@@ -20,7 +20,7 @@ namespace Agents.Net
         /// <param name="result">The result kind.</param>
         /// <param name="endMessage">The end message.</param>
         /// <param name="exceptions">Exception messages.</param>
-        public MessageGateResult(WaitResultKind result, TEnd endMessage, IEnumerable<ExceptionMessage> exceptions)
+        public MessageGateResult(MessageGateResultKind result, TEnd endMessage, IEnumerable<ExceptionMessage> exceptions)
         {
             Result = result;
             EndMessage = endMessage;
@@ -30,7 +30,7 @@ namespace Agents.Net
         /// <summary>
         /// The result kind. Meaning if the operation was successful or not. 
         /// </summary>
-        public WaitResultKind Result { get; }
+        public MessageGateResultKind Result { get; }
         
         /// <summary>
         /// The end message. Can be <c>null</c> if the operation was not successful.

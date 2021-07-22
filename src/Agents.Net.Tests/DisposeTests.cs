@@ -116,13 +116,13 @@ namespace Agents.Net.Tests
         [Test]
         public void MessageNotDisposedIfHeldByAggregator()
         {
-            MessageAggregator<TestMessage, DisposableMessage> aggregator = new();
+            MessageGate<TestMessage, DisposableMessage> aggregator = new();
             TestMessage startMessage = new();
             TestMessage startMessage2 = new();
             aggregator.SendAndAggregate(new []{startMessage, startMessage2}, _ => { });
             DisposableMessage message = new(startMessage);
             message.SetUserCount(1);
-            aggregator.Aggregate(message);
+            aggregator.Check(message);
             message.Used();
 
             message.IsDisposed.Should().BeFalse("the aggregator blocked the dispose.");
@@ -131,7 +131,7 @@ namespace Agents.Net.Tests
         [Test]
         public void MessageIsDisposedIfAggregatorIsExecuted()
         {
-            MessageAggregator<TestMessage, DisposableMessage> aggregator = new();
+            MessageGate<TestMessage, DisposableMessage> aggregator = new();
             TestMessage startMessage = new();
             TestMessage startMessage2 = new();
             aggregator.SendAndContinue(new []{startMessage, startMessage2}, _=>{},
@@ -145,9 +145,9 @@ namespace Agents.Net.Tests
             DisposableMessage message = new(startMessage);
             message.SetUserCount(1);
             DisposableMessage message2 = new(startMessage2);
-            aggregator.Aggregate(message);
+            aggregator.Check(message);
             message.Used();
-            aggregator.Aggregate(message2);
+            aggregator.Check(message2);
 
             message.IsDisposed.Should().BeTrue("the aggregator is finished.");
         }

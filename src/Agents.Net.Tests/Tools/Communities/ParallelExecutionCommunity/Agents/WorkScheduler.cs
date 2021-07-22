@@ -17,14 +17,14 @@ namespace Agents.Net.Tests.Tools.Communities.ParallelExecutionCommunity.Agents
     [Produces(typeof(MessagesAggregated<WorkDone>))]
     public class WorkScheduler : Agent
     {
-        private readonly MessageAggregator<WorkScheduled, WorkDone> aggregator = new();
+        private readonly MessageGate<WorkScheduled, WorkDone> aggregator = new();
         public WorkScheduler(IMessageBoard messageBoard) : base(messageBoard)
         {
         }
 
         protected override void ExecuteCore(Message messageData)
         {
-            if (aggregator.TryAggregate(messageData))
+            if (aggregator.Check(messageData))
             {
                 return;
             }

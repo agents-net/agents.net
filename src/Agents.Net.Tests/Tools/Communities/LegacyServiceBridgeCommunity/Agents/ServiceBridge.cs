@@ -28,7 +28,7 @@ namespace Agents.Net.Tests.Tools.Communities.LegacyServiceBridgeCommunity.Agents
         {
             ServiceParameterPassed startMessage = new ServiceParameterPassed(throwException);
             MessageGateResult<ServiceResult> result = gate.SendAndAwait(startMessage, OnMessage);
-            return result.Result == WaitResultKind.Success ? result.EndMessage.Result : "Exception";
+            return result.Result == MessageGateResultKind.Success ? result.EndMessage.Result : "Exception";
         }
     }
 }

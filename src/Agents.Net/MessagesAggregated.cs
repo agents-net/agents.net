@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Agents.Net
 {
     /// <summary>
-    /// This is the message that will be send automatically by the <see cref="MessageAggregator{TStart, TEnd}.SendAndAggregate"/> method.
+    /// This is the message that will be send automatically by the <see cref="MessageGate{TStart, TEnd}.SendAndAggregate"/> method.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MessagesAggregated<T> : Message where T:Message
@@ -17,12 +17,12 @@ namespace Agents.Net
         /// <summary>
         /// The result of the aggregation.
         /// </summary>
-        public MessageAggregatorResult<T> Result { get; }
+        public MessageAggregationResult<T> Result { get; }
 
-        internal MessagesAggregated(MessageAggregatorResult<T> aggregatorResult)
-            : base(aggregatorResult.EndMessages)
+        internal MessagesAggregated(MessageAggregationResult<T> aggregationResult)
+            : base(aggregationResult.EndMessages)
         {
-            Result = aggregatorResult;
+            Result = aggregationResult;
         }
 
         /// <inheritdoc />

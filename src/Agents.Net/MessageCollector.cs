@@ -196,7 +196,6 @@ namespace Agents.Net
         [Obsolete("This method is no longer maintained. Please switch to the new MessageGate type. This method will be removed with version 2022.6")]
         public bool PushAndExecute(Message message, Action<MessageCollection<T1, T2>> onCollected, CancellationToken cancellationToken = default)
         {
-            //TODO 
             return ExecutePushAndExecute(message, collection => onCollected((MessageCollection<T1, T2>) collection), cancellationToken);
         }
         

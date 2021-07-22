@@ -70,7 +70,7 @@ namespace Agents.Net.Tests
                                     Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
-            result.Result.Should().Be(WaitResultKind.Success);
+            result.Result.Should().Be(MessageGateResultKind.Success);
             result.EndMessage.Should().BeSameAs(endMessage);
         }
         
@@ -89,7 +89,7 @@ namespace Agents.Net.Tests
                                     Timeout.Infinite);
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {});
 
-            result.Result.Should().Be(WaitResultKind.Exception);
+            result.Result.Should().Be(MessageGateResultKind.Exception);
             result.Exceptions.Should().ContainSingle(message => ReferenceEquals(message, exception));
         }
         
@@ -111,7 +111,7 @@ namespace Agents.Net.Tests
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
-            result.Result.Should().Be(WaitResultKind.Timeout);
+            result.Result.Should().Be(MessageGateResultKind.Timeout);
         }
         
         [Test]
@@ -132,7 +132,7 @@ namespace Agents.Net.Tests
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, 500);
 
             executed.Should().BeTrue("otherwise there is a timing issue.");
-            result.Result.Should().Be(WaitResultKind.Timeout);
+            result.Result.Should().Be(MessageGateResultKind.Timeout);
         }
         
         [Test]
@@ -145,7 +145,7 @@ namespace Agents.Net.Tests
             MessageGateResult<OtherMessage> result = gate.SendAndAwait(startMessage, m => {}, cancellationToken:source.Token);
 
             source.IsCancellationRequested.Should().BeTrue("something went wrong otherwise.");
-            result.Result.Should().Be(WaitResultKind.Canceled);
+            result.Result.Should().Be(MessageGateResultKind.Canceled);
         }
         
         [Test]

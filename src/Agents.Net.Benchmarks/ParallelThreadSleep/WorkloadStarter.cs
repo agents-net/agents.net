@@ -9,23 +9,31 @@ using Agents.Net;
 
 namespace Agents.Net.Benchmarks.ParallelThreadSleep
 {
+    [Consumes(typeof(WorkloadExecutedMessage))]
+    [Consumes(typeof(ExceptionMessage))]
     [Consumes(typeof(StartingWorkloadsMessage))]
     [Produces(typeof(WorkloadDefinedMessage))]
     public class WorkloadStarter : Agent
     {
-        public WorkloadStarter(IMessageBoard messageBoard) : base(messageBoard)
+        private readonly MessageGate<WorkloadDefinedMessage, WorkloadExecutedMessage> gate = new();
+        private readonly Action terminateAction;
+        public WorkloadStarter(IMessageBoard messageBoard, Action terminateAction) : base(messageBoard)
         {
+            this.terminateAction = terminateAction;
         }
 
         protected override void ExecuteCore(Message messageData)
         {
             StartingWorkloadsMessage workloads = messageData.Get<StartingWorkloadsMessage>();
-            List<Message> messages = new List<Message>();
+            List<WorkloadDefinedMessage> messages = new();
             foreach (int workload in workloads.Workloads)
             {
                 messages.Add(new WorkloadDefinedMessage(workload, messageData));
             }
-            OnMessages(messages);
+            gate.SendAndContinue(messages,OnMessage, result =>
+            {
+                terminateAction();
+            });
         }
     }
 }
