@@ -24,7 +24,8 @@ namespace Agents.Net.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run(Assembly.GetAssembly(typeof(Program)));
+            //BenchmarkRunner.Run(Assembly.GetAssembly(typeof(Program)));
+            BenchmarkRunner.Run<ParallelThreadSleepBenchmark>();
         }
     }
 }

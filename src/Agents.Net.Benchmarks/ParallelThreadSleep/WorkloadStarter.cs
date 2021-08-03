@@ -24,6 +24,10 @@ namespace Agents.Net.Benchmarks.ParallelThreadSleep
 
         protected override void ExecuteCore(Message messageData)
         {
+            if (gate.Check(messageData))
+            {
+                return;
+            }
             StartingWorkloadsMessage workloads = messageData.Get<StartingWorkloadsMessage>();
             List<WorkloadDefinedMessage> messages = new();
             foreach (int workload in workloads.Workloads)

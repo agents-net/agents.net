@@ -4,16 +4,18 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ConcurrentCollections;
 using FluentAssertions;
 
 namespace Agents.Net.Tests.Tools
 {
     public class ExecutionOrder
     {
-        private readonly List<ExecutionOrderStep> steps = new List<ExecutionOrderStep>();
+        private readonly ConcurrentBag<ExecutionOrderStep> steps = new ConcurrentBag<ExecutionOrderStep>();
         private readonly Dictionary<string, AgentCollector> activeAgents = new Dictionary<string, AgentCollector>();
         private ExecutionOrderStep activeStep;
         private readonly object syncRoot = new object();
@@ -63,7 +65,7 @@ namespace Agents.Net.Tests.Tools
 
         public void CheckParallelMessages(string agent, int messageCount)
         {
-            steps.Any(s => s.Agents.FirstOrDefault(a => a.EndsWith(agent)) != null &&
+            steps.ToArray().Any(s => s.Agents.FirstOrDefault(a => a.EndsWith(agent)) != null &&
                            s.AgentMessages[s.Agents.First(a => a.EndsWith(agent))]
                                .GroupBy(m => m.Name)
                                .Any(g => g.Count() == messageCount))
@@ -106,11 +108,11 @@ namespace Agents.Net.Tests.Tools
 
         private class ExecutionOrderStep
         {
-            private readonly HashSet<AgentCollector> activeAgents;
+            private readonly ConcurrentHashSet<AgentCollector> activeAgents;
 
             public ExecutionOrderStep(IEnumerable<AgentCollector> activeAgents)
             {
-                this.activeAgents = new HashSet<AgentCollector>(activeAgents);
+                this.activeAgents = new ConcurrentHashSet<AgentCollector>(activeAgents);
             }
 
             public IEnumerable<string> Agents => activeAgents.Select(a => a.Agent);
