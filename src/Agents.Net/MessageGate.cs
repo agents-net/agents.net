@@ -116,40 +116,6 @@ namespace Agents.Net
         where TEnd : Message
         where TStart : Message
     {
-        private readonly MessageCollector<TStart, ExceptionMessage> exceptionCollector;
-        private readonly MessageCollector<TStart, TEnd> pairCollector = new MessageCollector<TStart, TEnd>();
-        private readonly Dictionary<TStart, CancellationTokenSource> exceptionCancelTokens = new Dictionary<TStart, CancellationTokenSource>();
-        private readonly Dictionary<TStart, List<ExceptionMessage>> exceptions = new Dictionary<TStart, List<ExceptionMessage>>();
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="MessageGate{TStart,TEnd}"/>
-        /// </summary>
-        public MessageGate()
-        {
-            exceptionCollector = new MessageCollector<TStart, ExceptionMessage>(OnExceptionMessagesCollected);
-        }
-
-        private void OnExceptionMessagesCollected(MessageCollection<TStart, ExceptionMessage> set)
-        {
-            set.MarkAsConsumed(set.Message2);
-
-            lock (exceptions)
-            {
-                if (exceptions.TryGetValue(set.Message1, out List<ExceptionMessage> messages))
-                {
-                    messages.Add(set.Message2);
-                }
-            }
-
-            lock (exceptionCancelTokens)
-            {
-                if (exceptionCancelTokens.TryGetValue(set.Message1, out CancellationTokenSource source))
-                {
-                    source.Cancel();
-                }
-            }
-        }
-
         /// <summary>
         /// A constant value to tell the <see cref="MessageGate{TStart,TEnd}"/> that it has to wait forever.
         /// </summary>
@@ -205,6 +171,9 @@ namespace Agents.Net
             }
         }
 
+        //Using only a dictionary is faster but there are weird errors.
+        private readonly ConcurrentDictionary<MessageDomain, OneTimeAction> continueActions =
+            new ConcurrentDictionary<MessageDomain, OneTimeAction>();
         /// <summary>
         /// The method to send a start message and wait for the end message.
         /// </summary>
@@ -242,72 +211,22 @@ namespace Agents.Net
             CancellationToken userCancelToken = cancellationToken;
             CancellationToken timeoutCancelToken = default;
             List<CancellationTokenSource> sources = new List<CancellationTokenSource>();
-            CancellationTokenSource exceptionSource = new CancellationTokenSource();
-            sources.Add(exceptionSource);
-            lock (exceptionCancelTokens)
-            {
-                exceptionCancelTokens.Add(startMessage, exceptionSource);
-            }
-            CancellationToken exceptionCancelToken = exceptionSource.Token;
             if (timeout != NoTimout)
             {
                 CancellationTokenSource timeoutSource = new CancellationTokenSource(timeout);
                 sources.Add(timeoutSource);
                 timeoutCancelToken = timeoutSource.Token;
             }
-            CancellationTokenSource combinedSource = CancellationTokenSource.CreateLinkedTokenSource(userCancelToken, timeoutCancelToken, exceptionCancelToken);
+            CancellationTokenSource combinedSource = CancellationTokenSource.CreateLinkedTokenSource(userCancelToken, timeoutCancelToken);
             cancellationToken = combinedSource.Token;
             sources.Add(combinedSource);
-            
-            lock (exceptions)
-            {
-                exceptions.Add(startMessage, new List<ExceptionMessage>());
-            }
 
             MessageDomain.CreateNewDomainsFor(startMessage);
-            exceptionCollector.Push(startMessage);
             CancellationTokenRegistration register = default;
-            pairCollector.PushAndContinue(startMessage, set =>
-            {
-                set.MarkAsConsumed(set.Message1);
-                set.MarkAsConsumed(set.Message2);
-                TEnd endMessage = set.Message2;
-                    
-                MessageDomain.TerminateDomainsOf(startMessage);
-                
-                Dispose();
-                MessageGateResult<TEnd> result = new MessageGateResult<TEnd>(MessageGateResultKind.Success, endMessage, Enumerable.Empty<ExceptionMessage>());
-                continueAction(result);
-            }, cancellationToken);
-            register = cancellationToken.Register(() =>
-            {
-                MessageDomain.TerminateDomainsOf(startMessage);
-                MessageGateResultKind resultKind = MessageGateResultKind.Success;
-                if (userCancelToken.IsCancellationRequested)
-                {
-                    resultKind = MessageGateResultKind.Canceled;
-                }
-                else if (exceptionCancelToken.IsCancellationRequested)
-                {
-                    resultKind = MessageGateResultKind.Exception;
-                }
-                else if (timeoutCancelToken.IsCancellationRequested)
-                {
-                    resultKind = MessageGateResultKind.Timeout;
-                }
+            OneTimeAction action = new OneTimeAction(OnReceived);
+            continueActions.TryAdd(startMessage.MessageDomain, action);
+            register = cancellationToken.Register(OnCancel);
 
-                IEnumerable<ExceptionMessage> currentExceptions;
-                lock (exceptions)
-                {
-                    currentExceptions = exceptions[startMessage];
-                    exceptions.Remove(startMessage);
-                }
-
-                Dispose();
-                MessageGateResult<TEnd> result = new MessageGateResult<TEnd>(resultKind, null, currentExceptions);
-                continueAction(result);
-            });
-                
             onMessage(startMessage);
 
             void Dispose()
@@ -318,11 +237,53 @@ namespace Agents.Net
                 }
                 
                 register.Dispose();
+            }
 
-                lock (exceptionCancelTokens)
+            void OnReceived(Message message)
+            {
+                if (!continueActions.TryRemove(startMessage.MessageDomain, out _))
                 {
-                    exceptionCancelTokens.Remove(startMessage);
+                    return;
                 }
+
+                MessageDomain.TerminateDomainsOf(startMessage);
+                if (message.TryGet(out TEnd endMessage))
+                {
+                    continueAction(new MessageGateResult<TEnd>(MessageGateResultKind.Success, endMessage,
+                                                               Enumerable.Empty<ExceptionMessage>()));
+                }
+                else
+                {
+                    ExceptionMessage exceptionMessage = message.Get<ExceptionMessage>();
+                    continueAction(
+                        new MessageGateResult<TEnd>(MessageGateResultKind.Exception, null, new[] {exceptionMessage}));
+                }
+
+                Dispose();
+            }
+
+            void OnCancel()
+            {
+                if (!continueActions.TryRemove(startMessage.MessageDomain, out _))
+                {
+                    return;
+                }
+
+                MessageDomain.TerminateDomainsOf(startMessage);
+                MessageGateResultKind resultKind = MessageGateResultKind.Success;
+                if (userCancelToken.IsCancellationRequested)
+                {
+                    resultKind = MessageGateResultKind.Canceled;
+                }
+                else if (timeoutCancelToken.IsCancellationRequested)
+                {
+                    resultKind = MessageGateResultKind.Timeout;
+                }
+
+                MessageGateResult<TEnd> result =
+                    new MessageGateResult<TEnd>(resultKind, null, Enumerable.Empty<ExceptionMessage>());
+                continueAction(result);
+                Dispose();
             }
         }
 
@@ -536,7 +497,7 @@ namespace Agents.Net
             });
         }
 
-        private bool IsActive => exceptions.Count > 0;
+        private bool IsActive => continueActions.Count > 0;
 
         /// <summary>
         /// Checks whether the provided exception message is the end message or an exception message for the awaited <see cref="SendAndAwait"/> operation.
@@ -546,14 +507,51 @@ namespace Agents.Net
         /// <remarks>For an example how to use this class see the type documentation.</remarks>
         public bool Check(Message message)
         {
-            if (!IsActive)
+            if (message == null)
             {
-                //do not store messages if no messages are awaited
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (!IsActive ||
+                !(message.Is<TEnd>() ||
+                message.Is<ExceptionMessage>()))
+            {
                 return false;
             }
-            bool result = exceptionCollector.TryPush(message);
-            result |= pairCollector.TryPush(message);
-            return result;
+
+            MessageDomain domain = message.MessageDomain;
+            while (domain?.IsTerminated == true)
+            {
+                domain = domain.Parent;
+            }
+
+            if (domain != null &&
+                continueActions.TryGetValue(domain, out OneTimeAction action))
+            {
+                action.Execute(message);
+                return true;
+            }
+            return false;
+        }
+
+        private class OneTimeAction
+        {
+            private readonly Action<Message> action;
+            private int executed = 0;
+
+            public OneTimeAction(Action<Message> action)
+            {
+                this.action = action;
+            }
+
+            //Not using interlocked leaves a small error but improves performance.
+            public void Execute(Message messageData)
+            {
+                if (Interlocked.Increment(ref executed) == 1)
+                {
+                    action(messageData);
+                }
+            }
         }
     }
 }
