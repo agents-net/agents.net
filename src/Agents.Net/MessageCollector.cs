@@ -223,10 +223,7 @@ namespace Agents.Net
                 oneShotActions.TryAdd(message, set =>
                 {
                     collection = set;
-                    lock (oneShotActions)
-                    {
-                        oneShotActions.TryRemove(message, out _);
-                    }
+                    oneShotActions.TryRemove(message, out _);
                     resetEvent.Set();
                 });
                 
@@ -260,23 +257,14 @@ namespace Agents.Net
             register = cancellationToken.Register(() =>
             {
                 register.Dispose();
-                lock (oneShotActions)
-                {
-                    oneShotActions.Remove(message);
-                }
+                oneShotActions.TryRemove(message, out _);
             });
-            lock (oneShotActions)
+            oneShotActions.TryAdd(message, set =>
             {
-                oneShotActions.Add(message, set =>
-                {
-                    register.Dispose();
-                    lock (oneShotActions)
-                    {
-                        oneShotActions.Remove(message);
-                    }
-                    executeAction?.Invoke(set);
-                });
-            }
+                register.Dispose();
+                oneShotActions.TryRemove(message, out _);
+                executeAction?.Invoke(set);
+            });
                 
             Push(message);
         }
@@ -309,7 +297,6 @@ namespace Agents.Net
         {
             foreach (MessageCollection messageSet in sets)
             {
-                //TODO lock
                 if (oneShotActions.Count > 0)
                 {
                     foreach (Message message in messageSet.SelectMany(m => m.HeadMessage.DescendantsAndSelf))
