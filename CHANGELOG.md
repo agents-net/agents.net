@@ -27,6 +27,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Removed
 - **Breaking Change:** Removed the `name` parameter in `Agent` and `Message` classes
 
+## 2021.6.3
+### Fixed
+
+- #115 - The `MessageCollector` works now with `ConcurrentDictionary` instead of locks to avoid the exception in the defect
+
 ## 2021.6.2
 ### Added
 - `PushAndExecute` accepts a `CancellationToken` now. With this it is possible to stop the wait operation

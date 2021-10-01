@@ -4,6 +4,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -90,17 +91,16 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T1"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T1>> Messages1 { get; } = new Dictionary<MessageDomain, MessageStore<T1>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T1>> Messages1 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T1>>();
         /// <summary>
         /// Store for messages of type <typeparamref name="T2"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T2>> Messages2 { get; } = new Dictionary<MessageDomain, MessageStore<T2>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T2>> Messages2 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T2>>();
         
         private readonly Action<MessageCollection<T1, T2>> onMessagesCollected;
-        private readonly object dictionaryLock = new object();
 
-        private readonly Dictionary<Message, Action<MessageCollection>> oneShotActions =
-            new Dictionary<Message, Action<MessageCollection>>(); 
+        private readonly ConcurrentDictionary<Message, Action<MessageCollection>> oneShotActions =
+            new ConcurrentDictionary<Message, Action<MessageCollection>>(); 
 
         /// <summary>
         /// Initialized a new instance of the class <see cref="MessageCollector{T1,T2}"/>.
@@ -144,21 +144,17 @@ namespace Agents.Net
         {
             bool result = true;
             IEnumerable<MessageCollection> completedSets;
-            lock (dictionaryLock)
-            {
-                result &= Aggregate(message, throwError);
-                completedSets = GetCompleteSets(message.MessageDomain);
-            }
+            
+            result &= Aggregate(message, throwError);
+            completedSets = GetCompleteSets(message.MessageDomain);
+            
             ExecuteCompleteSets(completedSets);
             return result;
         }
 
         internal void Remove(Message message)
         {
-            lock (dictionaryLock)
-            {
-                RemoveMessage(message);
-            }
+            RemoveMessage(message);
         }
 
         /// <summary>
@@ -170,11 +166,11 @@ namespace Agents.Net
         {
             if (message is T1 message1)
             {
-                Messages1.Remove(message1.MessageDomain);
+                Messages1.TryRemove(message1.MessageDomain, out _);
             }
             else if (message is T2 message2)
             {
-                Messages2.Remove(message2.MessageDomain);
+                Messages2.TryRemove(message2.MessageDomain, out _);
             }
             else
             {
@@ -224,18 +220,12 @@ namespace Agents.Net
             using (ManualResetEventSlim resetEvent = new ManualResetEventSlim(false))
             {
                 MessageCollection collection = null;
-                lock (oneShotActions)
+                oneShotActions.TryAdd(message, set =>
                 {
-                    oneShotActions.Add(message, set =>
-                    {
-                        collection = set;
-                        lock (oneShotActions)
-                        {
-                            oneShotActions.Remove(message);
-                        }
-                        resetEvent.Set();
-                    });
-                }
+                    collection = set;
+                    oneShotActions.TryRemove(message, out _);
+                    resetEvent.Set();
+                });
                 
                 Push(message);
                 try
@@ -267,23 +257,14 @@ namespace Agents.Net
             register = cancellationToken.Register(() =>
             {
                 register.Dispose();
-                lock (oneShotActions)
-                {
-                    oneShotActions.Remove(message);
-                }
+                oneShotActions.TryRemove(message, out _);
             });
-            lock (oneShotActions)
+            oneShotActions.TryAdd(message, set =>
             {
-                oneShotActions.Add(message, set =>
-                {
-                    register.Dispose();
-                    lock (oneShotActions)
-                    {
-                        oneShotActions.Remove(message);
-                    }
-                    executeAction?.Invoke(set);
-                });
-            }
+                register.Dispose();
+                oneShotActions.TryRemove(message, out _);
+                executeAction?.Invoke(set);
+            });
                 
             Push(message);
         }
@@ -316,7 +297,6 @@ namespace Agents.Net
         {
             foreach (MessageCollection messageSet in sets)
             {
-                //TODO lock
                 if (oneShotActions.Count > 0)
                 {
                     foreach (Message message in messageSet.SelectMany(m => m.HeadMessage.DescendantsAndSelf))
@@ -360,7 +340,7 @@ namespace Agents.Net
         /// <typeparam name="T">The type of the message.</typeparam>
         /// <returns><c>true</c> if the dictionary contains a message for the specific domain; otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">If the dictionary is null.</exception>
-        protected bool TryGetMessageFittingDomain<T>(MessageDomain domain, Dictionary<MessageDomain, MessageStore<T>> messagePool, out MessageStore<T> message)
+        protected bool TryGetMessageFittingDomain<T>(MessageDomain domain, ConcurrentDictionary<MessageDomain, MessageStore<T>> messagePool, out MessageStore<T> message)
             where T : Message
         {
             if (messagePool == null)
@@ -431,7 +411,7 @@ namespace Agents.Net
         /// <param name="messagePool">The message pool to add the message to.</param>
         /// <typeparam name="T">The type of the message.</typeparam>
         /// <exception cref="ArgumentNullException">If either the message or the message pool is <c>null</c>.</exception>
-        protected void UpdateMessagePool<T>(T message, Dictionary<MessageDomain, MessageStore<T>> messagePool)
+        protected void UpdateMessagePool<T>(T message, ConcurrentDictionary<MessageDomain, MessageStore<T>> messagePool)
             where T : Message
         {
             if (message == null)
@@ -450,7 +430,7 @@ namespace Agents.Net
             }
             else
             {
-                messagePool.Add(message.MessageDomain, message);
+                messagePool.TryAdd(message.MessageDomain, message);
                 message.MessageDomain.ExecuteOnTerminate(() =>
                 {
                     if (messagePool.TryGetValue(message.MessageDomain, out MessageStore<T> store))
@@ -458,7 +438,7 @@ namespace Agents.Net
                         store.Dispose();
                     }
 
-                    messagePool.Remove(message.MessageDomain);
+                    messagePool.TryRemove(message.MessageDomain, out _);
                 });
             }
         }
@@ -513,7 +493,7 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T3"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T3>> Messages3 { get; } = new Dictionary<MessageDomain, MessageStore<T3>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T3>> Messages3 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T3>>();
         private readonly Action<MessageCollection<T1, T2, T3>> onMessagesCollected;
 
         /// <inheritdoc />
@@ -564,7 +544,7 @@ namespace Agents.Net
         {
             if (message is T3 message3)
             {
-                Messages3.Remove(message3.MessageDomain);
+                Messages3.TryRemove(message3.MessageDomain, out _);
             }
             else
             {
@@ -611,7 +591,7 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T4"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T4>> Messages4 { get; } = new Dictionary<MessageDomain, MessageStore<T4>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T4>> Messages4 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T4>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4>> onMessagesCollected;
 
         /// <inheritdoc />
@@ -663,7 +643,7 @@ namespace Agents.Net
         {
             if (message is T4 message4)
             {
-                Messages4.Remove(message4.MessageDomain);
+                Messages4.TryRemove(message4.MessageDomain, out _);
             }
             else
             {
@@ -711,7 +691,7 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T5"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T5>> Messages5 { get; } = new Dictionary<MessageDomain, MessageStore<T5>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T5>> Messages5 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T5>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5>> onMessagesCollected;
 
         /// <inheritdoc />
@@ -764,7 +744,7 @@ namespace Agents.Net
         {
             if (message is T5 message5)
             {
-                Messages5.Remove(message5.MessageDomain);
+                Messages5.TryRemove(message5.MessageDomain, out _);
             }
             else
             {
@@ -813,7 +793,7 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T6"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T6>> Messages6 { get; } = new Dictionary<MessageDomain, MessageStore<T6>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T6>> Messages6 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T6>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6>> onMessagesCollected;
 
         /// <inheritdoc />
@@ -867,7 +847,7 @@ namespace Agents.Net
         {
             if (message is T6 message6)
             {
-                Messages6.Remove(message6.MessageDomain);
+                Messages6.TryRemove(message6.MessageDomain, out _);
             }
             else
             {
@@ -917,7 +897,7 @@ namespace Agents.Net
         /// <summary>
         /// Store for messages of type <typeparamref name="T7"/>.
         /// </summary>
-        protected Dictionary<MessageDomain, MessageStore<T7>> Messages7 { get; } = new Dictionary<MessageDomain, MessageStore<T7>>();
+        protected ConcurrentDictionary<MessageDomain, MessageStore<T7>> Messages7 { get; } = new ConcurrentDictionary<MessageDomain, MessageStore<T7>>();
         private readonly Action<MessageCollection<T1, T2, T3, T4, T5, T6, T7>> onMessagesCollected;
 
         /// <inheritdoc />
@@ -972,7 +952,7 @@ namespace Agents.Net
         {
             if (message is T7 message7)
             {
-                Messages7.Remove(message7.MessageDomain);
+                Messages7.TryRemove(message7.MessageDomain, out _);
             }
             else
             {
