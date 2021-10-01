@@ -6,13 +6,14 @@ on:
   push:
     branches:
       - master
+      - release/**
 
 jobs:
   build:
     
     name: build
     runs-on: ubuntu-latest
-
+*
     steps:
     - uses: actions/checkout@v2
     - name: Build with dotnet
